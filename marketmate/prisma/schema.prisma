@@ -9,3 +9,36 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Vendor {
+  id             Int       @id @default(autoincrement())
+  name           String
+  description    String
+  email          String
+  phone          String
+  image          String
+  shopTags       String[]
+  products       Product[]
+  upcomingEvents Event[]
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  startDate   DateTime
+  endDate     DateTime
+  location    String
+  url         String
+  vendors     Vendor[]
+}
+
+model Product {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  image       String
+  vendor      Vendor @relation(fields: [vendorId], references: [id])
+  vendorId    Int
+}
