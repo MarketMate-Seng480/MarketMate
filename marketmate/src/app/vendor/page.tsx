@@ -1,10 +1,6 @@
-import PageContainer from "../components/PageContainer"
-
 function Admin() {
   return (
-    <PageContainer>
-      This is the vendor admin page
-    </PageContainer>
+    <span>This is the vendor admin page</span>
   )
 }
  

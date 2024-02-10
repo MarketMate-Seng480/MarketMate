@@ -1,10 +1,10 @@
 'use client'
-
 import { Link, Box, Button } from '@chakra-ui/react'
-import React, { useState } from 'react'
+import React from 'react'
+import { useAuth } from '../authContext';
 
 const Navbar: React.FC = () => {
-    const [isVendor, setIsVendor] = useState(false)
+    const { isVendor,isLoading, login, logout } = useAuth()
     return (
         <Box 
             display='flex' 
@@ -15,13 +15,14 @@ const Navbar: React.FC = () => {
         >
             <Link href='/'>logo</Link>
             <Box display='flex' justifyContent='end' gap='4rem'>
-                {isVendor ? (
+                {/* Temporary fix for flashing navbar on reload issue, works for demo but should be updated */}
+                {(isVendor || isLoading) ? (
                     <>
                         <Link href='/vendor'>my shop</Link>
-                        <Button colorScheme='pink' onClick={() => setIsVendor(true)}>Logout</Button>
+                        <Button onClick={logout}>Logout</Button>
                     </>
                 ) : (
-                    <Button colorScheme='pink' onClick={() => setIsVendor(true)}>Login</Button>
+                    <Button onClick={login}>Login</Button>
                 )}
             </Box>
         </Box>
