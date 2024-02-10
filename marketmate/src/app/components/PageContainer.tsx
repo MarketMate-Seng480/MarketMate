@@ -1,12 +1,19 @@
+import React from "react"
 import Navbar from "./Navbar"
+import { Box } from '@chakra-ui/react'
 
-const PageContainer: React.FC = () => {
+interface PageContainerProps {
+    children: React.ReactNode
+}
+
+const PageContainer: React.FC<PageContainerProps> = ({children}) => {
     return (
-        <div style={{border:"2px solid black"}}>
-            This is the PageContainer component
+        <Box height='100vh'>
             <Navbar/>
-            <div>rest of page (children)</div>
-        </div>
+            <Box padding='2rem'>
+                {children}
+            </Box>
+        </Box>
     )
 }
 

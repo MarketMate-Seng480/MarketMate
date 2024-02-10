@@ -1,8 +1,10 @@
+import PageContainer from "../components/PageContainer"
+
 function Admin() {
   return (
-    <div>
-      Vendor admin page
-    </div>
+    <PageContainer>
+      This is the vendor admin page
+    </PageContainer>
   )
 }
  
