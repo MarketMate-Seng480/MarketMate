@@ -1,13 +1,19 @@
+'use client'
 import React from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, Link, Box } from '@chakra-ui/react';
+import { useAuth } from '../authContext';
 
-// TODO: Clicking this button should update global state to be user type 'vendor'
-function Login() {
+// Switches user state to isVendor (logged in state)
+const Login: React.FC = () => {
+  const { login } = useAuth();
   return (
-      <Button colorScheme='blue'>
-        Proceed as vendor
+    <Box display='flex' flexDirection='column' gap='1rem'>
+      Login page
+      <Button onClick={login} width='fit-content'>
+        <Link href='/vendor'>Proceed as vendor</Link>
       </Button>
+    </Box>
   );
 }
 
-export default Login
+export default Login;
