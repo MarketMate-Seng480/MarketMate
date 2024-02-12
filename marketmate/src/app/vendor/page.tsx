@@ -1,8 +1,6 @@
 function Admin() {
   return (
-    <div>
-      Vendor admin page
-    </div>
+    <span>This is the vendor admin page</span>
   )
 }
  
