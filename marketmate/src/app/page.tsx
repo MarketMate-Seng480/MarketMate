@@ -4,7 +4,6 @@ import { AuthProvider, useAuth } from "./authContext";
 import { ChakraProvider } from "@chakra-ui/react";
 
 const Home: React.FC = () => {
-  const { isVendor } = useAuth();
   return (
     <ChakraProvider>
       <AuthProvider>
@@ -30,7 +29,7 @@ const Home: React.FC = () => {
               as="h3"
               size="lg"
             >
-              {isVendor ? "Vendor" : "Customer"} Dashboard
+              {/* {isVendor ? "Vendor" : "Customer"} Dashboard */}
             </Heading>
           </Center>
         </Box>

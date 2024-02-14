@@ -3,7 +3,7 @@
 import { Flex, Stack, Center, Container } from "@chakra-ui/react";
 import Image from "next/image";
 import LoginImage from "../../public/login.jpg";
-import LoginForm from "./LoginForm";
+import SignUpForm from "./SignUpForm";
 
 export default function LoginPage() {
   return (
@@ -18,9 +18,7 @@ export default function LoginPage() {
         justifyContent={"center"}
       >
         <Container maxW="2xl">
-          <Center>
-            <LoginForm />
-          </Center>
+          <Center>{<SignUpForm />}</Center>
         </Container>
       </Flex>
       <Flex

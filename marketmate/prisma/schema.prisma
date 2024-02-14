@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -20,7 +17,7 @@ model Vendor {
   image          String
   shopTags       String[]
   products       Product[]
-  upcomingEvents Event[]
+  upcomingEvents Event[]   @relation("EventToVendor")
 }
 
 model Event {
@@ -31,7 +28,7 @@ model Event {
   endDate     DateTime
   location    String
   url         String
-  vendors     Vendor[]
+  vendors     Vendor[] @relation("EventToVendor")
 }
 
 model Product {
@@ -40,6 +37,6 @@ model Product {
   description String
   price       Float
   image       String
-  vendor      Vendor @relation(fields: [vendorId], references: [id])
   vendorId    Int
+  vendor      Vendor @relation(fields: [vendorId], references: [id])
 }
