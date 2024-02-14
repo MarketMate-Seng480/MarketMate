@@ -4,6 +4,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  FormErrorMessage,
   Heading,
   Input,
   Stack,
@@ -16,9 +17,72 @@ import {
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function SignUpForm() {
+  const router = useRouter();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    };
+
+    // Validate first name
+    if (!firstName) {
+      newErrors.firstName = "First name is required";
+      isValid = false;
+    }
+
+    // Validate last name
+    if (!lastName) {
+      newErrors.lastName = "Last name is required";
+      isValid = false;
+    }
+
+    // Validate email
+    if (!email) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Invalid email address";
+      isValid = false;
+    }
+
+    // Validate password
+    if (!password) {
+      newErrors.password = "Password is required";
+      isValid = false;
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSubmit = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+    if (validateForm()) {
+      router.push("/vendor");
+    }
+  };
+
   return (
     <Stack
       spacing={15}
@@ -26,7 +90,7 @@ export default function SignUpForm() {
       maxW={"lg"}
       p={6}
     >
-      <Heading fontSize={{ base: "2xl", md: "3xl" }}>Create an account</Heading>
+      <Heading fontSize={{ base: "2xl", md: "3xl" }}>Create An Account</Heading>
 
       <Stack spacing={2}>
         <Text>At MarketMate, we believe in the power of community.</Text>
@@ -45,37 +109,57 @@ export default function SignUpForm() {
             <FormControl
               id="firstName"
               isRequired
+              isInvalid={!!errors.firstName}
             >
               <FormLabel>First Name</FormLabel>
-              <Input type="text" />
+              <Input
+                type="text"
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <FormErrorMessage>{errors.firstName}</FormErrorMessage>
             </FormControl>
           </Box>
           <Box>
-            <FormControl id="lastName">
+            <FormControl
+              id="lastName"
+              isRequired
+              isInvalid={!!errors.lastName}
+            >
               <FormLabel>Last Name</FormLabel>
-              <Input type="text" />
+              <Input
+                type="text"
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <FormErrorMessage>{errors.lastName}</FormErrorMessage>
             </FormControl>
           </Box>
         </HStack>
         <FormControl
           id="email"
           isRequired
+          isInvalid={!!errors.email}
         >
           <FormLabel>Email address</FormLabel>
           <Input
             placeholder="your-email@example.com"
             _placeholder={{ color: "gray.500" }}
             type="email"
+            onChange={(e) => setEmail(e.target.value)}
           />
+          <FormErrorMessage>{errors.email}</FormErrorMessage>
         </FormControl>
 
         <FormControl
           id="password"
           isRequired
+          isInvalid={!!errors.password}
         >
           <FormLabel>Password</FormLabel>
           <InputGroup>
-            <Input type={showPassword ? "text" : "password"} />
+            <Input
+              type={showPassword ? "text" : "password"}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <InputRightElement h={"full"}>
               <Button
                 variant={"ghost"}
@@ -85,6 +169,7 @@ export default function SignUpForm() {
               </Button>
             </InputRightElement>
           </InputGroup>
+          <FormErrorMessage>{errors.password}</FormErrorMessage>
         </FormControl>
       </Stack>
 
@@ -95,6 +180,7 @@ export default function SignUpForm() {
           _hover={{
             bg: "blue.500",
           }}
+          onClick={handleSubmit}
         >
           Create An Account
         </Button>
