@@ -47,7 +47,7 @@ export default function LoginForm() {
   const handleSubmit = () => {
     if (validateForm()) {
       login();
-      router.push("/vendor"); // redirect to the home page
+      //router.push("/"); // redirect to the home page
     }
   };
 
@@ -118,7 +118,7 @@ export default function LoginForm() {
         onClick={handleSubmit}
         mb={5}
       >
-        Log In As Vendor
+        Log In
       </Button>
 
       <Text>Don&apos;t have an account?</Text>
