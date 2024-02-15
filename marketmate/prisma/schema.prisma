@@ -17,7 +17,7 @@ model Vendor {
   image          String
   shopTags       String[]
   products       Product[]
-  upcomingEvents Event[]   @relation("EventToVendor")
+  upcomingEvents Event[]
 }
 
 model Event {
@@ -28,7 +28,7 @@ model Event {
   endDate     DateTime
   location    String
   url         String
-  vendors     Vendor[] @relation("EventToVendor")
+  vendors     Vendor[]
 }
 
 model Product {
@@ -37,6 +37,6 @@ model Product {
   description String
   price       Float
   image       String
-  vendorId    Int
   vendor      Vendor @relation(fields: [vendorId], references: [id])
+  vendorId    Int
 }
