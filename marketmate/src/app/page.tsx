@@ -1,5 +1,6 @@
 import { Box, Heading, Center } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
+import { UpcomingEventCard } from "./components/UpcomingEventCard";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
             Welcome to MarketMate
           </Heading>
         </Center>
+        <UpcomingEventCard/>
       </Box>
     </>
   );
