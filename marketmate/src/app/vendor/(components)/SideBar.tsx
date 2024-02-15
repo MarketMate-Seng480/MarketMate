@@ -26,6 +26,7 @@ import {
 } from "@chakra-ui/react";
 import { FiHome, FiUser, FiMenu, FiBell, FiChevronDown, FiBox } from "react-icons/fi";
 import { IconType } from "react-icons";
+import { usePathname } from "next/navigation";
 
 interface LinkItemProps {
   name: string;
@@ -50,7 +51,6 @@ interface SidebarProps extends BoxProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Home", icon: FiHome, url: "/vendor" },
   { name: "Profile", icon: FiUser, url: "/vendor/profile" },
-  { name: "Products", icon: FiBox, url: "/vendor/products" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
@@ -96,6 +96,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 };
 
 const NavItem = ({ icon, url, children, ...rest }: NavItemProps) => {
+  const pathname = usePathname();
+  const isActive = pathname === url;
+
   return (
     <Link
       href={url}
@@ -109,19 +112,15 @@ const NavItem = ({ icon, url, children, ...rest }: NavItemProps) => {
           borderRadius="lg"
           role="group"
           cursor="pointer"
-          _hover={{
-            bg: "gray.700",
-            color: "white",
-          }}
+          _hover={isActive ? {} : { bg: "gray.100", color: "black" }}
+          bg={isActive ? "gray.700" : undefined}
+          color={isActive ? "white" : undefined}
           {...rest}
         >
           {icon && (
             <Icon
               mr="4"
               fontSize="16"
-              _groupHover={{
-                color: "white",
-              }}
               as={icon}
             />
           )}
@@ -159,8 +158,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         fontSize="2xl"
         fontFamily="monospace"
         fontWeight="bold"
+        as={"h1"}
       >
-        Logo
+        MarketMate
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
