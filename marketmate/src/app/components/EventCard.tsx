@@ -1,4 +1,5 @@
-import { Button, Card, CardBody, Heading, Stack, Image, Text, Link } from "@chakra-ui/react";
+import { Button, Card, CardBody, Heading, Stack, Image, Text } from "@chakra-ui/react";
+import Link from 'next/link';
 import React from "react";
 
 export interface EventCardProps {
@@ -10,7 +11,6 @@ export interface EventCardProps {
     description: string;
 }
 
-// TODO: Change card layout if required
 export const EventCard: React.FC<EventCardProps> = ({
     marketId,
     image,
@@ -39,7 +39,9 @@ export const EventCard: React.FC<EventCardProps> = ({
                         borderRadius='full'
                         alignSelf='end'
                     >
-                        <Link href={marketId}>View details</Link>
+                        <Link href={`/market/${marketId}`} passHref>
+                            View details
+                        </Link>
                     </Button>
                 </Stack>
             </CardBody>
