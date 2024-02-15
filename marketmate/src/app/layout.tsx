@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { AuthProvider } from "./authContext";
-import { Box } from "@chakra-ui/react";
-import Navbar from "./components/Navbar";
-import { ChakraProvider } from "@chakra-ui/react";
-
-const inter = Inter({ subsets: ["latin"] });
+import { Providers } from "./providers";
+import { fonts } from "./fonts";
 
 export const metadata: Metadata = {
-  title: "MarketMate",
-  description: "Victoria's local market place for artisans and crafters.",
+  title: "MarketMate - Victoria's Local Marketplace",
+  description: "Discover and support local artisans and crafts in Victoria, BC.",
+  keywords: ["marketplace", "local", "artisans", "crafts", "Victoria", "BC"],
 };
 
 export default function RootLayout({
@@ -18,16 +15,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html
+      lang="en"
+      className={[fonts.playfairDisplay.variable, fonts.openSans.variable].join(" ")}
+    >
+      <body>
         <AuthProvider>
-          <ChakraProvider>
-            <Box height="100vh">
-              {/* <Navbar /> */}
-              {/* <Box padding="2rem">{children}</Box> */}
-              {children}
-            </Box>
-          </ChakraProvider>
+          <Providers>{children}</Providers>
         </AuthProvider>
       </body>
     </html>

@@ -15,11 +15,13 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import Link from "next/link";
+import { ViewIcon, ViewOffIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+import { Link } from "@chakra-ui/next-js";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../authContext";
 
 export default function SignUpForm() {
+  const { login } = useAuth();
   const router = useRouter();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -76,9 +78,9 @@ export default function SignUpForm() {
     return isValid;
   };
 
-  const handleSubmit = (event: { preventDefault: () => void }) => {
-    event.preventDefault();
+  const handleSubmit = () => {
     if (validateForm()) {
+      login();
       router.push("/vendor");
     }
   };
@@ -90,7 +92,21 @@ export default function SignUpForm() {
       maxW={"lg"}
       p={6}
     >
-      <Heading fontSize={{ base: "2xl", md: "3xl" }}>Create An Account</Heading>
+      <Link href="/">
+        <ChevronLeftIcon
+          boxSize={6}
+          color={"grey.400"}
+        />
+        Return to Homepage
+      </Link>
+
+      <Heading
+        as={"h1"}
+        fontSize={{ base: "2xl", md: "3xl" }}
+        mt={5}
+      >
+        Create An Account
+      </Heading>
 
       <Stack spacing={2}>
         <Text>At MarketMate, we believe in the power of community.</Text>
@@ -173,24 +189,22 @@ export default function SignUpForm() {
         </FormControl>
       </Stack>
 
-      <Stack spacing={10}>
-        <Button
-          bg={"blue.400"}
-          color={"white"}
-          _hover={{
-            bg: "blue.500",
-          }}
-          onClick={handleSubmit}
-        >
-          Create An Account
-        </Button>
-      </Stack>
+      <Button
+        bg={"#D1C7BD"}
+        _hover={{ bg: "#C4BEB5" }}
+        onClick={handleSubmit}
+        mb={5}
+      >
+        Create An Account
+      </Button>
 
       <Text>Already have an account?</Text>
+
       <Link href="/login">
         <Text
-          color={"blue.400"}
+          color={"black"}
           as="b"
+          style={{ textDecoration: "underline" }}
         >
           Log In
         </Text>

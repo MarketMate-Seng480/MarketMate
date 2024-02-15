@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/next-js": "^2.2.0",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@prisma/client": "^5.9.1",
