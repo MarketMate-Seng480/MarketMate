@@ -1,7 +1,7 @@
 import { Box, Heading, Center } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
 
-export default function Admin() {
+export default function Shop() {
   return (
     <>
       <Navbar />
@@ -12,7 +12,7 @@ export default function Admin() {
             as="h1"
             size="xl"
           >
-            Vendor Admin Page
+            A Vendors shop
           </Heading>
         </Center>
       </Box>

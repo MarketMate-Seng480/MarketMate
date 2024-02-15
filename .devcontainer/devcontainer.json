@@ -23,7 +23,6 @@
 		"vscode": {
 
 			"extensions": [
-
 				"streetsidesoftware.code-spell-checker",
 				"dbaeumer.vscode-eslint",
 				"esbenp.prettier-vscode",
@@ -31,8 +30,9 @@
 				"ms-vscode-remote.remote-containers",
 				"ms-azuretools.vscode-docker",
 				"ms-vscode.vscode-typescript-next",
-				"github.copilot"
-				
+				"github.copilot",
+				"Prisma.prisma",
+				"WillLuke.nextjs"
 			]
 
 		}

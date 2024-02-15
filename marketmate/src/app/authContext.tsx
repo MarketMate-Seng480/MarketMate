@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 interface AuthContextProps {
   isVendor: boolean;
   isLoading: boolean;
+  isLoggedIn: boolean;
   login: () => void;
   logout: () => void;
 }
@@ -28,6 +29,7 @@ interface AuthProviderProps {
 export const AuthProvider: FunctionComponent<AuthProviderProps> = ({ children }) => {
   const [isVendor, setIsVendor] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,19 +42,23 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({ children })
 
   const login = () => {
     setIsVendor(true);
+    setIsLoggedIn(true);
     localStorage.setItem('isVendor', 'true');
-    router.push('/vendor');
+    localStorage.setItem('isLoggedIn', 'true');
+    router.push('/');
   };
 
   const logout = () => {
     setIsVendor(false);
+    setIsLoggedIn(false);
     localStorage.removeItem('isVendor');
+    localStorage.removeItem('isLoggedIn');
     router.push('/');
   };
 
   // Provide the state and updater functions to the rest of app
   return (
-    <AuthContext.Provider value={{ isVendor, isLoading, login, logout }}>
+    <AuthContext.Provider value={{ isVendor, isLoading, isLoggedIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
