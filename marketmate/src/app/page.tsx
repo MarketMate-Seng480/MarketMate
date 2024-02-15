@@ -1,7 +1,21 @@
-function Home() {
+import { Box, Heading, Center } from "@chakra-ui/react";
+import Navbar from "./components/Navbar";
+
+export default function Home() {
   return (
-      <span>This is the homepage</span>
-  )
+    <>
+      <Navbar />
+
+      <Box>
+        <Center>
+          <Heading
+            as="h1"
+            size="xl"
+          >
+            Welcome to MarketMate
+          </Heading>
+        </Center>
+      </Box>
+    </>
+  );
 }
- 
-export default Home
