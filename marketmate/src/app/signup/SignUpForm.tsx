@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon, ChevronLeftIcon } from "@chakra-ui/icons";
-import { Link } from "@chakra-ui/next-js";
+import { Link } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../authContext";
 
