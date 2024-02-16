@@ -2,27 +2,12 @@
 
 import {
     Box,
-    Center,
     useColorModeValue,
     Heading,
     Text,
     Stack,
     Image,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,
     useDisclosure,
-    Button,
-    Editable,
-    EditableInput,
-    EditableTextarea,
-    EditablePreview,
-    FormControl,
-    FormLabel,
 } from '@chakra-ui/react'
 import { useState } from 'react';
 import { Product } from '@/app/types';

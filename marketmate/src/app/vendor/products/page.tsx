@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Box, Heading, useDisclosure, SimpleGrid } from "@chakra-ui/react";
+import { Button, Box, useDisclosure, SimpleGrid } from "@chakra-ui/react";
 import { CgAdd } from "react-icons/cg";
 import { Vendor, Product } from "@/app/types";
 import TopBanner from "./TopBanner";
@@ -71,9 +71,9 @@ export default function VendorProductPage() {
         
 
       <SimpleGrid spacing={1} templateColumns="repeat(auto-fill, minmax(330px, 1fr))">
-          {products.map(product => (
+          {products.map((product, index) => (
              <Box
-             key={product.id}
+             key={index}
              mx={10}
              mt={10}
             >

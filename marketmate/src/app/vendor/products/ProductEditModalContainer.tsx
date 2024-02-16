@@ -5,7 +5,6 @@ import {
   FormLabel,
   Input,
   Stack,
-  Avatar,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -13,10 +12,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Editable,
-  EditableInput,
-  EditableTextarea,
-  EditablePreview,
   Textarea,
 } from "@chakra-ui/react";
 import { Product } from "@/app/types";
