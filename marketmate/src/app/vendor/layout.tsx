@@ -1,4 +1,4 @@
-import { Box, Center, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import SideBar from "./(components)/SideBar";
 
 export default function VendorLayout({ children }: { children: React.ReactNode }) {

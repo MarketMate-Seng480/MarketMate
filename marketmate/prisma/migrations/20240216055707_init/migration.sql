@@ -5,8 +5,8 @@ CREATE TABLE "Vendor" (
     "description" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
-    "image" TEXT NOT NULL,
     "shopTags" TEXT[],
+    "logo" TEXT NOT NULL,
 
     CONSTRAINT "Vendor_pkey" PRIMARY KEY ("id")
 );
