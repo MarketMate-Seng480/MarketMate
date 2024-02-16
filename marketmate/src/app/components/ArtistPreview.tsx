@@ -3,16 +3,9 @@ import React, { useState } from 'react';
 import { HStack, VStack, Box, Link, Text, Image, IconButton, Card, CardBody, Flex, Spacer } from '@chakra-ui/react'
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import NextLink from 'next/link'
+import { Vendor } from '../types';
 
-export interface ArtistPreviewProps {
-    shopName: string;
-    shopLogo: string;
-    shopLink: string;
-    shopDescription: string;
-    images: string[];
-}
-
-const ArtistPreview: React.FC<ArtistPreviewProps> = ({ shopName, shopLogo, shopLink, shopDescription, images }) => {
+const ArtistPreview: React.FC<Vendor> = ({ id, name, logo, description, images}) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     const handleNext = () => {
@@ -35,16 +28,16 @@ const ArtistPreview: React.FC<ArtistPreviewProps> = ({ shopName, shopLogo, shopL
                     fontSize="lg"
                     lineHeight="normal"
                     fontWeight="semibold"
-                    href={shopLink}
+                    href={`/shop/${id}`}
                     textAlign={'left'}
                     >
-                    {shopName}
+                    {name}
                     </Link>
                             <Flex >
                                 <Image
                                     boxSize="130px"
                                     borderRadius="lg"
-                                    src={shopLogo}
+                                    src={logo}
                                     alt="Shop Logo"
                                     />
 
@@ -72,7 +65,7 @@ const ArtistPreview: React.FC<ArtistPreviewProps> = ({ shopName, shopLogo, shopL
                             </Flex>   
 
                     <Text mt={2} color="gray.500" align={'left'} noOfLines={2}>
-                        {shopDescription}
+                        {description}
                     </Text>
                 </VStack>
                 </CardBody>

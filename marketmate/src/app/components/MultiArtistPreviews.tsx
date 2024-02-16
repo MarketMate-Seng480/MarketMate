@@ -1,9 +1,10 @@
 import { VStack } from "@chakra-ui/react";
 import React from "react";
-import ArtistPreview, { ArtistPreviewProps } from "./ArtistPreview";
+import ArtistPreview from "./ArtistPreview";
+import { Vendor } from "../types";
 
 export interface MultiArtistsPreviewsProps {
-    vendors: ArtistPreviewProps[];
+    vendors: Vendor[];
 }
 
 export const MultiArtistsPreviews: React.FC<MultiArtistsPreviewsProps> = ({vendors}) => {
@@ -12,11 +13,14 @@ export const MultiArtistsPreviews: React.FC<MultiArtistsPreviewsProps> = ({vendo
             {vendors.map((vendor, index) => (
                 <ArtistPreview
                     key={index}
-                    shopName={vendor.shopName} 
-                    shopLogo={vendor.shopLogo} 
-                    shopLink={vendor.shopLink} 
-                    shopDescription={vendor.shopDescription} 
+                    id={vendor.id}
+                    name={vendor.name}
+                    logo={vendor.logo}
+                    description={vendor.description}
                     images={vendor.images}
+                    email={vendor.email} 
+                    phone={vendor.phone} 
+                    shopTags={vendor.shopTags}
                 />
             ))}
         </VStack>

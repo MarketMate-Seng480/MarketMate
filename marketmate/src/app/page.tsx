@@ -1,6 +1,6 @@
 import { Box, Heading, Center, VStack } from "@chakra-ui/react";
 import { UpcomingEvents } from "./components/UpcomingEvents";
-import { sampleMarkets } from "./sampleMarkets";
+import { sampleMarkets } from "./sampleData/sampleMarkets";
 import { PageContainer } from "./components/PageContainer";
 
 export default function Home() {

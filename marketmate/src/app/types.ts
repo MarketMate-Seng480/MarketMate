@@ -7,16 +7,16 @@ export interface Vendor {
   logo: string;
   shopTags: string[];
   address?: string;
+  images: string[];
 }
 
 export interface Event {
   id?: number;
   name: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  date: string;
   location: string;
-  url: string;
+  image: string
 }
 
 export interface Product {

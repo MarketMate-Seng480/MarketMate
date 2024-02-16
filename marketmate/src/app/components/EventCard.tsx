@@ -1,18 +1,10 @@
 import { Button, Card, CardBody, Heading, Stack, Image, Text } from "@chakra-ui/react";
 import Link from 'next/link';
 import React from "react";
+import { Event } from "../types"
 
-export interface EventCardProps {
-    marketId: string;
-    image: string;
-    title: string;
-    date: string;
-    location: string;
-    description: string;
-}
-
-export const EventCard: React.FC<EventCardProps> = (event: EventCardProps) => {
-    const {marketId, image, title, date, location, description} = event;
+export const EventCard: React.FC<Event> = (event: Event) => {
+    const {id, image, name, date, location, description} = event;
     return (
         <Card maxW='sm'>
             <CardBody>
@@ -23,7 +15,7 @@ export const EventCard: React.FC<EventCardProps> = (event: EventCardProps) => {
                 />
                 <Stack mt='6' spacing='3'>
                     <Stack spacing='1'>
-                        <Heading size='md'>{title}</Heading>
+                        <Heading size='md'>{name}</Heading>
                         <Text as='b' color='gray'>{date}</Text>
                         <Text as='em' color='gray'>{location}</Text>
                     </Stack>
@@ -33,7 +25,7 @@ export const EventCard: React.FC<EventCardProps> = (event: EventCardProps) => {
                         borderRadius='full'
                         alignSelf='end'
                     >
-                        <Link href={`/market/${marketId}`} passHref>
+                        <Link href={`/market/${id}`} passHref>
                             View details
                         </Link>
                     </Button>

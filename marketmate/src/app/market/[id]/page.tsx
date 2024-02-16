@@ -9,16 +9,16 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { usePathname } from "next/navigation";
-import { sampleMarkets } from "@/app/sampleMarkets";
 import { MultiArtistsPreviews } from "@/app/components/MultiArtistPreviews";
-import { sampleVendors } from "@/app/sampleVendors";
 import { PageContainer } from "@/app/components/PageContainer";
+import { sampleMarkets } from "@/app/sampleData/sampleMarkets";
+import { sampleVendors } from "@/app/sampleData/sampleVendors";
 
 export default function MarketPage() {
     // Temporarily hardcoded, will actually be an API request
     const path = usePathname();
     const slug = path.split("/").pop();
-    const market = sampleMarkets.find(market => market.marketId === slug);
+    const market = sampleMarkets.find(market => market.id === Number(slug));
     return (
         <PageContainer>
             <VStack padding={10} spacing={6}>
@@ -28,7 +28,7 @@ export default function MarketPage() {
                             <Image src={market.image} alt="Market Banner" width="100%" borderRadius="lg" />
                             <VStack spacing={4} align="stretch" marginTop={5}>
                             <Heading as="h1" size="xl">
-                                {market.title}
+                                {market.name}
                             </Heading>
                             <Text fontSize="lg">
                                 <strong>Date:</strong> {market.date}
