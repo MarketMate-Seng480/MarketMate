@@ -4,7 +4,6 @@ import {
   Flex,
   Avatar,
   HStack,
-  Heading,
   IconButton,
   Button,
   Menu,
@@ -14,6 +13,7 @@ import {
   MenuDivider,
   useDisclosure,
   useColorModeValue,
+  Heading,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { useAuth } from '../authContext'
@@ -64,10 +64,21 @@ export default function Navbar() {
     const handleVendor = () => {
         router.push('/vendor/profile');
     }
+    const handleHome = () => {
+        router.push("/")
+    }
 
     return (
         <>
-        <Box bg={useColorModeValue('gray.100', 'gray.900')} px={4}>
+        <Box 
+            px={{ base: 4, md: 4 }}
+            height="20"
+            alignItems="center"
+            bg={useColorModeValue('gray.100', 'gray.900')}
+            borderBottomWidth="1px"
+            borderBottomColor={useColorModeValue("gray.200", "gray.700")}
+            justifyContent={{ base: "space-between", md: "flex-end" }}
+        >
             <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
             <IconButton
                 size={'md'}
@@ -78,12 +89,14 @@ export default function Navbar() {
             />
             <HStack spacing={8} alignItems={'center'}>
                 <Link href={'/'} >
-                    <Heading
-                        as={"h1"}
-                        size={"lg"}
-                        >
-                        MarketMate
-                    </Heading>
+                <Heading
+                    as={"h1"}
+                    size={"lg"}
+                    cursor="pointer"
+                    onClick={handleHome}
+                    >
+                    MarketMate
+                </Heading>
                 </Link>
             </HStack>
             <Flex alignItems={'center'}>
@@ -96,7 +109,7 @@ export default function Navbar() {
                         cursor={'pointer'}
                         minW={0}>
                         <Avatar
-                            size={'sm'}
+                            size={'md'}
                             src={
                             'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
                             }

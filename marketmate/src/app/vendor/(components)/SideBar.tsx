@@ -14,7 +14,7 @@ import {
   Link,
   Spacer,
 } from "@chakra-ui/react";
-import { FiUser, FiMenu, FiBox } from "react-icons/fi";
+import { FiUser, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/app/authContext";
@@ -43,7 +43,7 @@ interface SidebarProps extends BoxProps {
 const LinkItems: Array<LinkItemProps> = [
   // { name: "Overview", icon: FiHome, url: "/vendor" },
   { name: "Profile", icon: FiUser, url: "/vendor/profile" },
-  { name: "Products", icon: FiBox, url: "/vendor/products" },
+  { name: "Products", icon: FiShoppingCart, url: "/vendor/products"},
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
@@ -117,7 +117,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     logout();
     router.push("/");
   }
-
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -149,7 +148,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <Spacer />
-
     </Flex>
   );
 };
