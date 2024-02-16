@@ -1,22 +1,15 @@
-import { Box, Heading, Center } from "@chakra-ui/react";
-import Navbar from "../components/Navbar";
-import LocalArtisans from "../components/LocalArtisans";
+import { Box, Heading } from "@chakra-ui/react";
 
 export default function Admin() {
   return (
     <>
-      <Navbar />
-
       <Box>
-        <Center>
-          <Heading
-            as="h1"
-            size="xl"
-          >
-            Vendor Admin Page
-          </Heading>
-          <LocalArtisans/>
-        </Center>
+        <Heading
+          as="h1"
+          size="xl"
+        >
+          Vendor Admin Page
+        </Heading>
       </Box>
     </>
   );
