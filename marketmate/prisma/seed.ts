@@ -1,9 +1,11 @@
 import prisma from "./prisma";
 import { Prisma } from "@prisma/client";
-import { Vendor, Event } from "@/app/types";
+// import { Vendor, Event } from "@/app/types";
+import { Event, Vendor } from "@prisma/client";
 
 const eventSeeds: Event[] = [
   {
+    id: 1,
     name: "Event1",
     description: "Description for Event1",
     startDate: new Date("2024-02-08T12:00:00Z"),
@@ -15,6 +17,7 @@ const eventSeeds: Event[] = [
 
 const vendorSeeds: Vendor[] = [
   {
+    id: 2,
     name: "Vendor1",
     description: "Description for Vendor1",
     email: "vendor1@example.com",
@@ -23,6 +26,7 @@ const vendorSeeds: Vendor[] = [
     shopTags: ["tag1", "tag2"],
   },
   {
+    id: 3,
     name: "Vendor2",
     description: "vendor 2 description",
     email: "vendor2@example.com",
@@ -35,12 +39,12 @@ const vendorSeeds: Vendor[] = [
 const seedDatabase = async () => {
   // Seed vendors
   const createdVendors = await prisma.vendor.create({
-    data: vendorSeeds[0] as Prisma.VendorCreateInput, // Cast vendor seed data to Prisma.vendorCreateInput type
+    data: vendorSeeds[0],
   });
 
   // Seed events
   const createdEvents = await prisma.event.create({
-    data: eventSeeds[0] as Prisma.EventCreateInput,
+    data: eventSeeds[0],
   });
 
   console.log("Seed data has been added to the database.");
