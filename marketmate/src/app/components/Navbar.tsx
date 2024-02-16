@@ -1,11 +1,10 @@
 'use client'
-
 import {
   Box,
   Flex,
   Avatar,
   HStack,
-  Text,
+  Heading,
   IconButton,
   Button,
   Menu,
@@ -15,20 +14,15 @@ import {
   MenuDivider,
   useDisclosure,
   useColorModeValue,
-  Stack,
 } from '@chakra-ui/react'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import { useAuth } from '../authContext'
 import { useRouter } from 'next/navigation'
-import LoginForm from '../login/LoginForm'
-import { Router } from 'next/router'
+import Link from 'next/link'
 
 interface Props {
   children: React.ReactNode
 }
-
-//const Links = ['Dashboard', 'Projects', 'Team']
-const Links = ['Home']
 
 const NavLink = (props: Props) => {
     const router = useRouter();
@@ -59,7 +53,7 @@ const NavLink = (props: Props) => {
 export default function Navbar() {
     const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { isVendor, isLoading, isLoggedIn, logout } = useAuth();
+    const { isLoggedIn, logout } = useAuth();
 
     const handleLogin = () => {
         router.push('/login');
@@ -83,12 +77,14 @@ export default function Navbar() {
                 onClick={isOpen ? onClose : onOpen}
             />
             <HStack spacing={8} alignItems={'center'}>
-                <Box>Logo</Box>
-                <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
-                {Links.map((link) => (
-                    <NavLink key={link}>{link}</NavLink>
-                ))}
-                </HStack>
+                <Link href={'/'} >
+                    <Heading
+                        as={"h1"}
+                        size={"lg"}
+                        >
+                        MarketMate
+                    </Heading>
+                </Link>
             </HStack>
             <Flex alignItems={'center'}>
                 {isLoggedIn ? (
@@ -117,16 +113,6 @@ export default function Navbar() {
                 )}
             </Flex>
             </Flex>
-
-            {isOpen ? (
-            <Box pb={4} display={{ md: 'none' }}>
-                <Stack as={'nav'} spacing={4}>
-                {Links.map((link) => (
-                    <NavLink key={link}>{link}</NavLink>
-                ))}
-                </Stack>
-            </Box>
-            ) : null}
         </Box>
         </>
     )
