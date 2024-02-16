@@ -10,10 +10,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({children}) => {
     return (
         <Box>
             <Navbar />
-            <VStack padding={10} spacing={6}>
-                {children}
-            </VStack>
+            {children}
         </Box>
-
     )
 }

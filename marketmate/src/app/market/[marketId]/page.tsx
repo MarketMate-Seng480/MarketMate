@@ -21,31 +21,33 @@ export default function MarketPage() {
     const market = sampleMarkets.find(market => market.marketId === slug);
     return (
         <PageContainer>
-            <Box maxWidth="800px" margin="auto" padding={4}>
-                {market ? (
-                    <>
-                        <Image src={market.image} alt="Market Banner" width="100%" borderRadius="lg" />
-                        <VStack spacing={4} align="stretch" marginTop={5}>
-                        <Heading as="h1" size="xl">
-                            {market.title}
-                        </Heading>
-                        <Text fontSize="lg">
-                            <strong>Date:</strong> {market.date}
-                        </Text>
-                        <Text fontSize="lg">
-                            <strong>Location:</strong> {market.location}
-                        </Text>
-                        <Text fontSize="lg">{market.description}</Text>
-                        <Heading as="h2" size="lg">
-                            Participating vendors
-                        </Heading>
-                        <MultiArtistsPreviews vendors={sampleVendors} />
-                        </VStack>
-                    </>
-                ) : (
-                    <Center>Market Not Found</Center>
-                )}
-            </Box>
+            <VStack padding={10} spacing={6}>
+                <Box maxWidth="800px" margin="auto" padding={4}>
+                    {market ? (
+                        <>
+                            <Image src={market.image} alt="Market Banner" width="100%" borderRadius="lg" />
+                            <VStack spacing={4} align="stretch" marginTop={5}>
+                            <Heading as="h1" size="xl">
+                                {market.title}
+                            </Heading>
+                            <Text fontSize="lg">
+                                <strong>Date:</strong> {market.date}
+                            </Text>
+                            <Text fontSize="lg">
+                                <strong>Location:</strong> {market.location}
+                            </Text>
+                            <Text fontSize="lg">{market.description}</Text>
+                            <Heading as="h2" size="lg">
+                                Participating vendors
+                            </Heading>
+                            <MultiArtistsPreviews vendors={sampleVendors} />
+                            </VStack>
+                        </>
+                    ) : (
+                        <Center>Market Not Found</Center>
+                    )}
+                </Box>
+            </VStack>
         </PageContainer>
     );
 }

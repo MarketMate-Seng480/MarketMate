@@ -1,10 +1,8 @@
 "use client";
-
 import {
   IconButton,
   Button,
   Box,
-  CloseButton,
   Flex,
   Icon,
   useColorModeValue,
@@ -14,7 +12,6 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
-  Heading,
   Link,
   Spacer,
 } from "@chakra-ui/react";
@@ -59,26 +56,9 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
+      paddingTop={5}
       {...rest}
     >
-      <Flex
-        h="20"
-        alignItems="center"
-        mx="8"
-        justifyContent="space-between"
-      >
-        <Heading
-          as={"h1"}
-          size={"lg"}
-        >
-          MarketMate
-        </Heading>
-        <CloseButton
-          display={{ base: "flex", md: "none" }}
-          onClick={onClose}
-        />
-      </Flex>
-
       {LinkItems.map((link) => (
         <NavItem
           key={link.name}

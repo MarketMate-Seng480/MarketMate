@@ -2,7 +2,6 @@ import { Box, Heading } from "@chakra-ui/react";
 
 export default function Admin() {
   return (
-    <>
       <Box>
         <Heading
           as="h1"
@@ -11,6 +10,5 @@ export default function Admin() {
           Vendor Admin Page
         </Heading>
       </Box>
-    </>
   );
 }
