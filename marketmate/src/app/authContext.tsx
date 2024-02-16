@@ -45,7 +45,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({ children })
     setIsLoggedIn(true);
     localStorage.setItem('isVendor', 'true');
     localStorage.setItem('isLoggedIn', 'true');
-    router.push('/');
+    router.push('/vendor/profile');
   };
 
   const logout = () => {

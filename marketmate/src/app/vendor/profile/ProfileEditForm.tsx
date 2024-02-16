@@ -54,7 +54,7 @@ export default function ProfileEditModalContainer({
       <ModalOverlay />
 
       <ModalContent>
-        <ModalHeader>Profile Edit</ModalHeader>
+        <ModalHeader>Edit Profile</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
