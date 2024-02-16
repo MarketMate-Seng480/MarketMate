@@ -62,7 +62,7 @@ export default function Navbar() {
         logout();
     }
     const handleVendor = () => {
-        router.push('/vendor');
+        router.push('/vendor/profile');
     }
 
     return (

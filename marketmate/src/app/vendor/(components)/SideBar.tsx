@@ -42,7 +42,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Overview", icon: FiHome, url: "/vendor" },
+  // { name: "Overview", icon: FiHome, url: "/vendor" },
   { name: "Profile", icon: FiUser, url: "/vendor/profile" },
 ];
 
@@ -150,7 +150,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
       <Spacer />
 
-      <Button onClick={handleLogout}>Log Out</Button>
     </Flex>
   );
 };
