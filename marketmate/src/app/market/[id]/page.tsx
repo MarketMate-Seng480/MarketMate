@@ -22,10 +22,10 @@ export default function MarketPage() {
     return (
         <PageContainer>
             <VStack padding={10} spacing={6}>
-                <Box maxWidth="800px" margin="auto" padding={4}>
+                <Box margin="auto" padding={4}>
                     {market ? (
                         <>
-                            <Image src={market.image} alt="Market Banner" width="100%" borderRadius="lg" />
+                            <Image boxSize="300px" objectFit="cover" src={market.image} alt="Market Banner" width="100%" borderRadius="lg" />
                             <VStack spacing={4} align="stretch" marginTop={5}>
                             <Heading as="h1" size="xl">
                                 {market.name}
