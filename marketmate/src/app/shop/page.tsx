@@ -1,11 +1,9 @@
 import { Box, Heading, Center } from "@chakra-ui/react";
-import Navbar from "../components/Navbar";
+import { PageContainer } from "../components/PageContainer";
 
 export default function Shop() {
   return (
-    <>
-      <Navbar />
-
+    <PageContainer>
       <Box>
         <Center>
           <Heading
@@ -16,6 +14,6 @@ export default function Shop() {
           </Heading>
         </Center>
       </Box>
-    </>
+    </PageContainer>
   );
 }
