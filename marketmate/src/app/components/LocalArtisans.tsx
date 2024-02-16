@@ -7,8 +7,19 @@ interface LocalArtisansProps {
 
 export default function LocalArtisans({ children }: LocalArtisansProps) {
   return (
-    <Box p={4} my={4} bg="white" shadow="md" borderWidth="1px" w="full">
-      <Heading as="h2" size="md" mb={2}>
+    <Box
+      p={4}
+      my={5}
+      bg="white"
+      shadow="md"
+      borderWidth="1px"
+      w="full"
+    >
+      <Heading
+        as="h2"
+        size="md"
+        mb={5}
+      >
         Local artisans
       </Heading>
       {children}

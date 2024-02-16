@@ -7,7 +7,7 @@ export default function EventCard(event: Event) {
   const { id, image, name, date, location, description } = event;
 
   return (
-    <Card maxW="sm">
+    <Card maxW="md">
       <CardBody>
         <Image
           src={image}
