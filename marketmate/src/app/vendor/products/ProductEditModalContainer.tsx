@@ -80,7 +80,7 @@ export default function ProductEditModalContainer({
                     </Stack>
                 </ModalBody>
                 <ModalFooter>
-                    <Button colorScheme="blue" mr={3} onClick={onClose}>
+                    <Button onClick={onClose}>
                         Close
                     </Button>
                     <Button
