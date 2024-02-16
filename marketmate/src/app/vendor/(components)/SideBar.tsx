@@ -17,12 +17,19 @@ import {
   Heading,
   Link,
   Spacer,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  Avatar,
+  Menu,
 } from "@chakra-ui/react";
-import { FiHome, FiUser, FiMenu } from "react-icons/fi";
+import { FiHome, FiUser, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/app/authContext";
 import { useRouter } from "next/navigation";
+import { Router } from "next/router";
 
 interface LinkItemProps {
   name: string;
@@ -47,9 +54,15 @@ interface SidebarProps extends BoxProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Overview", icon: FiHome, url: "/vendor" },
   { name: "Profile", icon: FiUser, url: "/vendor/profile" },
+  { name: "Products", icon: FiShoppingCart, url: "/vendor/products"},
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const router = useRouter();
+  const handleHome = () => {
+    router.push("/")
+  }
+
   return (
     <Box
       transition="3s ease"
@@ -59,6 +72,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
+      boxShadow={'lg'}
       {...rest}
     >
       <Flex
@@ -70,6 +84,8 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <Heading
           as={"h1"}
           size={"lg"}
+          cursor="pointer"
+          onClick={handleHome}
         >
           MarketMate
         </Heading>
@@ -137,6 +153,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
     logout();
     router.push("/");
   }
+  const handleHome = () => {
+    router.push("/")
+  }
 
   return (
     <Flex
@@ -148,6 +167,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue("gray.200", "gray.700")}
       justifyContent={{ base: "space-between", md: "flex-end" }}
+      boxShadow={'lg'}
       {...rest}
     >
       <IconButton
@@ -170,7 +190,27 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
       <Spacer />
 
-      <Button onClick={handleLogout}>Log Out</Button>
+      <Menu>
+        <MenuButton
+        as={Button}
+        rounded={'full'}
+        variant={'link'}
+        cursor={'pointer'}
+        minW={0}>
+        <Avatar
+            size={'md'}
+            src={
+            'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
+            }
+        />
+        </MenuButton>
+          <MenuList>
+          <MenuItem onClick={handleHome}>MarketMate</MenuItem>
+          <MenuDivider />
+          <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+        </MenuList>
+      </Menu>
+
     </Flex>
   );
 };
