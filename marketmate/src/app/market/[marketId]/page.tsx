@@ -3,8 +3,8 @@ import Navbar from "@/app/components/Navbar";
 import { Box, Center, Heading } from "@chakra-ui/react";
 import React from "react";
 import { usePathname } from "next/navigation";
-import { sampleMarkets } from "@/app/page";
 import { EventCard } from "@/app/components/EventCard";
+import { sampleMarkets } from "@/app/sampleMarkets";
 
 export default function MarketPage() {
     // Temporarily hardcoded, will actually be an API request
