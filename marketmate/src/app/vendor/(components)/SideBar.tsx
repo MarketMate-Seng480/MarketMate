@@ -18,8 +18,6 @@ import {
 import { FiUser, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@/app/authContext";
-import { useRouter } from "next/navigation";
 import { AccountButton, HomeLink } from "@/app/components/Navbar";
 
 interface LinkItemProps {
