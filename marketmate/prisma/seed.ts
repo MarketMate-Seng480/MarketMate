@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Vendor, Event } from "../types";
+import { Vendor, Event } from "../src/app/types";
 
 const prisma = new PrismaClient();
 
@@ -20,7 +20,7 @@ const vendorSeeds: Vendor[] = [
     description: "Description for Vendor1",
     email: "vendor1@example.com",
     phone: "1234567890",
-    image: "vendor1.jpg",
+    logo: "vendor1.jpg",
     shopTags: ["tag1", "tag2"],
   },
   {
@@ -28,7 +28,7 @@ const vendorSeeds: Vendor[] = [
     description: "vendor 2 description",
     email: "vendor2@example.com",
     phone: "1111111111",
-    image: "vendor2.jpg",
+    logo: "vendor2.jpg",
     shopTags: ["tag1"],
   },
 ];

@@ -14,7 +14,7 @@ model Vendor {
   description    String
   email          String
   phone          String
-  image          String
+  logo           String
   shopTags       String[]
   products       Product[]
   upcomingEvents Event[]
