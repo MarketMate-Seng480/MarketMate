@@ -19,7 +19,7 @@ export default function TopBanner({ name, logo }: { name: string; logo: string }
         <Heading
           as="h1"
           size="2xl"
-          color={"grey.900"}
+          color={"black"}
         >
           {name}
         </Heading>

@@ -33,7 +33,7 @@ interface LinkItemProps {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   url: string;
-  children: React.ReactNode;
+  label: string;
 }
 
 interface MobileProps extends FlexProps {
@@ -84,15 +84,14 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           key={link.name}
           icon={link.icon}
           url={link.url}
-        >
-          <Text>{link.name}</Text>
-        </NavItem>
+          label={link.name}
+        />
       ))}
     </Box>
   );
 };
 
-const NavItem = ({ icon, url, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, url, label, ...rest }: NavItemProps) => {
   const pathname = usePathname();
   const isActive = pathname === url;
 
@@ -122,7 +121,7 @@ const NavItem = ({ icon, url, children, ...rest }: NavItemProps) => {
             />
           )}
 
-          {children}
+          <Text fontWeight="medium">{label}</Text>
         </Flex>
       </Box>
     </Link>

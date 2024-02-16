@@ -6,7 +6,7 @@ import {
   Input,
   InputLeftAddon,
   Badge,
-  Link,
+  Spacer,
 } from "@chakra-ui/react";
 import { Vendor } from "@/app/types";
 
@@ -31,13 +31,13 @@ export default function InfoSection(vendor: Vendor) {
     >
       {/* About Us */}
       <Stack spacing={4}>
-        <Heading size="lg">About Us</Heading>
+        <Heading size="md">About Us</Heading>
         <Text>{vendor.description}</Text>
       </Stack>
 
       {/* Store Tags */}
       <Stack spacing={4}>
-        <Heading size="lg">Store Tags</Heading>
+        <Heading size="md">Store Tags</Heading>
         <Stack
           direction={"row"}
           spacing={4}
@@ -55,7 +55,7 @@ export default function InfoSection(vendor: Vendor) {
 
       {/* Store Info */}
       <Stack spacing={4}>
-        <Heading size="lg">Store Info</Heading>
+        <Heading size="md">Store Info</Heading>
         <Stack spacing={2}>
           {InfoComponent("Phone Number", vendor.phone)}
           {InfoComponent("Email Address", vendor.email)}
@@ -65,15 +65,17 @@ export default function InfoSection(vendor: Vendor) {
 
       {/* Upcoming Market Events */}
       <Stack spacing={4}>
-        <Heading size="lg">Upcoming Market Events</Heading>
+        <Heading size="md">Upcoming Market Events</Heading>
         <Text>Insert the Upcoming Event components here</Text>
       </Stack>
 
       {/* Featured Products */}
       <Stack spacing={4}>
-        <Heading size="lg">Featured Products</Heading>
+        <Heading size="md">Featured Products</Heading>
         <Text>Coming soon...</Text>
       </Stack>
+
+      <Spacer />
     </Stack>
   );
 }
