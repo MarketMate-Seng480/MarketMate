@@ -2,7 +2,10 @@ import { Box, Heading, Center } from "@chakra-ui/react";
 import Navbar from "./components/Navbar";
 import { UpcomingEvents } from "./components/UpcomingEvents";
 import { sampleMarkets } from "./sampleMarkets";
-
+import LocalArtisans from "./components/LocalArtisans";
+import { MultiArtistsPreviews } from "@/app/components/MultiArtistPreviews";
+import ArtistPreview from "./components/ArtistPreview";
+import { sampleVendors } from "/workspace/marketmate/src/app/sampleVendors";
 export default function Home() {
   return (
     <>
@@ -24,10 +27,11 @@ export default function Home() {
           </Heading>
           <UpcomingEvents events={sampleMarkets}/>
           <LocalArtisans/>
-          <ArtistPreview shopName={"Delilah's Handmade Jewelry"} shopLogo={""} shopLink={""} shopDescription={""} images={[]}/>
+          <MultiArtistsPreviews vendors={sampleVendors} />
+                  
         </Center>
         {/* Just put this on the homepage for now for visibility, will need to be refactored later */}
-        <UpcomingEvents events={sampleMarkets}/>
+       {/* <UpcomingEvents events={sampleMarkets}/> */}
       </Box>
     </>
   );
