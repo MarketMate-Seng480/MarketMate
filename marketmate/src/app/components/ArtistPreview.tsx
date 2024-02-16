@@ -55,14 +55,14 @@ const ArtistPreview: React.FC<ArtistPreviewProps> = ({ id, name, logo, descripti
             </Link>
             <Flex>
               <Image
-                boxSize="130px"
+                boxSize="200px"
                 borderRadius="lg"
                 src={logo}
                 alt="Shop Logo"
               />
 
               <Spacer />
-              {images.length > 3 && (
+              {images.length > 5 && (
                 <HStack>
                   {currentImageIndex > 0 && (
                     <IconButton
@@ -76,19 +76,30 @@ const ArtistPreview: React.FC<ArtistPreviewProps> = ({ id, name, logo, descripti
                   {currentImageIndex == 0 && <Box w="40px" />}
                   <Image
                     src={images[currentImageIndex]}
-                    boxSize="130px"
+                    boxSize="200px"
                     alt="Carousel Image"
                   />
                   <Image
                     src={images[currentImageIndex + 1]}
-                    boxSize="130px"
+                    boxSize="200px"
                     alt="Carousel Image"
                   />
                   <Image
                     src={images[currentImageIndex + 2]}
-                    boxSize="130px"
+                    boxSize="200px"
                     alt="Carousel Image"
                   />
+                  <Image
+                    src={images[currentImageIndex + 3]}
+                    boxSize="200px"
+                    alt="Carousel Image"
+                  />
+                  <Image
+                    src={images[currentImageIndex + 4]}
+                    boxSize="200px"
+                    alt="Carousel Image"
+                  />
+                  {/* TODO: Update the remainder of this like above */}
                   {currentImageIndex == images.length - 3 && <Box w="40px" />}
                   {currentImageIndex < images.length - 3 && (
                     <IconButton
@@ -106,17 +117,17 @@ const ArtistPreview: React.FC<ArtistPreviewProps> = ({ id, name, logo, descripti
                 <HStack>
                   <Image
                     src={images[currentImageIndex]}
-                    boxSize="130px"
+                    boxSize="200px"
                     alt="Carousel Image"
                   />
                   <Image
                     src={images[currentImageIndex + 1]}
-                    boxSize="130px"
+                    boxSize="200px"
                     alt="Carousel Image"
                   />
                   <Image
                     src={images[currentImageIndex + 2]}
-                    boxSize="130px"
+                    boxSize="200px"
                     alt="Carousel Image"
                   />
                 </HStack>
