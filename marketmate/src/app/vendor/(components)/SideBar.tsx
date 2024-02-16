@@ -1,7 +1,6 @@
 "use client";
 import {
   IconButton,
-  Button,
   Box,
   Flex,
   Icon,
@@ -15,7 +14,7 @@ import {
   Link,
   Spacer,
 } from "@chakra-ui/react";
-import { FiHome, FiUser, FiMenu } from "react-icons/fi";
+import { FiUser, FiMenu, FiBox } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/app/authContext";
@@ -44,6 +43,7 @@ interface SidebarProps extends BoxProps {
 const LinkItems: Array<LinkItemProps> = [
   // { name: "Overview", icon: FiHome, url: "/vendor" },
   { name: "Profile", icon: FiUser, url: "/vendor/profile" },
+  { name: "Products", icon: FiBox, url: "/vendor/products" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {

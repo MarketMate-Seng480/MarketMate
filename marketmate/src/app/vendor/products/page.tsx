@@ -1,12 +1,11 @@
 "use client";
-
 import { useState } from "react";
 import { Button, Box, useDisclosure, SimpleGrid } from "@chakra-ui/react";
 import { CgAdd } from "react-icons/cg";
 import { Vendor, Product } from "@/app/types";
-import TopBanner from "./TopBanner";
 import ProductCard from "./ProductCard";
 import ProductEditModalContainer from './ProductEditModalContainer';
+import TopBanner from "../profile/TopBanner";
 
 
 export default function VendorProductPage() {
@@ -49,42 +48,45 @@ export default function VendorProductPage() {
 
   return (
     <>
-      <TopBanner
-        name={vendorInfo.name}
-        logo={vendorInfo.logo || ""}
-      />
-      <Button
-          leftIcon={<CgAdd />}
-          color={"black"}
-          variant="solid"
-          onClick={onOpen}
-        >
-          Add Product
-        </Button>
-        <ProductEditModalContainer
-          isOpen={isOpen}
-          onClose={onClose}
-          initialProductInfo={initialProductInfo}
-          setProductInfo={addProduct}
-        />
-      
+    <TopBanner
+      name={vendorInfo.name}
+      logo={vendorInfo.logo || ""}
+    />
+      <Box
+        mx={10}
+        mt={10}
+      >
+        <Button
+            leftIcon={<CgAdd />}
+            color={"black"}
+            variant="solid"
+            onClick={onOpen}
+          >
+            Add Product
+          </Button>
+          <ProductEditModalContainer
+            isOpen={isOpen}
+            onClose={onClose}
+            initialProductInfo={initialProductInfo}
+            setProductInfo={addProduct}
+          />
         
+        <SimpleGrid spacing={1} templateColumns="repeat(auto-fill, minmax(330px, 1fr))">
+            {products.map((product, index) => (
+              <Box
+              key={index}
+              mx={10}
+              mt={10}
+              >
+                <ProductCard 
+                  initialProductInfo={product}
+                  setProductInfo={updateProduct}
+                />
+              </Box>
+            ))}
 
-      <SimpleGrid spacing={1} templateColumns="repeat(auto-fill, minmax(330px, 1fr))">
-          {products.map((product, index) => (
-             <Box
-             key={index}
-             mx={10}
-             mt={10}
-            >
-              <ProductCard 
-                initialProductInfo={product}
-                setProductInfo={updateProduct}
-              />
-            </Box>
-          ))}
-
-      </SimpleGrid>
+        </SimpleGrid>
+      </Box>
     </>
   );
 }
