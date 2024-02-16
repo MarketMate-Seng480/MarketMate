@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Vendor, Event } from "../src/app/types";
+import { Vendor, Event } from "@/app/types";
 
 const prisma = new PrismaClient();
 

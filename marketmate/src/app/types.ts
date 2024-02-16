@@ -6,7 +6,7 @@ export interface Vendor {
   phone: string;
   shopTags: string[];
   address?: string;
-  logo?: string;
+  logo: string;
 }
 
 export interface Event {
