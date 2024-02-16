@@ -8,7 +8,7 @@ export const theme = extendTheme({
   },
   config: {
     initialColorMode: "light",
-    useSystemColorMode: true,
+    useSystemColorMode: false,
   },
   styles: {
     global: {
