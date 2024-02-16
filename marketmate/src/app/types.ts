@@ -4,18 +4,19 @@ export interface Vendor {
   description: string;
   email: string;
   phone: string;
-  image: string;
+  logo: string;
   shopTags: string[];
+  address?: string;
+  images: string[];
 }
 
 export interface Event {
   id?: number;
   name: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  date: string;
   location: string;
-  url: string;
+  image: string
 }
 
 export interface Product {
@@ -27,3 +28,4 @@ export interface Product {
   vendor: Vendor; // Assuming you want to include the full vendor information in the product
   vendorId: number;
 }
+

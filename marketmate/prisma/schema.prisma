@@ -1,13 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Vendor {
@@ -16,10 +14,10 @@ model Vendor {
   description    String
   email          String
   phone          String
-  image          String
   shopTags       String[]
+  logo           String
   products       Product[]
-  upcomingEvents Event[]
+  upcomingEvents Event[]   @relation("EventToVendor")
 }
 
 model Event {
@@ -30,7 +28,7 @@ model Event {
   endDate     DateTime
   location    String
   url         String
-  vendors     Vendor[]
+  vendors     Vendor[] @relation("EventToVendor")
 }
 
 model Product {
@@ -39,6 +37,6 @@ model Product {
   description String
   price       Float
   image       String
-  vendor      Vendor @relation(fields: [vendorId], references: [id])
   vendorId    Int
+  vendor      Vendor @relation(fields: [vendorId], references: [id])
 }

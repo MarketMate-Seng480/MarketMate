@@ -3,6 +3,8 @@ services:
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
+    environment:
+      - WATCHPACK_POLLING=true
     volumes:
       - ..:/workspace:cached
 
