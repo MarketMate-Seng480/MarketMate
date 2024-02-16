@@ -1,7 +1,5 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "./prisma";
 import { Vendor, Event } from "@/app/types";
-
-const prisma = new PrismaClient();
 
 const eventSeeds: Event[] = [
   {
@@ -35,13 +33,13 @@ const vendorSeeds: Vendor[] = [
 
 const seedDatabase = async () => {
   // Seed vendors
-  const createdVendors = await prisma.vendor.createMany({
-    data: vendorSeeds,
+  const createdVendors = await prisma.vendor.create({
+    data: vendorSeeds[0],
   });
 
   // Seed events
-  const createdEvents = await prisma.event.createMany({
-    data: eventSeeds,
+  const createdEvents = await prisma.event.create({
+    data: eventSeeds[0],
   });
 
   console.log("Seed data has been added to the database.");
