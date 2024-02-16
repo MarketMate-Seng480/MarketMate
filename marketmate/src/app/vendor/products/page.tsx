@@ -41,6 +41,12 @@ export default function VendorProductPage() {
     setProduct([...products, product]);
   }
 
+  const updateProduct = (index: number, product: Product) => {
+    const newProds = [...products];
+    newProds[index] = product; 
+    setProduct(newProds);
+  }
+
   return (
     <>
       <TopBanner
@@ -73,6 +79,7 @@ export default function VendorProductPage() {
             >
               <ProductCard 
                 initialProductInfo={product}
+                setProductInfo={updateProduct}
               />
             </Box>
           ))}
