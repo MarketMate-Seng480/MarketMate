@@ -23,7 +23,7 @@ export default function MarketPage() {
                 {market?.title}
                 </Heading>
                 {market ? (
-                    <EventCard marketId={market.marketId} image={market?.image} title={market?.title} date={market?.date} location={market?.location} description={market?.description} />
+                    <EventCard event={market}/>
                 ) : "Market Not Found"}
                 <Box>List of participating vendors</Box>
             </Center>

@@ -3,23 +3,18 @@ import React from "react";
 import { EventCard, EventCardProps } from "./EventCard";
 
 interface UpcomingEventsProps {
-    events: EventCardProps[];
+    events: EventCardProps['event'][];
 }
 
 export const UpcomingEvents: React.FC<UpcomingEventsProps> = ({ events }) => {
     return (
         <HStack spacing={5}>
-            {events.map((event) => (
+            {events.map((event, index) => (
                 <EventCard
-                    key={event.marketId}
-                    marketId={event.marketId}
-                    image={event.image}
-                    title={event.title}
-                    date={event.date}
-                    location={event.location}
-                    description={event.description}
+                    key={event.marketId || index}
+                    event={event}
                 />
             ))}
         </HStack>
-    )
+    );
 }

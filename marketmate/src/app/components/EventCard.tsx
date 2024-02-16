@@ -3,22 +3,17 @@ import Link from 'next/link';
 import React from "react";
 
 export interface EventCardProps {
-    marketId: string;
-    image: string;
-    title: string;
-    date: string;
-    location: string;
-    description: string;
+    event: {
+        marketId: string;
+        image: string;
+        title: string;
+        date: string;
+        location: string;
+        description: string;
+    };
 }
 
-export const EventCard: React.FC<EventCardProps> = ({
-    marketId,
-    image,
-    title,
-    date,
-    location,
-    description
-}) => {
+export const EventCard: React.FC<EventCardProps> = ({ event: { marketId, image, title, date, location, description } }) => {
     return (
         <Card maxW='sm'>
             <CardBody>
@@ -46,5 +41,5 @@ export const EventCard: React.FC<EventCardProps> = ({
                 </Stack>
             </CardBody>
         </Card>
-    )
-}
+    );
+};
