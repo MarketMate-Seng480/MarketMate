@@ -1,30 +1,43 @@
-'use client'
+"use client";
 import { Box, Heading, Center, VStack } from "@chakra-ui/react";
 import { PageContainer } from "../../components/PageContainer";
 import { usePathname } from "next/navigation";
 import { sampleVendors } from "@/app/sampleData/sampleVendors";
+import { sampleMarkets } from "@/app/sampleData/sampleMarkets";
+import { UpcomingEvents } from "../../components/UpcomingEvents";
+import TopBanner from "@/app/vendor/profile/TopBanner";
+import InfoSection from "@/app/vendor/profile/InfoSection";
+import { Vendor } from "@/app/types";
+
+function ProfilePage(vendor: Vendor) {
+  return (
+    <>
+      <TopBanner
+        name={vendor.name}
+        logo={vendor.logo || ""}
+      />
+      <Box
+        mx={10}
+        mt={10}
+      >
+        <InfoSection {...vendor} />
+      </Box>
+    </>
+  );
+}
 
 export default function Shop() {
   const path = usePathname();
   const slug = path.split("/").pop();
-  const vendor = sampleVendors.find(vendor => vendor.id === Number(slug));
+  const vendor = sampleVendors.find((vendor) => vendor.id === Number(slug));
+
   return (
     <PageContainer>
-      <VStack padding={10} spacing={6}>
-      {vendor ? (
-        <Box>
-        <Center>
-          <Heading
-            as="h1"
-            size="xl"
-          >
-            {vendor.name}
-          </Heading>
-        </Center>
-      </Box>
-      ) : (
-        <Box>Vendor Not Found</Box>
-      )}
+      <VStack
+        padding={10}
+        spacing={6}
+      >
+        {vendor ? <ProfilePage {...vendor} /> : <Box>Vendor Not Found</Box>}
       </VStack>
     </PageContainer>
   );

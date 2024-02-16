@@ -30,8 +30,9 @@ export default function LoginForm() {
     if (!email) {
       setEmailError("Email is required");
       isValid = false;
-    } else {
-      setEmailError("");
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      setEmailError("Invalid email address");
+      isValid = false;
     }
 
     if (!password) {

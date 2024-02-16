@@ -3,15 +3,13 @@
 import { useState } from "react";
 import { Button, Box, useDisclosure, useColorModeValue } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
-import { Vendor } from "@/app/types";
 import TopBanner from "./TopBanner";
 import InfoSection from "./InfoSection";
 import ProfileEditModalContainer from "./ProfileEditForm";
 import { sampleVendors } from "@/app/sampleData/sampleVendors";
 
 export default function VendorProfilePage() {
-  const initialVendorInfo = sampleVendors[0];
-  const [vendorInfo, setVendorInfo] = useState(initialVendorInfo);
+  const [vendorInfo, setVendorInfo] = useState(sampleVendors[0]);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -27,15 +25,13 @@ export default function VendorProfilePage() {
       >
         <Button
           leftIcon={<FiEdit />}
-          color={useColorModeValue("grey.800", "gray.200")}
+          color={useColorModeValue("grey.800", "grey.200")}
           variant="solid"
           onClick={onOpen}
         >
           Edit Profile
         </Button>
-
         <InfoSection {...vendorInfo} />
-
         <ProfileEditModalContainer
           isOpen={isOpen}
           onClose={onClose}

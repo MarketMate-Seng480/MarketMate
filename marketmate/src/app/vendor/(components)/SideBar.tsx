@@ -13,12 +13,14 @@ import {
   FlexProps,
   Link,
   Spacer,
+  CloseButton,
 } from "@chakra-ui/react";
 import { FiUser, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/app/authContext";
 import { useRouter } from "next/navigation";
+import { AccountButton, HomeLink } from "@/app/components/Navbar";
 
 interface LinkItemProps {
   name: string;
@@ -43,7 +45,7 @@ interface SidebarProps extends BoxProps {
 const LinkItems: Array<LinkItemProps> = [
   // { name: "Overview", icon: FiHome, url: "/vendor" },
   { name: "Profile", icon: FiUser, url: "/vendor/profile" },
-  { name: "Products", icon: FiShoppingCart, url: "/vendor/products"},
+  { name: "Products", icon: FiShoppingCart, url: "/vendor/products" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
@@ -56,9 +58,20 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
-      paddingTop={5}
       {...rest}
     >
+      <Flex
+        h="20"
+        alignItems="center"
+        mx="8"
+        justifyContent="space-between"
+      >
+        <HomeLink />
+        <CloseButton
+          display={{ base: "flex", md: "none" }}
+          onClick={onClose}
+        />
+      </Flex>
       {LinkItems.map((link) => (
         <NavItem
           key={link.name}
@@ -109,14 +122,8 @@ const NavItem = ({ icon, url, label, ...rest }: NavItemProps) => {
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const pathname = usePathname();
-  const { logout } = useAuth();
-  const router = useRouter();
   const headingTitle = LinkItems.find((link) => link.url === pathname)?.name;
 
-  function handleLogout() {
-    logout();
-    router.push("/");
-  }
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -143,11 +150,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         fontFamily="monospace"
         fontWeight="bold"
         as={"h1"}
+        mx={{ base: "2", md: "0" }}
       >
         {headingTitle}
       </Text>
 
       <Spacer />
+
+      <AccountButton />
     </Flex>
   );
 };

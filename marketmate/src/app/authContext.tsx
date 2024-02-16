@@ -1,6 +1,13 @@
-'use client';
-import { createContext, useContext, ReactNode, useState, useEffect, FunctionComponent } from 'react';
-import { useRouter } from 'next/navigation';
+"use client";
+import {
+  createContext,
+  useContext,
+  ReactNode,
+  useState,
+  useEffect,
+  FunctionComponent,
+} from "react";
+import { useRouter } from "next/navigation";
 
 interface AuthContextProps {
   isVendor: boolean;
@@ -16,7 +23,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -33,7 +40,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({ children })
   const router = useRouter();
 
   useEffect(() => {
-    const storedState = localStorage.getItem('isVendor');
+    const storedState = localStorage.getItem("isVendor");
     if (storedState !== null) {
       setIsVendor(JSON.parse(storedState));
     }
@@ -43,17 +50,17 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({ children })
   const login = () => {
     setIsVendor(true);
     setIsLoggedIn(true);
-    localStorage.setItem('isVendor', 'true');
-    localStorage.setItem('isLoggedIn', 'true');
-    router.push('/vendor/profile');
+    localStorage.setItem("isVendor", "true");
+    localStorage.setItem("isLoggedIn", "true");
+    router.push("/vendor/profile");
   };
 
   const logout = () => {
     setIsVendor(false);
     setIsLoggedIn(false);
-    localStorage.removeItem('isVendor');
-    localStorage.removeItem('isLoggedIn');
-    router.push('/');
+    localStorage.removeItem("isVendor");
+    localStorage.removeItem("isLoggedIn");
+    router.push("/");
   };
 
   // Provide the state and updater functions to the rest of app
