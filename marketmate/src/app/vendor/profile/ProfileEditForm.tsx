@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   Button,
@@ -32,6 +30,20 @@ export default function ProfileEditModalContainer({
 }) {
   const [tempVendorInfo, setTempVendorInfo] = useState(initialVendorInfo);
 
+  const handleInputChange = (field: keyof Vendor, value: string) => {
+    setTempVendorInfo((prevState) => ({
+      ...prevState,
+      [field]: value,
+    }));
+  };
+
+  const handleTagsChange = (value: string) => {
+    setTempVendorInfo((prevState) => ({
+      ...prevState,
+      shopTags: value.split(",").map((tag) => tag.trim()),
+    }));
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -45,17 +57,12 @@ export default function ProfileEditModalContainer({
         <ModalCloseButton />
 
         <ModalBody>
-          <FormControl id="userName">
+          <FormControl id="name">
             <FormLabel>Shop Name</FormLabel>
             <Input
               type="text"
               value={tempVendorInfo.name}
-              onChange={(e) =>
-                setTempVendorInfo({
-                  ...tempVendorInfo,
-                  name: e.target.value,
-                })
-              }
+              onChange={(e) => handleInputChange("name", e.target.value)}
             />
           </FormControl>
 
@@ -70,12 +77,7 @@ export default function ProfileEditModalContainer({
                 <Input
                   type="text"
                   value={tempVendorInfo.logo}
-                  onChange={(e) =>
-                    setTempVendorInfo({
-                      ...tempVendorInfo,
-                      logo: e.target.value,
-                    })
-                  }
+                  onChange={(e) => handleInputChange("logo", e.target.value)}
                 />
               </FormControl>
               <Avatar
@@ -90,12 +92,7 @@ export default function ProfileEditModalContainer({
             <Input
               type="email"
               value={tempVendorInfo.email}
-              onChange={(e) =>
-                setTempVendorInfo({
-                  ...tempVendorInfo,
-                  email: e.target.value,
-                })
-              }
+              onChange={(e) => handleInputChange("email", e.target.value)}
             />
           </FormControl>
 
@@ -104,12 +101,7 @@ export default function ProfileEditModalContainer({
             <Input
               type="tel"
               value={tempVendorInfo.phone}
-              onChange={(e) =>
-                setTempVendorInfo({
-                  ...tempVendorInfo,
-                  phone: e.target.value,
-                })
-              }
+              onChange={(e) => handleInputChange("phone", e.target.value)}
             />
           </FormControl>
 
@@ -118,12 +110,7 @@ export default function ProfileEditModalContainer({
             <Input
               type="text"
               value={tempVendorInfo.address}
-              onChange={(e) =>
-                setTempVendorInfo({
-                  ...tempVendorInfo,
-                  address: e.target.value,
-                })
-              }
+              onChange={(e) => handleInputChange("address", e.target.value)}
             />
           </FormControl>
 
@@ -132,12 +119,7 @@ export default function ProfileEditModalContainer({
             <Input
               type="text"
               value={tempVendorInfo.shopTags.join(", ")}
-              onChange={(e) =>
-                setTempVendorInfo({
-                  ...tempVendorInfo,
-                  shopTags: e.target.value.split(",").map((tag) => tag.trim()),
-                })
-              }
+              onChange={(e) => handleTagsChange(e.target.value)}
             />
           </FormControl>
 
@@ -145,12 +127,7 @@ export default function ProfileEditModalContainer({
             <FormLabel>About Us</FormLabel>
             <Textarea
               value={tempVendorInfo.description}
-              onChange={(e) =>
-                setTempVendorInfo({
-                  ...tempVendorInfo,
-                  description: e.target.value,
-                })
-              }
+              onChange={(e) => handleInputChange("description", e.target.value)}
             />
           </FormControl>
         </ModalBody>
