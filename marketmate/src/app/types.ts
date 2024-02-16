@@ -4,8 +4,9 @@ export interface Vendor {
   description: string;
   email: string;
   phone: string;
-  image: string;
+  logo: string;
   shopTags: string[];
+  address?: string;
 }
 
 export interface Event {
