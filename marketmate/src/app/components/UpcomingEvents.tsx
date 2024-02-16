@@ -1,25 +1,25 @@
-import { HStack } from "@chakra-ui/react";
+import { HStack, Spacer } from "@chakra-ui/react";
 import React from "react";
-import { EventCard, EventCardProps } from "./EventCard";
+import EventCard from "./EventCard";
+import { Event } from "../types";
 
 interface UpcomingEventsProps {
-    events: EventCardProps[];
+  events: Event[];
 }
 
 export const UpcomingEvents: React.FC<UpcomingEventsProps> = ({ events }) => {
-    return (
-        <HStack spacing={5}>
-            {events.map((event, index) => (
-                <EventCard
-                    key={event.marketId || index} 
-                    marketId={event.marketId} 
-                    image={event.image} 
-                    title={event.title} 
-                    date={event.date} 
-                    location={event.location} 
-                    description={event.description}                    
-                />
-            ))}
-        </HStack>
-    );
-}
+  return (
+    <HStack
+      spacing={5}
+      alignContent={"space-between"}
+      justifyContent={"space-between"}
+    >
+      {events.map((event, index) => (
+        <EventCard
+          key={event.id || index}
+          {...event}
+        />
+      ))}
+    </HStack>
+  );
+};

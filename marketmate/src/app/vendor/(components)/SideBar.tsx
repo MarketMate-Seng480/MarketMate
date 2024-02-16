@@ -1,10 +1,7 @@
 "use client";
-
 import {
   IconButton,
-  Button,
   Box,
-  CloseButton,
   Flex,
   Icon,
   useColorModeValue,
@@ -14,22 +11,14 @@ import {
   useDisclosure,
   BoxProps,
   FlexProps,
-  Heading,
   Link,
   Spacer,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
-  Avatar,
-  Menu,
+  CloseButton,
 } from "@chakra-ui/react";
-import { FiHome, FiUser, FiMenu, FiShoppingCart } from "react-icons/fi";
+import { FiUser, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@/app/authContext";
-import { useRouter } from "next/navigation";
-import { Router } from "next/router";
+import { AccountButton, HomeLink } from "@/app/components/Navbar";
 
 interface LinkItemProps {
   name: string;
@@ -52,17 +41,12 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Overview", icon: FiHome, url: "/vendor" },
+  // { name: "Overview", icon: FiHome, url: "/vendor" },
   { name: "Profile", icon: FiUser, url: "/vendor/profile" },
-  { name: "Products", icon: FiShoppingCart, url: "/vendor/products"},
+  { name: "Products", icon: FiShoppingCart, url: "/vendor/products" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
-  const router = useRouter();
-  const handleHome = () => {
-    router.push("/")
-  }
-
   return (
     <Box
       transition="3s ease"
@@ -72,7 +56,6 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
-      boxShadow={'lg'}
       {...rest}
     >
       <Flex
@@ -81,20 +64,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         mx="8"
         justifyContent="space-between"
       >
-        <Heading
-          as={"h1"}
-          size={"lg"}
-          cursor="pointer"
-          onClick={handleHome}
-        >
-          MarketMate
-        </Heading>
+        <HomeLink />
         <CloseButton
           display={{ base: "flex", md: "none" }}
           onClick={onClose}
         />
       </Flex>
-
       {LinkItems.map((link) => (
         <NavItem
           key={link.name}
@@ -145,17 +120,7 @@ const NavItem = ({ icon, url, label, ...rest }: NavItemProps) => {
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const pathname = usePathname();
-  const { logout } = useAuth();
-  const router = useRouter();
   const headingTitle = LinkItems.find((link) => link.url === pathname)?.name;
-
-  function handleLogout() {
-    logout();
-    router.push("/");
-  }
-  const handleHome = () => {
-    router.push("/")
-  }
 
   return (
     <Flex
@@ -167,7 +132,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue("gray.200", "gray.700")}
       justifyContent={{ base: "space-between", md: "flex-end" }}
-      boxShadow={'lg'}
       {...rest}
     >
       <IconButton
@@ -184,33 +148,14 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         fontFamily="monospace"
         fontWeight="bold"
         as={"h1"}
+        mx={{ base: "2", md: "0" }}
       >
         {headingTitle}
       </Text>
 
       <Spacer />
 
-      <Menu>
-        <MenuButton
-        as={Button}
-        rounded={'full'}
-        variant={'link'}
-        cursor={'pointer'}
-        minW={0}>
-        <Avatar
-            size={'md'}
-            src={
-            'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-            }
-        />
-        </MenuButton>
-          <MenuList>
-          <MenuItem onClick={handleHome}>MarketMate</MenuItem>
-          <MenuDivider />
-          <MenuItem onClick={handleLogout}>Log Out</MenuItem>
-        </MenuList>
-      </Menu>
-
+      <AccountButton />
     </Flex>
   );
 };

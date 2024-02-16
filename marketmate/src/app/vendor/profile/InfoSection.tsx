@@ -7,8 +7,14 @@ import {
   InputLeftAddon,
   Badge,
   Spacer,
+  SimpleGrid,
+  Box,
 } from "@chakra-ui/react";
 import { Vendor } from "@/app/types";
+import { sampleMarkets } from "@/app/sampleData/sampleMarkets";
+import { UpcomingEvents } from "@/app/components/UpcomingEvents";
+import ProductCard from "../products/ProductCard";
+import { sampleProducts } from "@/app/sampleData/sampleProducts";
 
 const InfoComponent = (title: string, value: string) => {
   return (
@@ -66,13 +72,32 @@ export default function InfoSection(vendor: Vendor) {
       {/* Upcoming Market Events */}
       <Stack spacing={4}>
         <Heading size="md">Upcoming Market Events</Heading>
-        <Text>Insert the Upcoming Event components here</Text>
+        <UpcomingEvents events={sampleMarkets} />
       </Stack>
 
       {/* Featured Products */}
       <Stack spacing={4}>
         <Heading size="md">Featured Products</Heading>
-        <Text>Coming soon...</Text>
+        <Box mt="30px">
+          <SimpleGrid
+            minChildWidth="300px"
+            spacing={1}
+          >
+            {sampleProducts.map((product, index) => (
+              <Box
+                key={product.image}
+                my={5}
+                mr={10}
+                minW={300}
+              >
+                <ProductCard
+                  initialProductInfo={product}
+                  setProductInfo={() => {}}
+                />
+              </Box>
+            ))}
+          </SimpleGrid>
+        </Box>
       </Stack>
 
       <Spacer />

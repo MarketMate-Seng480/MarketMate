@@ -3,13 +3,25 @@ import React, { ReactNode } from "react";
 
 interface LocalArtisansProps {
   children: ReactNode;
+  title: string;
 }
 
-export default function LocalArtisans({ children }: LocalArtisansProps) {
+export default function HomepageSection({ children, title }: LocalArtisansProps) {
   return (
-    <Box p={4} my={4} bg="white" shadow="md" borderWidth="1px" w="full">
-      <Heading as="h2" size="md" mb={2}>
-        Local artisans
+    <Box
+      p={4}
+      my={5}
+      bg="white"
+      borderWidth="1px"
+      borderRadius={4}
+      w="full"
+    >
+      <Heading
+        as="h2"
+        size="md"
+        mb={5}
+      >
+        {title}
       </Heading>
       {children}
     </Box>
