@@ -120,7 +120,6 @@ const NavItem = ({ icon, url, label, ...rest }: NavItemProps) => {
               as={icon}
             />
           )}
-
           <Text fontWeight="medium">{label}</Text>
         </Flex>
       </Box>

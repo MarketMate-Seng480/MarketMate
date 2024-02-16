@@ -28,3 +28,4 @@ export interface Product {
   vendor: Vendor; // Assuming you want to include the full vendor information in the product
   vendorId: number;
 }
+
