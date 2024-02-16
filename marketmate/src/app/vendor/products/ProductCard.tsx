@@ -36,7 +36,7 @@ export default function ProductCard({
     setProductInfo,
   }: {
     initialProductInfo: Product;
-    setProductInfo: (product: Product) => void;
+    setProductInfo: (index:number, product: Product) => void;
   }) {
     const [tempProductInfo, setTempProductInfo] = useState(initialProductInfo);
     const { isOpen, onOpen, onClose } = useDisclosure();
