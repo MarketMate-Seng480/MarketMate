@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import { Button, Box, useDisclosure } from "@chakra-ui/react";
+import { FiEdit } from "react-icons/fi";
+import { Vendor } from "@/app/types";
 import TopBanner from "./TopBanner";
 import InfoSection from "./InfoSection";
-import { FiEdit } from "react-icons/fi";
 import ProfileEditModalContainer from "./ProfileEditForm";
-import { Vendor } from "@/app/types";
 
 export default function VendorProfilePage() {
   const initialVendorInfo: Vendor = {
