@@ -66,6 +66,7 @@ export default function VendorProductPage() {
       <SimpleGrid spacing={1} templateColumns="repeat(auto-fill, minmax(330px, 1fr))">
           {products.map(product => (
              <Box
+             key={product.id}
              mx={10}
              mt={10}
             >
