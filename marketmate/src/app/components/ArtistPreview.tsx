@@ -4,7 +4,7 @@ import { HStack, VStack, Box, Link, Text, Image, IconButton, Card, CardBody, Fle
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import NextLink from 'next/link'
 
-interface ArtistPreviewProps {
+export interface ArtistPreviewProps {
     shopName: string;
     shopLogo: string;
     shopLink: string;
@@ -24,7 +24,7 @@ const ArtistPreview: React.FC<ArtistPreviewProps> = ({ shopName, shopLogo, shopL
     };
 
     return (
-        <Box w='60%'>
+        <Box w='full'>
             <Card direction={{ base: 'column', sm: 'row' }} >
                 <CardBody>
                 <VStack align={"left"}>
