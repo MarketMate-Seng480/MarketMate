@@ -1,4 +1,4 @@
-import { VStack } from "@chakra-ui/react";
+import { VStack, Flex } from "@chakra-ui/react";
 import React from "react";
 import ArtistPreview, { ArtistPreviewProps } from "./ArtistPreview";
 
@@ -8,7 +8,9 @@ export interface MultiArtistsPreviewsProps {
 
 export const MultiArtistsPreviews: React.FC<MultiArtistsPreviewsProps> = ({vendors}) => {
     return (
+        <Flex direction="column" align="center" justify="center" w="full">
         <VStack spacing={5}>
+            
             {vendors.map((vendor, index) => (
                 <ArtistPreview
                     key={index}
@@ -19,6 +21,8 @@ export const MultiArtistsPreviews: React.FC<MultiArtistsPreviewsProps> = ({vendo
                     images={vendor.images}
                 />
             ))}
+            
         </VStack>
+        </Flex>
     );
 }
