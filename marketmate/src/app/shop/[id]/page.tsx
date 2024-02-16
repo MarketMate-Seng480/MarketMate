@@ -1,10 +1,8 @@
 "use client";
-import { Box, Heading, Center, VStack } from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 import { PageContainer } from "../../components/PageContainer";
 import { usePathname } from "next/navigation";
 import { sampleVendors } from "@/app/sampleData/sampleVendors";
-import { sampleMarkets } from "@/app/sampleData/sampleMarkets";
-import { UpcomingEvents } from "../../components/UpcomingEvents";
 import TopBanner from "@/app/vendor/profile/TopBanner";
 import InfoSection from "@/app/vendor/profile/InfoSection";
 import { Vendor } from "@/app/types";
