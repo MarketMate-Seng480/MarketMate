@@ -1,3 +1,2 @@
-# seng480
-hi
-iahsia
+# Group 6 - MarketMate
+
