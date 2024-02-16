@@ -49,6 +49,7 @@ export default function ProfileEditModalContainer({
       isOpen={isOpen}
       onClose={onClose}
       size={"2xl"}
+      closeOnOverlayClick={false}
     >
       <ModalOverlay />
 
@@ -57,84 +58,86 @@ export default function ProfileEditModalContainer({
         <ModalCloseButton />
 
         <ModalBody>
-          <FormControl id="name">
-            <FormLabel>Shop Name</FormLabel>
-            <Input
-              type="text"
-              value={tempVendorInfo.name}
-              onChange={(e) => handleInputChange("name", e.target.value)}
-            />
-          </FormControl>
-
-          <FormControl id="logo">
-            <Stack
-              direction={["column", "row"]}
-              spacing={10}
-              mt={5}
-            >
-              <FormControl id="logo">
-                <FormLabel>Shop Logo URL</FormLabel>
-                <Input
-                  type="text"
-                  value={tempVendorInfo.logo}
-                  onChange={(e) => handleInputChange("logo", e.target.value)}
-                />
-              </FormControl>
-              <Avatar
-                size="xl"
-                src={tempVendorInfo.logo}
+          <Stack spacing={5}>
+            <FormControl id="name">
+              <FormLabel fontWeight={600}>Shop Name</FormLabel>
+              <Input
+                type="text"
+                value={tempVendorInfo.name}
+                onChange={(e) => handleInputChange("name", e.target.value)}
               />
-            </Stack>
-          </FormControl>
+            </FormControl>
 
-          <FormControl id="email">
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              value={tempVendorInfo.email}
-              onChange={(e) => handleInputChange("email", e.target.value)}
-            />
-          </FormControl>
+            <FormControl id="logo">
+              <Stack
+                direction={["column", "row"]}
+                spacing={10}
+              >
+                <FormControl id="logo">
+                  <FormLabel fontWeight={600}>Shop Logo URL</FormLabel>
+                  <Input
+                    type="text"
+                    value={tempVendorInfo.logo}
+                    onChange={(e) => handleInputChange("logo", e.target.value)}
+                  />
+                </FormControl>
+                <Avatar
+                  size="xl"
+                  src={tempVendorInfo.logo}
+                />
+              </Stack>
+            </FormControl>
 
-          <FormControl id="phone">
-            <FormLabel>Phone</FormLabel>
-            <Input
-              type="tel"
-              value={tempVendorInfo.phone}
-              onChange={(e) => handleInputChange("phone", e.target.value)}
-            />
-          </FormControl>
+            <FormControl id="email">
+              <FormLabel fontWeight={600}>Email</FormLabel>
+              <Input
+                type="email"
+                value={tempVendorInfo.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+              />
+            </FormControl>
 
-          <FormControl id="address">
-            <FormLabel>Address</FormLabel>
-            <Input
-              type="text"
-              value={tempVendorInfo.address}
-              onChange={(e) => handleInputChange("address", e.target.value)}
-            />
-          </FormControl>
+            <FormControl id="phone">
+              <FormLabel fontWeight={600}>Phone</FormLabel>
+              <Input
+                type="tel"
+                value={tempVendorInfo.phone}
+                onChange={(e) => handleInputChange("phone", e.target.value)}
+              />
+            </FormControl>
 
-          <FormControl id="tags">
-            <FormLabel>Store tags</FormLabel>
-            <Input
-              type="text"
-              value={tempVendorInfo.shopTags.join(", ")}
-              onChange={(e) => handleTagsChange(e.target.value)}
-            />
-          </FormControl>
+            <FormControl id="address">
+              <FormLabel fontWeight={600}>Address</FormLabel>
+              <Input
+                type="text"
+                value={tempVendorInfo.address}
+                onChange={(e) => handleInputChange("address", e.target.value)}
+              />
+            </FormControl>
 
-          <FormControl id="aboutUs">
-            <FormLabel>About Us</FormLabel>
-            <Textarea
-              value={tempVendorInfo.description}
-              onChange={(e) => handleInputChange("description", e.target.value)}
-            />
-          </FormControl>
+            <FormControl id="tags">
+              <FormLabel fontWeight={600}>Store tags (split by &quot;,&quot;)</FormLabel>
+              <Input
+                type="text"
+                value={tempVendorInfo.shopTags.join(", ")}
+                onChange={(e) => handleTagsChange(e.target.value)}
+              />
+            </FormControl>
+
+            <FormControl id="aboutUs">
+              <FormLabel fontWeight={600}>About Us</FormLabel>
+              <Textarea
+                value={tempVendorInfo.description}
+                onChange={(e) => handleInputChange("description", e.target.value)}
+              />
+            </FormControl>
+          </Stack>
         </ModalBody>
 
         <ModalFooter>
           <Button
-            colorScheme="blue"
+            bg={"#D1C7BD"}
+            _hover={{ bg: "#C4BEB5" }}
             mr={3}
             onClick={() => {
               setVendorInfo(tempVendorInfo);

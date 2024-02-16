@@ -8,6 +8,7 @@ export default function TopBanner({ name, logo }: { name: string; logo: string }
       rounded={"md"}
       overflow={"hidden"}
     >
+      {/* Background Image with Vendor Shop Name */}
       <Box
         backgroundColor={"#EFEDEE"}
         h={"200px"}
@@ -23,6 +24,8 @@ export default function TopBanner({ name, logo }: { name: string; logo: string }
           {name}
         </Heading>
       </Box>
+
+      {/* Vendor Logo */}
       <Flex
         justify={"start"}
         mt={-20}

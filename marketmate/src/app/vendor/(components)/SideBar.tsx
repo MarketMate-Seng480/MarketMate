@@ -45,7 +45,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Home", icon: FiHome, url: "/vendor" },
+  { name: "Overview", icon: FiHome, url: "/vendor" },
   { name: "Profile", icon: FiUser, url: "/vendor/profile" },
 ];
 
@@ -78,6 +78,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           onClick={onClose}
         />
       </Flex>
+
       {LinkItems.map((link) => (
         <NavItem
           key={link.name}
