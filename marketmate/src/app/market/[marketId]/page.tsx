@@ -4,6 +4,7 @@ import { Box, Center, Heading } from "@chakra-ui/react";
 import React from "react";
 import { usePathname } from "next/navigation";
 import { sampleMarkets } from "@/app/page";
+import { EventCard } from "@/app/components/EventCard";
 
 export default function MarketPage() {
     // Temporarily hardcoded, will actually be an API request
@@ -12,17 +13,21 @@ export default function MarketPage() {
     const market = sampleMarkets.find(market => market.marketId === slug);
     return (
         <>
-        <Navbar />
-        <Box>
-          <Center>
-            <Heading
-              as="h1"
-              size="xl"
-            >
-              {market?.title ?? "Market Not Found"}
-            </Heading>
-          </Center>
-        </Box>
+            <Navbar />
+            <Box>
+            <Center flexDirection='column'>
+                <Heading
+                as="h1"
+                size="xl"
+                >
+                {market?.title}
+                </Heading>
+                {market ? (
+                    <EventCard marketId={market.marketId} image={market?.image} title={market?.title} date={market?.date} location={market?.location} description={market?.description} />
+                ) : "Market Not Found"}
+                <Box>List of participating vendors</Box>
+            </Center>
+            </Box>
       </>
     )
 }
