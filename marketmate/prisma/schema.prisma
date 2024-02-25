@@ -9,15 +9,15 @@ datasource db {
 }
 
 model Vendor {
-  id             Int       @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   name           String
   description    String
   email          String
   phone          String
-  shopTags       String[]
   logo           String
-  products       Product[]
-  upcomingEvents Event[]   @relation("EventToVendor")
+  shopTags       ShopCategory[] // A vendor can have multiple shop tags
+  products       Product[] // A vendor can have multiple products
+  upcomingEvents Event[] // A vendor can attend multiple events
 }
 
 model Event {
@@ -28,15 +28,33 @@ model Event {
   endDate     DateTime
   location    String
   url         String
-  vendors     Vendor[] @relation("EventToVendor")
+  vendors     Vendor[]
+  images      String[]
 }
 
 model Product {
-  id          Int    @id @default(autoincrement())
+  id           Int               @id @default(autoincrement())
+  name         String
+  description  String
+  price        Float
+  detailImage  String[]
+  featureImage String
+  categories   ProductCategory[] // A product can belong to multiple categories
+  isFeatured   Boolean           @default(false)
+  vendorId     Int
+  vendor       Vendor            @relation(fields: [vendorId], references: [id]) // A product belongs to one vendor
+}
+
+model ProductCategory {
+  id          Int       @id @default(autoincrement())
   name        String
   description String
-  price       Float
-  image       String
-  vendorId    Int
-  vendor      Vendor @relation(fields: [vendorId], references: [id])
+  products    Product[] // A product category can have multiple products
+}
+
+model ShopCategory {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  vendors     Vendor[] // A shop category can have multiple vendors
 }
