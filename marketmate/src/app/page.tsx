@@ -1,4 +1,6 @@
-import { Box, Heading, Center, Stack } from "@chakra-ui/react";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
+import { Box, Heading, Center, Stack, Text } from "@chakra-ui/react";
 
 import { UpcomingEvents } from "@components/UpcomingEvents";
 import HomepageSection from "@components/LocalArtisans";
@@ -9,6 +11,9 @@ import { sampleMarkets } from "./sampleData/sampleMarkets";
 import { sampleVendors } from "./sampleData/sampleVendors";
 
 export default async function Home() {
+  const supabase = createServerComponentClient({ cookies });
+  const user = await supabase.auth.getUser();
+
   return (
     <PageContainer>
       <Center flexDirection={"column"}>
@@ -19,6 +24,8 @@ export default async function Home() {
           >
             Welcome to MarketMate
           </Heading>
+
+          <Text color={"green"}>User ID: {user?.data.user?.id || "Not logged in"}</Text>
 
           <Heading
             as="h1"

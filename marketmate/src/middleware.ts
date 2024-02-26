@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
   await supabase.auth.getSession();
 
   // If user is not signed in and is trying to get to /vendor, then redirect the user to /login
-  if (!user && req.nextUrl.pathname === "/vendor") {
+  if (!user && req.nextUrl.pathname.includes("/vendor")) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
@@ -30,5 +30,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/", "/vendor"],
+  matcher: ["/", "/vendor/:path"],
 };

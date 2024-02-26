@@ -70,7 +70,7 @@ export function HomeLink() {
   );
 }
 
-export function AccountButton() {
+export function AccountButton({ isVendorPage }: { isVendorPage: Boolean }) {
   const router = useRouter();
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(false);
@@ -94,7 +94,12 @@ export function AccountButton() {
     setLoading(false);
     if (!error) {
       setSession(null);
-      router.push("/");
+
+      if (isVendorPage) {
+        router.push("/");
+      } else {
+        router.refresh();
+      }
     }
   };
 
@@ -125,14 +130,13 @@ export function AccountButton() {
             />
           </MenuButton>
           <MenuList>
-            <MenuItem onClick={handleVendor}>My Store</MenuItem>
-            <MenuDivider />
-            <MenuItem
-              disabled={loading}
-              onClick={handleLogout}
-            >
-              Log Out
-            </MenuItem>
+            {!isVendorPage ? (
+              <>
+                <MenuItem onClick={handleVendor}>My Store</MenuItem>
+                <MenuDivider />
+              </>
+            ) : null}
+            <MenuItem onClick={handleLogout}>Log Out</MenuItem>
           </MenuList>
         </Menu>
       ) : (
@@ -150,7 +154,7 @@ export function AccountButton() {
   );
 }
 
-export default function Navbar() {
+export default function Navbar({ isVendorPage }: { isVendorPage: Boolean }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -182,7 +186,7 @@ export default function Navbar() {
           >
             <HomeLink />
           </HStack>
-          <AccountButton />
+          <AccountButton isVendorPage={isVendorPage} />
         </Flex>
       </Box>
     </>

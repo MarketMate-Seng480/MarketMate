@@ -155,7 +155,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
       <Spacer />
 
-      <AccountButton />
+      <AccountButton isVendorPage={true} />
     </Flex>
   );
 };

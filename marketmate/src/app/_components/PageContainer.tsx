@@ -3,14 +3,14 @@ import React from "react";
 import Navbar from "./Navbar";
 
 interface PageContainerProps {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }
 
-export const PageContainer: React.FC<PageContainerProps> = ({children}) => {
-    return (
-        <Box>
-            <Navbar />
-            {children}
-        </Box>
-    )
-}
+export const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
+  return (
+    <Box>
+      <Navbar isVendorPage={false} />
+      {children}
+    </Box>
+  );
+};
