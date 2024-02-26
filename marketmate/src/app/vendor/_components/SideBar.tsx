@@ -18,7 +18,7 @@ import {
 import { FiUser, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { usePathname } from "next/navigation";
-import { AccountButton, HomeLink } from "@/app/components/Navbar";
+import { AccountButton, HomeLink } from "@components/Navbar";
 
 interface LinkItemProps {
   name: string;

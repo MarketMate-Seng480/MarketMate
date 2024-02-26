@@ -17,7 +17,8 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
-import { useAuth } from "../authContext";
+import { Session } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "../lib/supabase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -54,9 +55,6 @@ const NavLink = (props: Props) => {
 
 export function HomeLink() {
   const router = useRouter();
-  const handleHome = () => {
-    router.push("/");
-  };
 
   return (
     <Link href={"/"}>
@@ -64,7 +62,7 @@ export function HomeLink() {
         as={"h1"}
         size={"lg"}
         cursor="pointer"
-        onClick={handleHome}
+        onClick={() => router.push("/")}
       >
         MarketMate
       </Heading>
@@ -74,30 +72,43 @@ export function HomeLink() {
 
 export function AccountButton() {
   const router = useRouter();
-  const { logout } = useAuth();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    let status = localStorage.getItem("isLoggedIn");
-    setIsLoggedIn(status === "true");
+    supabase.auth
+      .getSession()
+      .then((session) => setSession(session.data.session ?? null))
+      .catch((err) => {
+        console.log("ERROR GET SESSION: ", err);
+      });
   }, []);
 
   const handleLogin = () => {
     router.push("/login");
   };
-  const handleLogout = () => {
-    logout();
+
+  const handleLogout = async () => {
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+    setLoading(false);
+    if (!error) {
+      setSession(null);
+      router.push("/");
+    }
   };
+
   const handleVendor = () => {
     router.push("/vendor/profile");
   };
+
   const handleHome = () => {
     router.push("/");
   };
 
   return (
     <Flex alignItems={"center"}>
-      {isLoggedIn ? (
+      {session ? (
         <Menu>
           <MenuButton
             as={Button}
@@ -116,7 +127,12 @@ export function AccountButton() {
           <MenuList>
             <MenuItem onClick={handleVendor}>My Store</MenuItem>
             <MenuDivider />
-            <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+            <MenuItem
+              disabled={loading}
+              onClick={handleLogout}
+            >
+              Log Out
+            </MenuItem>
           </MenuList>
         </Menu>
       ) : (
@@ -125,6 +141,7 @@ export function AccountButton() {
           onClick={handleLogin}
           bg={"#BF9E86"}
           _hover={{ bg: "#D1C7BD" }}
+          disabled={loading}
         >
           Log In
         </Button>
