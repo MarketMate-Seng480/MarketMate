@@ -7,6 +7,13 @@ import { sampleVendors } from "./sampleData/sampleVendors";
 import { PageContainer } from "./components/PageContainer";
 
 export default function Home() {
+  async function getVendors() {
+    const res = await fetch('/api/vendor')
+    const data = await res.json()
+    return data.data
+  }
+
+
   return (
       <PageContainer>
           <Center flexDirection={"column"}>
