@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { AuthProvider } from "./authContext";
 import { Providers } from "./providers";
 import { fonts } from "./fonts";
 
@@ -20,9 +19,7 @@ export default function RootLayout({
       className={[fonts.playfairDisplay.variable, fonts.openSans.variable].join(" ")}
     >
       <body>
-        <AuthProvider>
-          <Providers>{children}</Providers>
-        </AuthProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
