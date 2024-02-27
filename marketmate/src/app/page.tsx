@@ -10,19 +10,9 @@ import { MultiArtistsPreviews } from "@components/MultiArtistPreviews";
 import { sampleMarkets } from "./sampleData/sampleMarkets";
 import { sampleVendors } from "./sampleData/sampleVendors";
 
-<<<<<<< HEAD
-export default function Home() {
-  async function getVendors() {
-    const res = await fetch('/api/vendor')
-    const data = await res.json()
-    return data.data
-  }
-
-=======
 export default async function Home() {
   const supabase = createServerComponentClient({ cookies });
   const user = await supabase.auth.getUser();
->>>>>>> dev
 
   return (
     <PageContainer>
