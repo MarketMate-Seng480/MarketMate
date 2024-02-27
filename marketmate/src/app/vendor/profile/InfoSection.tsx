@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Vendor } from "@/app/types";
 import { sampleMarkets } from "@/app/sampleData/sampleMarkets";
-import { UpcomingEvents } from "@/app/components/UpcomingEvents";
+import { UpcomingEvents } from "@components/UpcomingEvents";
 import ProductCard from "../products/ProductCard";
 import { sampleProducts } from "@/app/sampleData/sampleProducts";
 
