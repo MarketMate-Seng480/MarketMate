@@ -18,7 +18,7 @@ export async function POST(req: Request) {
         status: 500 
     })
         
-    return new NextResponse(JSON.stringify(created), { status: 201 })
+    return NextResponse.json({ message: 'ok', status: 201, data: created }) 
 
 }
 
