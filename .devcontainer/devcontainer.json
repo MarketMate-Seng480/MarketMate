@@ -10,7 +10,7 @@
     "workspaceFolder": "/workspace",
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	"forwardPorts": [3000, 5432],
+	"forwardPorts": [3000, 5432, 5555],
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
