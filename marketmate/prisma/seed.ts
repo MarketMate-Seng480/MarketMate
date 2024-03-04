@@ -59,6 +59,47 @@ const seedDatabase = async () => {
     },
   });
 
+  // Create users
+  const user1 = await prisma.user.create({
+    data: {
+      email: "info@wildwooddesigns.com",
+      name: "Luca",
+      password: "password", 
+    }
+  });
+
+  const user2 = await prisma.user.create({
+    data: {
+      email: "info@eandemberjewelry.com",
+      name: "Ember",
+      password: "password", 
+    }
+  });
+
+  const user3 = await prisma.user.create({
+    data: {
+      email: "info@sunstonepottery.com",
+      name: "Penny",
+      password: "password", 
+    }
+  });
+
+  const user4 = await prisma.user.create({
+    data: {
+      email: "hello@artisanhubs.com",
+      name: "Arthur",
+      password: "password", 
+    }
+  });
+
+  const user5 = await prisma.user.create({
+    data: {
+      email: "info@BobTest.com",
+      name: "Bob Test",
+      password: "password", 
+    }
+  });
+
   // Create vendors
   const vendor1 = await prisma.vendor.create({
     data: {
@@ -126,6 +167,7 @@ const seedDatabase = async () => {
       name: "Reclaimed Wood Coffee Table",
       description: "A beautiful coffee table made from reclaimed wood",
       price: 350.0,
+      stock: 5,
       featureImage:
         "https://images.unsplash.com/photo-1581428982868-e410dd047a90?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       detailImage: [
@@ -150,6 +192,7 @@ const seedDatabase = async () => {
       name: "Silver Crescent Necklace",
       description: "A delicate necklace made from sterling silver",
       price: 75.0,
+      stock: 10,
       featureImage:
         "https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=1664&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       detailImage: [
@@ -174,6 +217,7 @@ const seedDatabase = async () => {
       name: "Handcrafted Ceramic Mug",
       description: "A beautiful and functional mug for your morning coffee",
       price: 25.0,
+      stock: 1,
       featureImage:
         "https://images.unsplash.com/photo-1536936812504-0e77dc3f0b40?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       detailImage: [
@@ -197,6 +241,7 @@ const seedDatabase = async () => {
       name: "Abstract Acrylic Painting",
       description: "A vibrant and colorful abstract painting",
       price: 500.0,
+      stock: 0,
       featureImage:
         "https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=1658&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       detailImage: [
