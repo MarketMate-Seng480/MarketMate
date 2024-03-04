@@ -65,7 +65,8 @@ const seedDatabase = async () => {
     data: {
       email: "info@wildwooddesigns.com",
       name: "Luca",
-      password: "password", 
+      password: "password",
+      profileImage: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
     }
   });
 
@@ -73,7 +74,8 @@ const seedDatabase = async () => {
     data: {
       email: "info@eandemberjewelry.com",
       name: "Ember",
-      password: "password", 
+      password: "password",
+      profileImage: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
     }
   });
 
@@ -81,7 +83,8 @@ const seedDatabase = async () => {
     data: {
       email: "info@sunstonepottery.com",
       name: "Penny",
-      password: "password", 
+      password: "password",
+      profileImage: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
     }
   });
 
@@ -90,6 +93,7 @@ const seedDatabase = async () => {
       email: "hello@artisanhubs.com",
       name: "Arthur",
       password: "password", 
+      profileImage: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
     }
   });
 
@@ -98,6 +102,7 @@ const seedDatabase = async () => {
       email: "info@BobTest.com",
       name: "Bob Test",
       password: "password", 
+      profileImage: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
     }
   });
 

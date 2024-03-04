@@ -14,8 +14,8 @@ model User {
   name      String
   password  String
   profileImage String 
-  vendorId  Int         @unique
-  vendor    Vendor      @relation(fields: [vendorId], references: [id]) // A user can be a vendor
+  vendor    Vendor?
+  vendorId  Int?
   role      String      @default("user")
   cart      Cart?       // A user can have one cart
 
@@ -28,8 +28,8 @@ model Vendor {
   email          String
   phone          String
   logo           String
-  userId         Int
-  user           User?          // A vendor belongs to a user
+  userId         Int          @unique
+  user           User         @relation(fields: [userId], references: [id])// A vendor belongs to a user
   shopTags       ShopCategory[] // A vendor can have multiple shop tags
   products       Product[]      // A vendor can have multiple products
   upcomingEvents Event[]        // A vendor can attend multiple events
