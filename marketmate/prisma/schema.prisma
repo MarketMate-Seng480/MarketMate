@@ -11,8 +11,8 @@ datasource db {
 model User {
   id        Int         @id @default(autoincrement())
   email     String      @unique
-  name      String?
-  password  String?
+  name      String
+  password  String
   profileImage String 
   vendorId  Int         @unique
   vendor    Vendor      @relation(fields: [vendorId], references: [id]) // A user can be a vendor
