@@ -6,6 +6,7 @@ const seedDatabase = async () => {
   await prisma.product.deleteMany();
   await prisma.event.deleteMany();
   await prisma.vendor.deleteMany();
+  await prisma.user.deleteMany();
 
   // Create shop categories
   const shopCategory1 = await prisma.shopCategory.create({
@@ -365,6 +366,10 @@ const seedDatabase = async () => {
     event1,
     event2,
     event3,
+    user1,
+    user2,
+    user3,
+    user4,
   };
 };
 
