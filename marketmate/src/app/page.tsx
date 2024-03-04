@@ -10,9 +10,13 @@ import { MultiArtistsPreviews } from "@components/MultiArtistPreviews";
 import { sampleMarkets } from "./sampleData/sampleMarkets";
 import { sampleVendors } from "./sampleData/sampleVendors";
 
+
+
+
 export default async function Home() {
   const supabase = createServerComponentClient({ cookies });
   const user = await supabase.auth.getUser();
+
 
   return (
     <PageContainer>

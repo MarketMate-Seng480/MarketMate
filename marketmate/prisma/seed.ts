@@ -108,6 +108,7 @@ const seedDatabase = async () => {
       email: "info@wildwooddesigns.com",
       phone: "(555) 555-5555",
       logo: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+      userId: user1.id,
       shopTags: {
         connect: {
           id: shopCategory2.id,
@@ -123,6 +124,7 @@ const seedDatabase = async () => {
       email: "info@eandemberjewelry.com",
       phone: "(555) 555-5556",
       logo: "https://cdn.dribbble.com/userupload/13160300/file/original-12c28a8ed53c655335f31075a52754f0.png?resize=1024x576",
+      userId: user2.id,
       shopTags: {
         connect: {
           id: shopCategory1.id,
@@ -138,6 +140,7 @@ const seedDatabase = async () => {
       email: "info@sunstonepottery.com",
       phone: "(555) 555-5557",
       logo: "https://cdn.dribbble.com/userupload/6425484/file/original-bd5d30a21aba5b4ab7177948a02c7cab.jpg?resize=1504x1128",
+      userId: user3.id,
       shopTags: {
         connect: {
           id: shopCategory2.id,
@@ -153,6 +156,7 @@ const seedDatabase = async () => {
       email: "hello@artisanhubs.com",
       phone: "(555) 555-5558",
       logo: "https://cdn.dribbble.com/users/508142/screenshots/15533007/media/00c26f35f22d3c4c928650259e1acec1.jpg?resize=1600x1200&vertical=center",
+      userId: user4.id,
       shopTags: {
         connect: {
           id: shopCategory3.id,
