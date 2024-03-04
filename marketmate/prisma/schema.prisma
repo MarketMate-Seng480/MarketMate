@@ -8,6 +8,19 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model User {
+  id        Int         @id @default(autoincrement())
+  email     String      @unique
+  name      String
+  password  String
+  profileImage String 
+  vendor    Vendor?
+  vendorId  Int?
+  role      String      @default("user")
+  cart      Cart?       // A user can have one cart
+
+}
+
 model Vendor {
   id             Int            @id @default(autoincrement())
   name           String
@@ -15,9 +28,19 @@ model Vendor {
   email          String
   phone          String
   logo           String
+  userId         Int          @unique
+  user           User         @relation(fields: [userId], references: [id])// A vendor belongs to a user
   shopTags       ShopCategory[] // A vendor can have multiple shop tags
-  products       Product[] // A vendor can have multiple products
-  upcomingEvents Event[] // A vendor can attend multiple events
+  products       Product[]      // A vendor can have multiple products
+  upcomingEvents Event[]        // A vendor can attend multiple events
+}
+
+model Cart {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @unique
+  user      User      @relation(fields: [userId], references: [id]) // A cart belongs to a user
+  total     Float
+  products  Product[] // A cart can have multiple products
 }
 
 model Event {
@@ -37,12 +60,14 @@ model Product {
   name         String
   description  String
   price        Float
+  stock        Int
   detailImage  String[]
   featureImage String
   categories   ProductCategory[] // A product can belong to multiple categories
   isFeatured   Boolean           @default(false)
   vendorId     Int
   vendor       Vendor            @relation(fields: [vendorId], references: [id]) // A product belongs to one vendor
+  carts        Cart[]            // A product can be in multiple carts
 }
 
 model ProductCategory {
