@@ -3,9 +3,20 @@ import { Providers } from "./providers";
 import { fonts } from "./fonts";
 
 export const metadata: Metadata = {
-  title: "MarketMate - Victoria's Local Marketplace",
+  title: "Artisway - Handcrafted by Locals, Inspired by Community",
   description: "Discover and support local artisans and crafts in Victoria, BC.",
-  keywords: ["marketplace", "local", "artisans", "crafts", "Victoria", "BC"],
+  keywords: [
+    "marketplace",
+    "local",
+    "artisans",
+    "crafts",
+    "Victoria",
+    "BC",
+    "Canada",
+    "handmade",
+    "gifts",
+    "art",
+  ],
 };
 
 export default function RootLayout({
