@@ -7,8 +7,8 @@ const prisma = new PrismaClient();
 export async function GET(req: Request, { params: {id, productId} }: { params: { id: string, productId: string } }) {
     const product = await prisma.product.findUnique({
         where: {
-            id: Number(productId),
-            vendorId: Number(id)
+            id: productId,
+            vendorId: id
         }
     })
     if (!product) return NextResponse.json({ 
@@ -27,8 +27,8 @@ export async function PATCH(req: Request, { params: {id, productId} }: { params:
     const json = await req.json()
     const updated = await prisma.product.update({
         where: {
-            id: Number(productId),
-            vendorId: Number(id)
+            id: productId,
+            vendorId: id
         },
         data: json
     })
@@ -43,8 +43,8 @@ export async function DELETE(req: Request, { params: {id, productId} }: { params
 
     const deleted = await prisma.product.delete({
         where: {
-            id: Number(productId),
-            vendorId: Number(id)
+            id: productId,
+            vendorId: id
         }
     })
     return NextResponse.json({ message: 'ok', status: 200, data: deleted })

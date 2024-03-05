@@ -9,77 +9,76 @@ datasource db {
 }
 
 model User {
-  id        Int         @id @default(autoincrement())
-  email     String      @unique
-  name      String
-  password  String
-  profileImage String 
-  vendor    Vendor?
-  vendorId  Int?
-  role      String      @default("user")
-  cart      Cart?       // A user can have one cart
-
+  id           String  @id @default(uuid())
+  email        String  @unique
+  first_name   String
+  last_name    String
+  role         String  @default("user")
+  profileImage String  @default("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
+  vendorId     String?
+  cart         Cart?
+  vendor       Vendor?
 }
 
 model Vendor {
-  id             Int            @id @default(autoincrement())
+  id             String         @id @default(uuid())
   name           String
   description    String
   email          String
   phone          String
   logo           String
-  userId         Int          @unique
-  user           User         @relation(fields: [userId], references: [id])// A vendor belongs to a user
-  shopTags       ShopCategory[] // A vendor can have multiple shop tags
-  products       Product[]      // A vendor can have multiple products
-  upcomingEvents Event[]        // A vendor can attend multiple events
+  userId         String         @unique
+  products       Product[]
+  user           User           @relation(fields: [userId], references: [id])
+  upcomingEvents Event[]        @relation("EventToVendor")
+  shopTags       ShopCategory[] @relation("ShopCategoryToVendor")
 }
 
 model Cart {
-  id        Int       @id @default(autoincrement())
-  userId    Int       @unique
-  user      User      @relation(fields: [userId], references: [id]) // A cart belongs to a user
-  total     Float
-  products  Product[] // A cart can have multiple products
+  id       String    @id @default(uuid())
+  userId   String    @unique
+  total    Float
+  user     User      @relation(fields: [userId], references: [id])
+  products Product[] @relation("CartToProduct")
 }
 
 model Event {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   name        String
   description String
   startDate   DateTime
   endDate     DateTime
   location    String
   url         String
-  vendors     Vendor[]
   images      String[]
+  vendors     Vendor[] @relation("EventToVendor")
 }
 
 model Product {
-  id           Int               @id @default(autoincrement())
+  id           String            @id @default(uuid())
   name         String
   description  String
   price        Float
   stock        Int
+  vendorId     String
   detailImage  String[]
   featureImage String
-  categories   ProductCategory[] // A product can belong to multiple categories
   isFeatured   Boolean           @default(false)
-  vendorId     Int
-  vendor       Vendor            @relation(fields: [vendorId], references: [id]) // A product belongs to one vendor
-  carts        Cart[]            // A product can be in multiple carts
+  vendor       Vendor            @relation(fields: [vendorId], references: [id])
+  carts        Cart[]            @relation("CartToProduct")
+  categories   ProductCategory[] @relation("ProductToProductCategory")
 }
 
 model ProductCategory {
-  id          Int       @id @default(autoincrement())
+  id          String    @id @default(uuid())
   name        String
   description String
-  products    Product[] // A product category can have multiple products
+  products    Product[] @relation("ProductToProductCategory")
 }
 
 model ShopCategory {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   name        String
   description String
-  vendors     Vendor[] // A shop category can have multiple vendors
+  vendors     Vendor[] @relation("ShopCategoryToVendor")
 }

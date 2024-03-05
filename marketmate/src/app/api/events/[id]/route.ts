@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export async function GET(req: Request, { params: {id} }: { params: { id: string } }) {
     const event = await prisma.event.findUnique({
         where: {
-            id: parseInt(id, 10)
+            id
         }
     })
     if (!event) return NextResponse.json({ 
@@ -26,7 +26,7 @@ export async function PATCH(req: Request, { params: {id} }: { params: { id: stri
     const json = await req.json()
     const updated = await prisma.event.update({
         where: {
-            id: parseInt(id, 10)
+            id
         },
         data: json
     })
@@ -41,7 +41,7 @@ export async function DELETE(req: Request, { params: {id} }: { params: { id: str
 
     const deleted = await prisma.event.delete({
         where: {
-            id: parseInt(id, 10)
+            id
         }
     })
     return NextResponse.json({ message: 'ok', status: 200, data: deleted })

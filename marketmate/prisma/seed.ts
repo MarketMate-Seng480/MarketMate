@@ -63,47 +63,57 @@ const seedDatabase = async () => {
   // Create users
   const user1 = await prisma.user.create({
     data: {
+      id: "5b1fe2ca-73e5-4288-b64f-642ac23e2cd7",
       email: "info@wildwooddesigns.com",
-      name: "Luca",
-      password: "password",
-      profileImage: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
-    }
+      first_name: "Luca",
+      last_name: "Good",
+      profileImage:
+        "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+    },
   });
 
   const user2 = await prisma.user.create({
     data: {
+      id: "3e71fd9a-5631-40a1-9645-85aff7288d02",
       email: "info@eandemberjewelry.com",
-      name: "Ember",
-      password: "password",
-      profileImage: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
-    }
+      first_name: "Ember",
+      last_name: "Earth",
+      profileImage:
+        "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+    },
   });
 
   const user3 = await prisma.user.create({
     data: {
+      id: "bedf215b-4ff2-4ca0-a6ad-13480a33945c",
       email: "info@sunstonepottery.com",
-      name: "Penny",
-      password: "password",
-      profileImage: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
-    }
+      first_name: "Penny",
+      last_name: "Potter",
+      profileImage:
+        "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+    },
   });
 
   const user4 = await prisma.user.create({
     data: {
+      id: "44682af8-a1ed-4108-9f28-66ec0a243a56",
       email: "hello@artisanhubs.com",
-      name: "Arthur",
-      password: "password", 
-      profileImage: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
-    }
+      first_name: "Arthur",
+      last_name: "Artisan",
+      profileImage:
+        "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+    },
   });
 
   const user5 = await prisma.user.create({
     data: {
+      id: "5b1fe2ca-73e5-4288-b64f-642ac23e2cd7",
       email: "info@BobTest.com",
-      name: "Bob Test",
-      password: "password", 
-      profileImage: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
-    }
+      first_name: "Bob",
+      last_name: "Test",
+      profileImage:
+        "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+    },
   });
 
   // Create vendors

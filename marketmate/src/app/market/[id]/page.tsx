@@ -3,7 +3,7 @@ import { Box, Center, Heading, Image, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { usePathname } from "next/navigation";
 import { MultiArtistsPreviews } from "@components/MultiArtistPreviews";
-import { PageContainer } from "@components/PageContainer";
+import PageContainer from "@components/PageContainer";
 import { sampleMarkets } from "@/app/sampleData/sampleMarkets";
 import { sampleVendors } from "@/app/sampleData/sampleVendors";
 
