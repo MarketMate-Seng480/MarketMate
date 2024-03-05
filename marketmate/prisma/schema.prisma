@@ -9,19 +9,19 @@ datasource db {
 }
 
 model User {
-  id           String  @id
+  id           String  @id @default(uuid())
   email        String  @unique
   first_name   String
   last_name    String
   role         String  @default("user")
-  profileImage String  @default("https://res.cloudinary.com/dx3x66v6d/image/upload/v1626740003/Profile%20Images/blank-profile-picture-973460_640")
+  profileImage String  @default("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
   vendorId     String?
   cart         Cart?
   vendor       Vendor?
 }
 
 model Vendor {
-  id             String         @id
+  id             String         @id @default(uuid())
   name           String
   description    String
   email          String
@@ -35,7 +35,7 @@ model Vendor {
 }
 
 model Cart {
-  id       String    @id
+  id       String    @id @default(uuid())
   userId   String    @unique
   total    Float
   user     User      @relation(fields: [userId], references: [id])
@@ -43,7 +43,7 @@ model Cart {
 }
 
 model Event {
-  id          String   @id
+  id          String   @id @default(uuid())
   name        String
   description String
   startDate   DateTime
@@ -55,7 +55,7 @@ model Event {
 }
 
 model Product {
-  id           String            @id
+  id           String            @id @default(uuid())
   name         String
   description  String
   price        Float
@@ -70,14 +70,14 @@ model Product {
 }
 
 model ProductCategory {
-  id          String    @id
+  id          String    @id @default(uuid())
   name        String
   description String
   products    Product[] @relation("ProductToProductCategory")
 }
 
 model ShopCategory {
-  id          String   @id
+  id          String   @id @default(uuid())
   name        String
   description String
   vendors     Vendor[] @relation("ShopCategoryToVendor")
