@@ -1,5 +1,6 @@
 "use client";
 import { Box, VStack } from "@chakra-ui/react";
+import CartItem from "@components/BasketProduct";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
 import { sampleVendors } from "@/app/sampleData/sampleVendors";
