@@ -138,7 +138,7 @@ export default function SignUpForm() {
       </Heading>
 
       <Stack spacing={2}>
-        <Text>At MarketMate, we believe in the power of community.</Text>
+        <Text>At Artisway, we believe in the power of community.</Text>
         <Text>
           With a single account, you can buy from local artisans or create and manage your own shop.
         </Text>
