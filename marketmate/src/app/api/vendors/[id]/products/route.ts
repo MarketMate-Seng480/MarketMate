@@ -11,7 +11,7 @@ export async function POST(req: Request, { params: {id} }: { params: { id: strin
     const created = await prisma.product.create({
         data: { 
             ...json,
-            vendorId: parseInt(id, 10)
+            vendorId: id
 
         }
     })
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest, { params: {id} }: { params: { id
     const take = request.nextUrl.searchParams.get('take')
     const products = await prisma.product.findMany({
         where: {
-            vendorId: parseInt(id, 10)
+            vendorId: id
         },
         skip: skip ? parseInt(skip, 10) : undefined,
         take: take ? parseInt(take, 10) : undefined

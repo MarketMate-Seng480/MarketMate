@@ -6,6 +6,7 @@ const seedDatabase = async () => {
   await prisma.product.deleteMany();
   await prisma.event.deleteMany();
   await prisma.vendor.deleteMany();
+  await prisma.user.deleteMany();
 
   // Create shop categories
   const shopCategory1 = await prisma.shopCategory.create({
@@ -59,6 +60,62 @@ const seedDatabase = async () => {
     },
   });
 
+  // Create users
+  const user1 = await prisma.user.create({
+    data: {
+      id: "5b1fe2ca-73e5-4288-b64f-642ac23e2cd7",
+      email: "info@wildwooddesigns.com",
+      first_name: "Luca",
+      last_name: "Good",
+      profileImage:
+        "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+    },
+  });
+
+  const user2 = await prisma.user.create({
+    data: {
+      id: "3e71fd9a-5631-40a1-9645-85aff7288d02",
+      email: "info@eandemberjewelry.com",
+      first_name: "Ember",
+      last_name: "Earth",
+      profileImage:
+        "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+    },
+  });
+
+  const user3 = await prisma.user.create({
+    data: {
+      id: "bedf215b-4ff2-4ca0-a6ad-13480a33945c",
+      email: "info@sunstonepottery.com",
+      first_name: "Penny",
+      last_name: "Potter",
+      profileImage:
+        "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+    },
+  });
+
+  const user4 = await prisma.user.create({
+    data: {
+      id: "44682af8-a1ed-4108-9f28-66ec0a243a56",
+      email: "hello@artisanhubs.com",
+      first_name: "Arthur",
+      last_name: "Artisan",
+      profileImage:
+        "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+    },
+  });
+
+  const user5 = await prisma.user.create({
+    data: {
+      id: "5b1fe2ca-73e5-4288-b64f-642ac23e2cd7",
+      email: "info@BobTest.com",
+      first_name: "Bob",
+      last_name: "Test",
+      profileImage:
+        "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+    },
+  });
+
   // Create vendors
   const vendor1 = await prisma.vendor.create({
     data: {
@@ -67,6 +124,7 @@ const seedDatabase = async () => {
       email: "info@wildwooddesigns.com",
       phone: "(555) 555-5555",
       logo: "https://cdn.dribbble.com/userupload/12901068/file/original-473883d6952ea9b25c551b5b2ffe8e4b.png?resize=1024x768",
+      userId: user1.id,
       shopTags: {
         connect: {
           id: shopCategory2.id,
@@ -82,6 +140,7 @@ const seedDatabase = async () => {
       email: "info@eandemberjewelry.com",
       phone: "(555) 555-5556",
       logo: "https://cdn.dribbble.com/userupload/13160300/file/original-12c28a8ed53c655335f31075a52754f0.png?resize=1024x576",
+      userId: user2.id,
       shopTags: {
         connect: {
           id: shopCategory1.id,
@@ -97,6 +156,7 @@ const seedDatabase = async () => {
       email: "info@sunstonepottery.com",
       phone: "(555) 555-5557",
       logo: "https://cdn.dribbble.com/userupload/6425484/file/original-bd5d30a21aba5b4ab7177948a02c7cab.jpg?resize=1504x1128",
+      userId: user3.id,
       shopTags: {
         connect: {
           id: shopCategory2.id,
@@ -112,6 +172,7 @@ const seedDatabase = async () => {
       email: "hello@artisanhubs.com",
       phone: "(555) 555-5558",
       logo: "https://cdn.dribbble.com/users/508142/screenshots/15533007/media/00c26f35f22d3c4c928650259e1acec1.jpg?resize=1600x1200&vertical=center",
+      userId: user4.id,
       shopTags: {
         connect: {
           id: shopCategory3.id,
@@ -126,6 +187,7 @@ const seedDatabase = async () => {
       name: "Reclaimed Wood Coffee Table",
       description: "A beautiful coffee table made from reclaimed wood",
       price: 350.0,
+      stock: 5,
       featureImage:
         "https://images.unsplash.com/photo-1581428982868-e410dd047a90?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       detailImage: [
@@ -150,6 +212,7 @@ const seedDatabase = async () => {
       name: "Silver Crescent Necklace",
       description: "A delicate necklace made from sterling silver",
       price: 75.0,
+      stock: 10,
       featureImage:
         "https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=1664&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       detailImage: [
@@ -174,6 +237,7 @@ const seedDatabase = async () => {
       name: "Handcrafted Ceramic Mug",
       description: "A beautiful and functional mug for your morning coffee",
       price: 25.0,
+      stock: 1,
       featureImage:
         "https://images.unsplash.com/photo-1536936812504-0e77dc3f0b40?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       detailImage: [
@@ -197,6 +261,7 @@ const seedDatabase = async () => {
       name: "Abstract Acrylic Painting",
       description: "A vibrant and colorful abstract painting",
       price: 500.0,
+      stock: 0,
       featureImage:
         "https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=1658&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       detailImage: [
@@ -316,6 +381,10 @@ const seedDatabase = async () => {
     event1,
     event2,
     event3,
+    user1,
+    user2,
+    user3,
+    user4,
   };
 };
 

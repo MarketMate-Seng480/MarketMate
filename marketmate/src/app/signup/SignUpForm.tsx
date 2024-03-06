@@ -90,11 +90,26 @@ export default function SignUpForm() {
           },
         },
       });
-
       if (error) {
         setAuthError(error.message);
       } else {
-        router.push("/vendor/profile");
+        // Add user to the database
+        const user = {
+          id: data?.user?.id,
+          email: email,
+          first_name: firstName,
+          last_name: lastName,
+        };
+
+        const res = await fetch("/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        });
+
+        router.push("/");
       }
     }
   };

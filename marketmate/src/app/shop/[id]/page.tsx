@@ -1,10 +1,10 @@
 "use client";
 import { Box, VStack } from "@chakra-ui/react";
-import { PageContainer } from "../../_components/PageContainer";
+import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
 import { sampleVendors } from "@/app/sampleData/sampleVendors";
-import TopBanner from "@/app/vendor/profile/TopBanner";
-import InfoSection from "@/app/vendor/profile/InfoSection";
+import TopBanner from "@/app/vendor/[id]/profile/TopBanner";
+import InfoSection from "@/app/vendor/[id]/profile/InfoSection";
 import { Vendor } from "@/app/types";
 
 function ProfilePage(vendor: Vendor) {
