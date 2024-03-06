@@ -59,7 +59,7 @@ export default function LoginForm() {
         setAuthError(error.message);
       } else {
         console.log("Login successful", data);
-        router.push("/vendor");
+        router.push("/");
       }
     }
   };

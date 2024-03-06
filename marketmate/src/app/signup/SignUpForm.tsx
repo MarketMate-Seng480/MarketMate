@@ -101,7 +101,7 @@ export default function SignUpForm() {
           last_name: lastName,
         };
 
-        const res = await fetch("/api/user", {
+        const res = await fetch("/api/users", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -109,7 +109,7 @@ export default function SignUpForm() {
           body: JSON.stringify(user),
         });
 
-        router.push("/vendor");
+        router.push("/");
       }
     }
   };
