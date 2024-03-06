@@ -21,6 +21,7 @@ import { Vendor } from "@prisma/client";
 export default function ProfileEditModalContainer({
   isOpen,
   onClose,
+  initialVendorInfo,
   setVendorInfo,
 }: {
   isOpen: boolean;

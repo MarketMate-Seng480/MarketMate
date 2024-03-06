@@ -1,22 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Box, useDisclosure, useColorModeValue } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
-import TopBanner from "./TopBanner";
-import InfoSection from "./InfoSection";
-import ProfileEditModalContainer from "./ProfileEditForm";
-import { sampleVendors } from "@/app/sampleData/sampleVendors";
+import TopBanner from "@components/vendor/TopBanner";
+import InfoSection from "@components/vendor/InfoSection";
+import ProfileEditModalContainer from "@components/vendor/ProfileEditForm";
+import { Vendor } from "@prisma/client";
+import { usePathname } from "next/navigation";
+
 
 export default function VendorProfilePage() {
-  const [vendorInfo, setVendorInfo] = useState(sampleVendors[0]);
+  const path = usePathname();
+  const path_pieces = path.split("/");
+  const slug = path_pieces[path_pieces.length - 2];
+  const fetchURL = `/api/vendors/${slug}`;
+  const [ vendorInfo, setVendorInfo ] = useState<Vendor>();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    const fetchVendor = async () => {
+      try {
+        const response = await fetch(fetchURL, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        console.log(data);
+        setVendorInfo(data.data);
+      } catch (error) {
+        console.error("Error fetching vendor info:", error);
+      }
+    };
+    fetchVendor();
+  });
 
   return (
     <>
       <TopBanner
-        name={vendorInfo.name}
-        logo={vendorInfo.logo || ""}
+        name={vendorInfo?.name || ""}
+        logo={vendorInfo?.logo || ""}
       />
 
       <Box
@@ -31,12 +56,12 @@ export default function VendorProfilePage() {
         >
           Edit Profile
         </Button>
-        <InfoSection {...vendorInfo} />
+        <InfoSection {...vendorInfo as Vendor} />
         <ProfileEditModalContainer
           isOpen={isOpen}
           onClose={onClose}
-          initialVendorInfo={vendorInfo}
-          setVendorInfo={setVendorInfo}
+          initialVendorInfo={vendorInfo as Vendor}
+          updateVendorInfo={setVendorInfo}
         />
       </Box>
     </>
