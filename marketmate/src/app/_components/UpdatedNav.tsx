@@ -3,6 +3,12 @@
 import {
   Box,
   Flex,
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
   Text,
   IconButton,
   Button,
@@ -19,9 +25,105 @@ import {
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { FiShoppingCart, FiUser } from "react-icons/fi";
+import { Session } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "../lib/supabase";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+
+export interface User {
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  role: string;
+}
+
 
 export default function Navbar() {
+  const router = useRouter();
   const { isOpen, onToggle } = useDisclosure();
+  const [session, setSession] = useState<Session | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
+
+  useEffect(() => {
+    supabase.auth
+      .getSession()
+      .then((session) => {
+        setSession(session?.data?.session ?? null);
+        setUserId(session?.data?.session?.user.id ?? null);
+      })
+      .catch((err) => {
+        console.log("ERROR GET SESSION: ", err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if(userId) {
+      const fetchData = async () => {
+        const res = await fetch(`http://${window.location.host}/api/users/${userId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const user_data = (await res.json()).data;
+        setUserData(user_data);
+      };
+      fetchData();
+    };
+  }, [userId]);
+
+
+  const newVendor = async () => {
+    if(userData == null) return;
+
+    const newVendor = await fetch(`http://${window.location.host}/api/vendors`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        userId: userData.id,
+        email: userData.email,
+        name: userData.first_name + " " + userData.last_name,
+        description: "This is a new vendor",
+        phone: "888-888-8888",
+        logo: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+      }),
+    });
+    if (!newVendor) return;
+    
+    const vendorData = (await newVendor.json()).data;
+
+    const res = await fetch(`http://${window.location.host}/api/users/${userData.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ role: "vendor", vendorId: vendorData.id }),
+    });
+  }
+
+  const handleLogout = async () => {
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+    setLoading(false);
+    if (!error) {
+      setSession(null);
+    }
+  };
+
+  const handleVendor = () => {
+    router.push("/vendor");
+  }
+
+  const handleNewVendor = () => {
+    newVendor();
+    router.push("/vendor");
+  }
+
 
   return (
     <Box>
@@ -79,35 +181,83 @@ export default function Navbar() {
             <DesktopNav />
           </Flex>
         </Flex>
-
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={"flex-end"}
-          direction={"row"}
-          spacing={3}
-        >
-          <Button
-            variant={"ghost"}
-            color={"#119DA4"}
-            as={"a"}
-            href={"/login"}
-          >
-            <FiUser />
-            <Text
-              display={{ base: "none", md: "block" }}
-              ml={{ base: 0, md: 2 }}
+        <Flex alignItems={"center"}>
+          {session ? (
+            <Stack
+              flex={{ base: 1, md: 0 }}
+              justify={"flex-end"}
+              direction={"row"}
+              spacing={3}
             >
-              Log In / Register
-            </Text>
-          </Button>
+              <Button
+                variant={"ghost"}
+                color={"#119DA4"}
+              >
+                <FiShoppingCart />
+              </Button>
 
-          <Button
-            variant={"ghost"}
-            color={"#119DA4"}
-          >
-            <FiShoppingCart />
-          </Button>
-        </Stack>
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  rounded={"full"}
+                  variant={"link"}
+                  cursor={"pointer"}
+                  minW={0}
+                >
+                  <Avatar
+                    size={"md"}
+                    src={
+                      "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                    }
+                  />
+                </MenuButton>
+                <MenuList>
+                  {(userData?.role == "vendor") ?(
+                    <>
+                      <MenuItem onClick={handleVendor}>My Store</MenuItem>
+                      <MenuDivider />
+                    </>
+                  ) : (
+                    <>
+                      <MenuItem onClick={handleNewVendor}>Become A Vendor</MenuItem>
+                      <MenuDivider />
+                    </>
+                  )}
+                  <MenuItem onClick={handleLogout}>Log Out</MenuItem>
+                </MenuList>
+              </Menu>
+            </Stack>
+          ) : (
+            <Stack
+              flex={{ base: 1, md: 0 }}
+              justify={"flex-end"}
+              direction={"row"}
+              spacing={3}
+            >
+              <Button
+                variant={"ghost"}
+                color={"#119DA4"}
+              >
+                <FiShoppingCart />
+              </Button>
+
+              <Button
+                variant={"ghost"}
+                color={"#119DA4"}
+                as={"a"}
+                href={"/login"}
+              >
+                <FiUser />
+                <Text
+                  display={{ base: "none", md: "block" }}
+                  ml={{ base: 0, md: 2 }}
+                >
+                  Log In / Register
+                </Text>
+              </Button>
+            </Stack>
+          )}
+        </Flex>
       </Flex>
 
       <Collapse
