@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Flex, VStack, SimpleGrid, Heading, Text, Button } from "@chakra-ui/react";
 import ProductCard from "@components/ProductCard";
 import type { Product } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 export default function FeatureProductSection() {
+  const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -24,10 +26,7 @@ export default function FeatureProductSection() {
   const productCards = products.map((product) => (
     <ProductCard
       key={product.id}
-      name={product.name}
-      vendorId={product.vendorId}
-      price={product.price}
-      featureImage={product.featureImage}
+      product={product}
     />
   ));
 
@@ -57,7 +56,12 @@ export default function FeatureProductSection() {
           {productCards}
         </SimpleGrid>
 
-        <Button variant={"outline"}>Discover More Products</Button>
+        <Button
+          variant={"outline"}
+          onClick={() => router.push("/product")}
+        >
+          Discover More Products
+        </Button>
       </VStack>
     </Flex>
   );

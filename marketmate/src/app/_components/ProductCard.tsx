@@ -1,22 +1,17 @@
 "use client";
-import { VStack, Image, Heading, Text } from "@chakra-ui/react";
-import type { Vendor } from "@prisma/client";
+import { VStack, Image, Heading, Text, Box } from "@chakra-ui/react";
+import type { Product, Vendor } from "@prisma/client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-interface ProductCardProps {
-  name: string;
-  vendorId: string;
-  price: number;
-  featureImage: string;
-}
-
-export default function ProductCard({ name, vendorId, price, featureImage }: ProductCardProps) {
+export default function ProductCard({ product }: { product: Product }) {
   const [vendor, setVendor] = useState<Vendor | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchVendor = async () => {
       try {
-        const response = await fetch(`/api/vendors/${vendorId}`);
+        const response = await fetch(`/api/vendors/${product.vendorId}`);
         const data = await response.json();
         setVendor(data.data);
       } catch (error) {
@@ -24,33 +19,46 @@ export default function ProductCard({ name, vendorId, price, featureImage }: Pro
       }
     };
     fetchVendor();
-  }, [vendorId]);
+  }, [product.vendorId]);
 
   return (
-    <VStack spacing={8}>
-      <Image
-        src={featureImage}
-        alt={name}
-        borderRadius={10}
-        w={320}
-        h={350}
-      />
-      <VStack spacing={2}>
-        <Heading size={"md"}>{name}</Heading>
-        <Text
-          size={"sm"}
-          color={"gray.600"}
-        >
-          {vendor?.name || "Vendor Name"}
-        </Text>
-        <Text
-          size={"sm"}
-          as={"b"}
-          color={"gray.500"}
-        >
-          {"$" + price}
-        </Text>
+    <Box>
+      <VStack spacing={8}>
+        <Image
+          src={product.featureImage}
+          alt={product.name}
+          borderRadius={10}
+          w={320}
+          h={350}
+          onClick={() => router.push("/product/" + product.id)}
+          cursor={"pointer"}
+        />
+        <VStack spacing={2}>
+          <Heading
+            size={"md"}
+            onClick={() => router.push("/product/" + product.id)}
+            cursor={"pointer"}
+          >
+            {product.name}
+          </Heading>
+          <Text
+            size={"sm"}
+            color={"gray.600"}
+            onClick={() => router.push("/shop/" + product.vendorId)}
+            cursor={"pointer"}
+            textDecoration={"underline"}
+          >
+            {vendor?.name || "Vendor Name"}
+          </Text>
+          <Text
+            size={"sm"}
+            as={"b"}
+            color={"gray.500"}
+          >
+            {"$" + product.price.toFixed(2)}
+          </Text>
+        </VStack>
       </VStack>
-    </VStack>
+    </Box>
   );
 }
