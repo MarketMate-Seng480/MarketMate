@@ -29,14 +29,7 @@ import { Session } from "@supabase/auth-helpers-nextjs";
 import { supabase } from "../lib/supabase";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-export interface User {
-  id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  role: string;
-}
+import { User } from "@prisma/client";
 
 export default function Navbar() {
   const router = useRouter();
@@ -61,7 +54,7 @@ export default function Navbar() {
   useEffect(() => {
     if (userId) {
       const fetchData = async () => {
-        const res = await fetch(`http://${window.location.host}/api/users/${userId}`, {
+        const res = await fetch(`/api/users/${userId}`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -77,7 +70,7 @@ export default function Navbar() {
   const newVendor = async () => {
     if (userData == null) return;
 
-    const newVendor = await fetch(`http://${window.location.host}/api/vendors`, {
+    const newVendor = await fetch(`/api/vendors`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -95,13 +88,15 @@ export default function Navbar() {
 
     const vendorData = (await newVendor.json()).data;
 
-    const res = await fetch(`http://${window.location.host}/api/users/${userData.id}`, {
+    const res = await fetch(`/api/users/${userData.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ role: "vendor", vendorId: vendorData.id }),
     });
+    const updatedUserData = (await res.json()).data;
+    setUserData(updatedUserData);
   };
 
   const handleLogout = async () => {
@@ -114,12 +109,12 @@ export default function Navbar() {
   };
 
   const handleVendor = () => {
-    router.push("/vendor");
+    router.push(`/vendor/${userData?.vendorId}/profile`);
   };
 
   const handleNewVendor = () => {
     newVendor();
-    router.push("/vendor");
+    router.push(`/vendor/${userData?.vendorId}/profile`);
   };
 
   return (
