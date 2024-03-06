@@ -7,6 +7,7 @@ import TopBanner from "@/app/vendor/profile/TopBanner";
 import InfoSection from "@/app/vendor/profile/InfoSection";
 import { Vendor } from "@/app/types";
 
+
 function ProfilePage(vendor: Vendor) {
   return (
     <>
