@@ -1,8 +1,8 @@
 import { NextResponse, NextRequest } from "next/server";
-import { PrismaClient } from "@prisma/client";
-//import prisma from "@prisma/prisma";
+//import { PrismaClient } from "@prisma/client";
+import prisma from "@prisma/prisma";
 
-const prisma = new PrismaClient();
+//const prisma = new PrismaClient();
 
 // find all products
 export async function GET(request: NextRequest) {
