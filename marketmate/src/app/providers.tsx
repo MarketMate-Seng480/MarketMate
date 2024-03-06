@@ -3,8 +3,8 @@ import { ChakraProvider, extendTheme, Box } from "@chakra-ui/react";
 
 export const theme = extendTheme({
   fonts: {
-    body: "var(--font-open-sans)",
-    heading: "var(--font-open-sans)",
+    body: "'DM Sans', sans-serif",
+    heading: "'DM Sans', sans-serif",
   },
   colors: {
     brand: {
@@ -53,14 +53,7 @@ export const theme = extendTheme({
         body: '#321F0E',
         caption: '#9FADAC'
     }
-  },
-  styles: {
-    global: {
-      h1: {
-        fontFamily: "var(--font-playfair) !important",
-      },
-    },
-  },
+  }
 });
 
 export function Providers({ children }: { children: React.ReactNode }) {
