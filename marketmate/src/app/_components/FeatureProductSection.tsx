@@ -7,12 +7,12 @@ import { useRouter } from "next/navigation";
 
 export default function FeatureProductSection() {
   const router = useRouter();
-  const [products, setProducts] = useState<Product[] | null>(null);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("/api/products");
+        const response = await fetch(`http://${window.location.host}/api/products`);
         const data = await response.json();
         console.log(data);
         setProducts(data.data);
