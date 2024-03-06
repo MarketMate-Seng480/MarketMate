@@ -24,6 +24,7 @@ export default async function LoginPage() {
       <Flex
         flex={1}
         maxH="100vh"
+        display={{ base: "none", md: "flex" }}
       >
         <Image
           src={LoginImage}
