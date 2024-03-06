@@ -1,7 +1,40 @@
+"use client";
+import React, { useEffect, useState } from "react";
 import { Flex, VStack, SimpleGrid, Heading, Text, Button } from "@chakra-ui/react";
 import ProductCard from "@components/ProductCard";
+import type { Product } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 export default function FeatureProductSection() {
+  const router = useRouter();
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("/api/products", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        console.log(data);
+        setProducts(data.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const productCards = products?.map((product) => (
+    <ProductCard
+      key={product.id}
+      product={product}
+    />
+  ));
+
   return (
     <Flex
       w="full"
@@ -25,15 +58,15 @@ export default function FeatureProductSection() {
           spacing={10}
           p={10}
         >
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+          {productCards}
         </SimpleGrid>
 
-        <Button variant={"outline"}>Discover More Products</Button>
+        <Button
+          variant={"outline"}
+          onClick={() => router.push("/product")}
+        >
+          Discover More Products
+        </Button>
       </VStack>
     </Flex>
   );

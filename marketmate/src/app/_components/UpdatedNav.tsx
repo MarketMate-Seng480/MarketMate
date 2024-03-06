@@ -38,7 +38,6 @@ export interface User {
   role: string;
 }
 
-
 export default function Navbar() {
   const router = useRouter();
   const { isOpen, onToggle } = useDisclosure();
@@ -60,7 +59,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if(userId) {
+    if (userId) {
       const fetchData = async () => {
         const res = await fetch(`http://${window.location.host}/api/users/${userId}`, {
           method: "GET",
@@ -72,19 +71,18 @@ export default function Navbar() {
         setUserData(user_data);
       };
       fetchData();
-    };
+    }
   }, [userId]);
 
-
   const newVendor = async () => {
-    if(userData == null) return;
+    if (userData == null) return;
 
     const newVendor = await fetch(`http://${window.location.host}/api/vendors`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         userId: userData.id,
         email: userData.email,
         name: userData.first_name + " " + userData.last_name,
@@ -94,7 +92,7 @@ export default function Navbar() {
       }),
     });
     if (!newVendor) return;
-    
+
     const vendorData = (await newVendor.json()).data;
 
     const res = await fetch(`http://${window.location.host}/api/users/${userData.id}`, {
@@ -104,7 +102,7 @@ export default function Navbar() {
       },
       body: JSON.stringify({ role: "vendor", vendorId: vendorData.id }),
     });
-  }
+  };
 
   const handleLogout = async () => {
     setLoading(true);
@@ -117,13 +115,12 @@ export default function Navbar() {
 
   const handleVendor = () => {
     router.push("/vendor");
-  }
+  };
 
   const handleNewVendor = () => {
     newVendor();
     router.push("/vendor");
-  }
-
+  };
 
   return (
     <Box>
@@ -170,6 +167,8 @@ export default function Navbar() {
             size={"md"}
             textAlign={useBreakpointValue({ base: "center", md: "left" })}
             color={"#CA7A6C"}
+            onClick={() => router.push("/")}
+            cursor={"pointer"}
           >
             Artisway
           </Heading>
@@ -212,7 +211,7 @@ export default function Navbar() {
                   />
                 </MenuButton>
                 <MenuList>
-                  {(userData?.role == "vendor") ?(
+                  {userData?.role == "vendor" ? (
                     <>
                       <MenuItem onClick={handleVendor}>My Store</MenuItem>
                       <MenuDivider />
