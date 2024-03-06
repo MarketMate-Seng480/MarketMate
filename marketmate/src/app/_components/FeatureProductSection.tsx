@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 
 export default function FeatureProductSection() {
   const router = useRouter();
-  const [products, setProducts] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[] | null>(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -23,7 +23,7 @@ export default function FeatureProductSection() {
     fetchProducts();
   }, []);
 
-  const productCards = products.map((product) => (
+  const productCards = products?.map((product) => (
     <ProductCard
       key={product.id}
       product={product}
