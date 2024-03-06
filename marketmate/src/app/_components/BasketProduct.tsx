@@ -14,15 +14,17 @@ type ProductProps = {
   name: string;
   quantity: number;
   price: number;
+  vendorName: string;
   onQuantityChange: (quantity: number) => void;
 };
 
-const CartItem: React.FC<ProductProps> = ({ imageUrl, name, quantity, price, onQuantityChange }) => {
+const CartItem: React.FC<ProductProps> = ({ imageUrl, name, quantity, price, vendorName, onQuantityChange }) => {
   return (
     <Flex align="center" p={5} boxShadow="md" borderRadius="lg">
       <Image boxSize="100px" objectFit="cover" src={imageUrl} alt={name} mr={4} />
       <Box flex="1">
         <Text fontWeight="bold">{name}</Text>
+        <Text fontSize="sm">Vendor: {vendorName}</Text> {/* Display the vendor name */}
         <Text>Price: ${price.toFixed(2)}</Text>
       </Box>
       <NumberInput min={1} value={quantity} onChange={(valueString) => onQuantityChange(Number(valueString))} maxWidth="100px">
