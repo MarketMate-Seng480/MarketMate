@@ -12,7 +12,7 @@ export default function FeatureProductSection() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("/api/home");
+        const response = await fetch("/api/products");
         const data = await response.json();
         console.log(data);
         setProducts(data.data);
