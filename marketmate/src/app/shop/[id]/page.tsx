@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { Box, VStack } from "@chakra-ui/react";
+import CartItem from "@components/BasketProduct";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
 import TopBanner from "@/app/vendor/[id]/profile/TopBanner";
