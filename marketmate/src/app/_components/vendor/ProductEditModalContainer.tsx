@@ -14,27 +14,30 @@ import {
   ModalCloseButton,
   Textarea,
 } from "@chakra-ui/react";
-import { Product } from "@/app/types";
+import { Product } from "@prisma/client";
 
 export default function ProductEditModalContainer({
   isOpen,
   onClose,
+  onSave,
   initialProductInfo,
-  setProductInfo,
+  alterProductInfo,
+  vendorId,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  onSave: () => void;
   initialProductInfo: Product;
-  setProductInfo: (product: Product) => void;
+  alterProductInfo: (info: Product) => void;
+  vendorId: string;
 }) {
-  const [tempProductInfo, setTempProductInfo] = useState(initialProductInfo);
+  const [productInfo, setProductInfo] = useState(initialProductInfo);
 
   const handleInputChange = (field: keyof Product, value: string | number) => {
     if (value === "price") {
       value = parseFloat(value) || 0;
     }
-
-    setTempProductInfo((prevState) => ({
+    setProductInfo((prevState) => ({
       ...prevState,
       [field]: value,
     }));
@@ -58,29 +61,36 @@ export default function ProductEditModalContainer({
             <FormControl id="name">
               <FormLabel>Name</FormLabel>
               <Input
-                value={tempProductInfo.name}
+                value={productInfo.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
               />
             </FormControl>
             <FormControl id="description">
               <FormLabel>Description</FormLabel>
               <Textarea
-                value={tempProductInfo.description}
+                value={productInfo.description}
                 onChange={(e) => handleInputChange("description", e.target.value)}
               />
             </FormControl>
             <FormControl id="price">
               <FormLabel>Price</FormLabel>
               <Input
-                value={tempProductInfo.price}
+                value={productInfo.price}
                 onChange={(e) => handleInputChange("price", e.target.value)}
+              />
+            </FormControl>
+            <FormControl id="stock">
+              <FormLabel>Stock</FormLabel>
+              <Input
+                value={productInfo.stock}
+                onChange={(e) => handleInputChange("stock", e.target.value)}
               />
             </FormControl>
             <FormControl id="image">
               <FormLabel>Image URL</FormLabel>
               <Input
-                value={tempProductInfo.image}
-                onChange={(e) => handleInputChange("image", e.target.value)}
+                value={productInfo.featureImage}
+                onChange={(e) => handleInputChange("featureImage", e.target.value)}
               />
             </FormControl>
           </Stack>
@@ -91,8 +101,8 @@ export default function ProductEditModalContainer({
             _hover={{ bg: "#C4BEB5" }}
             mr={3}
             onClick={() => {
-              setProductInfo(tempProductInfo);
-              onClose();
+              alterProductInfo(productInfo);
+              onSave();
             }}
           >
             Save

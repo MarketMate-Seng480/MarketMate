@@ -109,12 +109,12 @@ export default function Navbar() {
   };
 
   const handleVendor = () => {
-    router.push(`/vendor/${userData?.vendorId}/profile`);
+    router.push(`/vendor/profile/${userData?.vendorId}`);
   };
 
   const handleNewVendor = () => {
     newVendor();
-    router.push(`/vendor/${userData?.vendorId}/profile`);
+    router.push(`/vendor/profile/${userData?.vendorId}`);
   };
 
   return (

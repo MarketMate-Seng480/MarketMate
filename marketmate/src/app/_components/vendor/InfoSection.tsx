@@ -1,3 +1,4 @@
+'use client';
 import {
   Stack,
   Heading,
@@ -12,10 +13,9 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Vendor, Product } from "@prisma/client";
-import { useState, useEffect } from "react";
 import { UpcomingEvents } from "@components/UpcomingEvents";
 import ProductCard from "@components/ProductCard";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const InfoComponent = (title: string, value: string) => {
   return (
@@ -30,21 +30,23 @@ const InfoComponent = (title: string, value: string) => {
 };
 
 export default function InfoSection(vendor: Vendor) {
-  const router = useRouter();
+  
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`/api/vendor/${vendor.id}/products`, {
+        const response = await fetch(`/api/vendors/${vendor.id}/products`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
         });
         const data = await response.json();
-        console.log(data);
-        setProducts(data.data);
+        const products = await data.data;
+        setProducts(products);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -52,7 +54,8 @@ export default function InfoSection(vendor: Vendor) {
     fetchProducts();
   }, [vendor.id]);
 
-  const productCards = products?.map((product) => (
+
+  const productCards = products.map((product: Product) => (
     <ProductCard
       key={product.id}
       product={product}
@@ -100,10 +103,8 @@ export default function InfoSection(vendor: Vendor) {
             fontSize={{ base: "2xl", md: "3xl" }}
           >
             Featured Products
-          </Heading>
-          <Text size={"xs"}>Some of our favorite picks and top-sellers</Text>
+          </Heading> 
         </VStack>
-
         <SimpleGrid
           columns={{ base: 1, md: 2, lg: 3 }}
           spacing={10}
