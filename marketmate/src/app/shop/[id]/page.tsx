@@ -1,11 +1,11 @@
 "use client";
+import { useState, useEffect } from "react";
 import { Box, VStack } from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
-import { sampleVendors } from "@/app/sampleData/sampleVendors";
 import TopBanner from "@/app/vendor/[id]/profile/TopBanner";
 import InfoSection from "@/app/vendor/[id]/profile/InfoSection";
-import { Vendor } from "@/app/types";
+import type { Vendor } from "@prisma/client";
 
 function ProfilePage(vendor: Vendor) {
   return (
@@ -18,7 +18,8 @@ function ProfilePage(vendor: Vendor) {
         mx={10}
         mt={10}
       >
-        <InfoSection {...vendor} />
+        {/* <InfoSection {...vendor} /> */}
+        <text>{vendor.description}</text>
       </Box>
     </>
   );
@@ -27,7 +28,21 @@ function ProfilePage(vendor: Vendor) {
 export default function Shop() {
   const path = usePathname();
   const slug = path.split("/").pop();
-  const vendor = sampleVendors.find((vendor) => vendor.id === Number(slug));
+  const fetchURL = `/api/vendors/${slug}`;
+  const [vendor, setVendor] = useState<Vendor | null>(null);
+
+  const fetchVendor = async () => {
+    try {
+      const response = await fetch(fetchURL);
+      const data = await response.json();
+      console.log("data", data);
+      setVendor(data.data);
+    } catch (error) {
+      console.error("Error fetching vendor:", error);
+    }
+  };
+
+  fetchVendor();
 
   return (
     <PageContainer>

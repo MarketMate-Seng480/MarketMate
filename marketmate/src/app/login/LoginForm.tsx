@@ -87,7 +87,7 @@ export default function LoginForm() {
         fontSize={{ base: "3xl", md: "4xl" }}
         mt={5}
       >
-        Welcome Back to MarketMate
+        Welcome Back to Artisway
       </Heading>
 
       <Stack

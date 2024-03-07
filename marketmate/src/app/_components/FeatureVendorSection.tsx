@@ -1,7 +1,11 @@
+"use client";
 import { Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import VendorCarousel from "@components/VendorCarousel";
+import { useRouter } from "next/navigation";
 
 export default function FeatureVendorSection() {
+  const router = useRouter();
+
   return (
     <Flex
       bg="white"
@@ -24,7 +28,12 @@ export default function FeatureVendorSection() {
 
         <VendorCarousel />
 
-        <Button variant={"outline"}>Discover More Vendors</Button>
+        <Button
+          variant={"outline"}
+          onClick={() => router.push("/shop")}
+        >
+          Discover More Vendors
+        </Button>
       </VStack>
     </Flex>
   );
