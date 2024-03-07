@@ -14,6 +14,8 @@ import {
   NumberDecrementStepper,
   useColorModeValue,
   Divider,
+  Flex,
+  Container,
 } from '@chakra-ui/react';
 
 type ProductProps = {
@@ -31,42 +33,30 @@ const CartItem: React.FC<ProductProps> = ({
   quantity,
   price,
   vendorName,
-  onQuantityChange,
 }) => {
-  const borderColor = useColorModeValue('gray.200', 'gray.700');
+  // Placeholder function for quantity change
+  const onQuantityChange = (quantity: string) => {
+    console.log(`New quantity: ${quantity}`);
+  };
 
   return (
-    <HStack
-      w="full"
-      align="center"
-      p={5}
-      boxShadow="md"
-      borderRadius="lg"
-      justifyContent="space-between"
-      spacing={4} // Adjust the spacing between elements
-    >
-      <Image boxSize="75px" src={imageUrl} alt={name} />
-      <VStack align="start" flex={1}>
+    <Flex align="center" justify="space-between" p={5} boxShadow="md" borderRadius="lg">
+      <Image boxSize="75px" src={imageUrl} alt={name} mr={4} />
+      <Box flex={2}>
         <Text fontWeight="bold" isTruncated>{name}</Text>
         <Text fontSize="sm" color="gray.500">{vendorName}</Text>
-      </VStack>
-      <HStack flex={1} justify="center">
-        <NumberInput
-          size="sm"
-          defaultValue={quantity}
-          min={1}
-          onChange={(_, valueAsNumber) => onQuantityChange(valueAsNumber)}
-          w="100px" // You can adjust the width as needed
-        >
-          <NumberInputField />
-          <NumberInputStepper>
-            <NumberIncrementStepper />
-            <NumberDecrementStepper />
-          </NumberInputStepper>
-        </NumberInput>
-      </HStack>
-      <Text flex={1} textAlign="right">${(quantity * price).toFixed(2)}</Text>
-    </HStack>
+      </Box>
+      <NumberInput defaultValue={quantity} min={1} onChange={onQuantityChange} maxW="100px">
+        <NumberInputField />
+        <NumberInputStepper>
+          <NumberIncrementStepper />
+          <NumberDecrementStepper />
+        </NumberInputStepper>
+      </NumberInput>
+      <Box flex={1} textAlign="right">
+        <Text>${(quantity * price).toFixed(2)}</Text>
+      </Box>
+    </Flex>
   );
 };
 // Example usage in a page component
