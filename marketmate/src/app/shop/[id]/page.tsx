@@ -1,3 +1,4 @@
+
 "use client";
 import { useState, useEffect } from "react";
 import { Box, VStack } from "@chakra-ui/react";
@@ -55,3 +56,4 @@ export default function Shop() {
     </PageContainer>
   );
 }
+

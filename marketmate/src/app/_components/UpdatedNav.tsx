@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -488,3 +489,4 @@ const NAV_ITEMS: Array<NavItem> = [
     href: "/products",
   },
 ];
+
