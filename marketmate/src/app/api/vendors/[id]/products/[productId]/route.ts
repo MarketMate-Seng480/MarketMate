@@ -30,7 +30,14 @@ export async function PATCH(req: Request, { params: {id, productId} }: { params:
             id: productId,
             vendorId: id
         },
-        data: json
+        data: {
+            name: json.name,
+            description: json.description,
+            price: Number(json.price),
+            stock: Number(json.stock),
+            featureImage: json.featureImage,
+            detailImage: json.detailImage,
+        }
     })
     return NextResponse.json({ message: 'ok', status: 200, data: updated })
 }
