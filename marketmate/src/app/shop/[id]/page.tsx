@@ -3,8 +3,8 @@ import { useState, useEffect } from "react";
 import { Box, VStack } from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
-import TopBanner from "@/app/vendor/[id]/profile/TopBanner";
-import InfoSection from "@/app/vendor/[id]/profile/InfoSection";
+import TopBanner from "@components/vendor/TopBanner";
+import InfoSection from "@components/vendor/InfoSection";
 import type { Vendor } from "@prisma/client";
 
 function ProfilePage(vendor: Vendor) {
