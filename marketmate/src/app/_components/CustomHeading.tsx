@@ -2,10 +2,10 @@
 import { Heading, HeadingProps, useTheme } from "@chakra-ui/react";
 import React from "react";
 
-interface HeaderTextProps extends HeadingProps {
+interface CustomHeadingProps extends HeadingProps {
     children: React.ReactNode;
 }
-export const HeaderText: React.FC<HeaderTextProps> = ({ children, ...rest }) => {
+export const CustomHeading: React.FC<CustomHeadingProps> = ({ children, ...rest }) => {
     const theme = useTheme();
     const headingColor = theme.colors.text.heading;
     return (
