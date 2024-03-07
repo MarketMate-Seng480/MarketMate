@@ -1,4 +1,5 @@
-import { useState } from "react";
+'use client';
+import React, { useState, useEffect } from "react";
 import {
   Button,
   FormControl,
@@ -15,34 +16,39 @@ import {
   ModalCloseButton,
   Textarea,
 } from "@chakra-ui/react";
-import { Vendor } from "@/app/types";
+import { Vendor } from "@prisma/client";
+import { useRouter } from "next/navigation";
+
 
 export default function ProfileEditModalContainer({
   isOpen,
   onClose,
+  onSave,
   initialVendorInfo,
-  setVendorInfo,
 }: {
   isOpen: boolean;
   onClose: () => void;
+  onSave: () => void;
   initialVendorInfo: Vendor;
-  setVendorInfo: (info: Vendor) => void;
 }) {
-  const [tempVendorInfo, setTempVendorInfo] = useState(initialVendorInfo);
+  const [vendorInfo, setVendorInfo] = useState(initialVendorInfo);
 
   const handleInputChange = (field: keyof Vendor, value: string) => {
-    setTempVendorInfo((prevState) => ({
-      ...prevState,
-      [field]: value,
-    }));
+    setVendorInfo((prev: Vendor) => ({ ...prev, [field]: value }));
   };
 
-  const handleTagsChange = (value: string) => {
-    setTempVendorInfo((prevState) => ({
-      ...prevState,
-      shopTags: value.split(",").map((tag) => tag.trim()),
-    }));
+  const updateVendorInfo = async (info: Vendor) => {
+    const res = await fetch(`/api/vendors/${info.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(info),
+    });
+    const vendor = await res.json();
+    return vendor.data;
   };
+
 
   return (
     <Modal
@@ -63,7 +69,7 @@ export default function ProfileEditModalContainer({
               <FormLabel fontWeight={600}>Shop Name</FormLabel>
               <Input
                 type="text"
-                value={tempVendorInfo.name}
+                value={vendorInfo?.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
               />
             </FormControl>
@@ -77,13 +83,13 @@ export default function ProfileEditModalContainer({
                   <FormLabel fontWeight={600}>Shop Logo URL</FormLabel>
                   <Input
                     type="text"
-                    value={tempVendorInfo.logo}
+                    value={vendorInfo?.logo}
                     onChange={(e) => handleInputChange("logo", e.target.value)}
                   />
                 </FormControl>
                 <Avatar
                   size="xl"
-                  src={tempVendorInfo.logo}
+                  src={vendorInfo?.logo}
                 />
               </Stack>
             </FormControl>
@@ -92,7 +98,7 @@ export default function ProfileEditModalContainer({
               <FormLabel fontWeight={600}>Email</FormLabel>
               <Input
                 type="email"
-                value={tempVendorInfo.email}
+                value={vendorInfo?.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
               />
             </FormControl>
@@ -101,33 +107,19 @@ export default function ProfileEditModalContainer({
               <FormLabel fontWeight={600}>Phone</FormLabel>
               <Input
                 type="tel"
-                value={tempVendorInfo.phone}
+                value={vendorInfo?.phone}
                 onChange={(e) => handleInputChange("phone", e.target.value)}
-              />
-            </FormControl>
-
-            <FormControl id="address">
-              <FormLabel fontWeight={600}>Address</FormLabel>
-              <Input
-                type="text"
-                value={tempVendorInfo.address}
-                onChange={(e) => handleInputChange("address", e.target.value)}
               />
             </FormControl>
 
             <FormControl id="tags">
               <FormLabel fontWeight={600}>Store tags (split by &quot;,&quot;)</FormLabel>
-              <Input
-                type="text"
-                value={tempVendorInfo.shopTags.join(", ")}
-                onChange={(e) => handleTagsChange(e.target.value)}
-              />
             </FormControl>
 
             <FormControl id="aboutUs">
               <FormLabel fontWeight={600}>About Us</FormLabel>
               <Textarea
-                value={tempVendorInfo.description}
+                value={vendorInfo?.description}
                 onChange={(e) => handleInputChange("description", e.target.value)}
               />
             </FormControl>
@@ -140,8 +132,8 @@ export default function ProfileEditModalContainer({
             _hover={{ bg: "#C4BEB5" }}
             mr={3}
             onClick={() => {
-              setVendorInfo(tempVendorInfo);
-              onClose();
+              updateVendorInfo(vendorInfo);
+              onSave();
             }}
           >
             Save

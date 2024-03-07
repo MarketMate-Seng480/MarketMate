@@ -26,9 +26,10 @@ import {
 import { FiUser, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { Session } from "@supabase/auth-helpers-nextjs";
-import { supabase } from "@/app/lib/supabase";
+import { supabase } from "../../lib/supabase";
+import { useEffect, useState } from "react";
+import { User, Vendor } from "@prisma/client";
 
 interface LinkItemProps {
   name: string;
@@ -152,12 +153,43 @@ export function AccountButton({ isVendorPage }: { isVendorPage: Boolean }) {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  // { name: "Overview", icon: FiHome, url: "/vendor" },
   { name: "Profile", icon: FiUser, url: "/vendor/profile" },
   { name: "Products", icon: FiShoppingCart, url: "/vendor/products" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const [session, setSession] = useState<Session | null>(null);
+  const [userId, setUserId] = useState<string>();
+  const [userData, setUserData] = useState<User>();
+
+  useEffect(() => {
+    supabase.auth
+      .getSession()
+      .then((session) => {
+        setSession(session?.data?.session);
+        setUserId(session?.data?.session?.user.id);
+      })
+      .catch((err) => {
+        console.log("ERROR GET SESSION: ", err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (userId) {
+      const fetchData = async () => {
+        const res = await fetch(`/api/users/${userId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const user_data = (await res.json()).data;
+        setUserData(user_data);
+      };
+      fetchData();
+    }
+  }, [userId]);
+
   return (
     <Box
       transition="3s ease"
@@ -185,7 +217,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <NavItem
           key={link.name}
           icon={link.icon}
-          url={link.url}
+          url={link.url + `/${userData?.vendorId}`}
           label={link.name}
         />
       ))}
