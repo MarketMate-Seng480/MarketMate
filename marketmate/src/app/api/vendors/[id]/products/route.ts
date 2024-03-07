@@ -1,3 +1,4 @@
+
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@prisma/prisma";
@@ -9,7 +10,13 @@ export async function POST(req: Request, { params: { id } }: { params: { id: str
   const json = await req.json();
   const created = await prisma.product.create({
     data: {
-      ...json,
+      //...json,
+      name: json.name,
+      description: json.description,
+      price: Number(json.price),
+      stock: Number(json.stock),
+      featureImage: json.featureImage,
+      detailImage: json.detailImage,
       vendorId: id,
     },
   });
