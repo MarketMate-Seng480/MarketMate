@@ -1,10 +1,11 @@
 "use client";
 import { ChakraProvider, extendTheme, Box } from "@chakra-ui/react";
+import '@fontsource-variable/dm-sans';
 
 export const theme = extendTheme({
   fonts: {
-    body: "'DM Sans', sans-serif",
-    heading: "'DM Sans', sans-serif",
+    body: "'DM Sans Variable', sans-serif",
+    heading: "'DM Sans Variable', sans-serif",
   },
   colors: {
     brand: {
