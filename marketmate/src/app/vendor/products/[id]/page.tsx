@@ -6,6 +6,7 @@ import { Vendor, Product } from "@prisma/client";
 import ProductCard from "@components/vendor/ProductCard";
 import ProductEditModalContainer from "@components/vendor/ProductEditModalContainer";
 import TopBanner from "@components/vendor/TopBanner";
+import { CustomButton } from "@/app/_components/CustomButton";
 
 export default function VendorProductPage({ 
   params: { id },
@@ -120,14 +121,13 @@ export default function VendorProductPage({
         mx={10}
         mt={10}
       >
-        <Button
+        <CustomButton
           leftIcon={<CgAdd />}
-          color={"black"}
-          variant="solid"
+          variant="secondary"
           onClick={onOpen}
         >
           Add Product
-        </Button>
+        </CustomButton>
 
         <ProductEditModalContainer
           isOpen={isOpen}
