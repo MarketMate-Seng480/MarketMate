@@ -11,11 +11,11 @@ datasource db {
 model User {
   id           String  @id @default(uuid())
   email        String  @unique
-  first_name   String
-  last_name    String
   role         String  @default("user")
   profileImage String  @default("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
   vendorId     String?
+  first_name   String
+  last_name    String
   cart         Cart?
   vendor       Vendor?
 }
