@@ -18,10 +18,9 @@ import { useState } from "react";
 import { ViewIcon, ViewOffIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { Link } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../authContext";
+import { supabase } from "../lib/supabase";
 
 export default function SignUpForm() {
-  const { login } = useAuth();
   const router = useRouter();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -34,6 +33,7 @@ export default function SignUpForm() {
     email: "",
     password: "",
   });
+  const [authError, setAuthError] = useState("");
 
   const validateForm = () => {
     let isValid = true;
@@ -78,10 +78,39 @@ export default function SignUpForm() {
     return isValid;
   };
 
-  const handleSubmit = () => {
+  const handleSignUp = async () => {
     if (validateForm()) {
-      login();
-      router.push("/");
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${location.origin}/auth/callback`,
+          data: {
+            name: `${firstName} ${lastName}`,
+          },
+        },
+      });
+      if (error) {
+        setAuthError(error.message);
+      } else {
+        // Add user to the database
+        const user = {
+          id: data?.user?.id,
+          email: email,
+          first_name: firstName,
+          last_name: lastName,
+        };
+
+        const res = await fetch("/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        });
+
+        router.push("/");
+      }
     }
   };
 
@@ -109,10 +138,9 @@ export default function SignUpForm() {
       </Heading>
 
       <Stack spacing={2}>
-        <Text>At MarketMate, we believe in the power of community.</Text>
+        <Text>At Artisway, we believe in the power of community.</Text>
         <Text>
-          With a single account, you can buy from local artisans or create and manage
-          your own shop.
+          With a single account, you can buy from local artisans or create and manage your own shop.
         </Text>
       </Stack>
 
@@ -189,10 +217,12 @@ export default function SignUpForm() {
         </FormControl>
       </Stack>
 
+      <Text color="red.500">{authError}</Text>
+
       <Button
         bg={"#D1C7BD"}
         _hover={{ bg: "#C4BEB5" }}
-        onClick={handleSubmit}
+        onClick={handleSignUp}
         mb={5}
       >
         Create An Account

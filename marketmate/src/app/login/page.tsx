@@ -1,11 +1,9 @@
-"use client";
-
 import { Flex, Stack, Center, Container } from "@chakra-ui/react";
 import Image from "next/image";
 import LoginImage from "../../public/login.jpg";
 import LoginForm from "./LoginForm";
 
-export default function LoginPage() {
+export default async function LoginPage() {
   return (
     <Stack
       minH={"100vh"}
@@ -26,6 +24,7 @@ export default function LoginPage() {
       <Flex
         flex={1}
         maxH="100vh"
+        display={{ base: "none", md: "flex" }}
       >
         <Image
           src={LoginImage}

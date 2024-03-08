@@ -8,35 +8,77 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model User {
+  id           String  @id @default(uuid())
+  email        String  @unique
+  first_name   String
+  last_name    String
+  role         String  @default("user")
+  profileImage String  @default("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
+  vendorId     String?
+  cart         Cart?
+  vendor       Vendor?
+}
+
 model Vendor {
-  id             Int       @id @default(autoincrement())
+  id             String         @id @default(uuid())
   name           String
   description    String
   email          String
   phone          String
-  shopTags       String[]
   logo           String
+  userId         String         @unique
   products       Product[]
-  upcomingEvents Event[]   @relation("EventToVendor")
+  user           User           @relation(fields: [userId], references: [id])
+  upcomingEvents Event[]        @relation("EventToVendor")
+  shopTags       ShopCategory[] @relation("ShopCategoryToVendor")
+}
+
+model Cart {
+  id       String    @id @default(uuid())
+  userId   String    @unique
+  total    Float
+  user     User      @relation(fields: [userId], references: [id])
+  products Product[] @relation("CartToProduct")
 }
 
 model Event {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   name        String
   description String
   startDate   DateTime
   endDate     DateTime
   location    String
   url         String
+  images      String[]
   vendors     Vendor[] @relation("EventToVendor")
 }
 
 model Product {
-  id          Int    @id @default(autoincrement())
+  id           String            @id @default(uuid())
+  name         String
+  description  String
+  price        Float
+  stock        Int
+  vendorId     String
+  detailImage  String[]
+  featureImage String
+  isFeatured   Boolean           @default(false)
+  vendor       Vendor            @relation(fields: [vendorId], references: [id])
+  carts        Cart[]            @relation("CartToProduct")
+  categories   ProductCategory[] @relation("ProductToProductCategory")
+}
+
+model ProductCategory {
+  id          String    @id @default(uuid())
   name        String
   description String
-  price       Float
-  image       String
-  vendorId    Int
-  vendor      Vendor @relation(fields: [vendorId], references: [id])
+  products    Product[] @relation("ProductToProductCategory")
+}
+
+model ShopCategory {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  vendors     Vendor[] @relation("ShopCategoryToVendor")
 }

@@ -14,19 +14,21 @@ import { ChevronLeftIcon } from "@chakra-ui/icons";
 import { Link } from "@chakra-ui/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../authContext";
+import { supabase } from "../lib/supabase";
 
 export default function LoginForm() {
   const router = useRouter();
-  const { login } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [authError, setAuthError] = useState("");
 
   const validateForm = () => {
     let isValid = true;
 
+    // Validate email
     if (!email) {
       setEmailError("Email is required");
       isValid = false;
@@ -35,6 +37,7 @@ export default function LoginForm() {
       isValid = false;
     }
 
+    // Validate password is not empty
     if (!password) {
       setPasswordError("Password is required");
       isValid = false;
@@ -45,10 +48,19 @@ export default function LoginForm() {
     return isValid;
   };
 
-  const handleSubmit = () => {
+  const handleLogin = async () => {
     if (validateForm()) {
-      login();
-      //router.push("/"); // redirect to the home page
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+      // If there is an error, set the error message and clear the password
+      if (error) {
+        setPassword("");
+        setPasswordError("");
+        setAuthError(error.message);
+      } else {
+        console.log("Login successful", data);
+        router.push("/");
+      }
     }
   };
 
@@ -75,7 +87,7 @@ export default function LoginForm() {
         fontSize={{ base: "3xl", md: "4xl" }}
         mt={5}
       >
-        Welcome Back to MarketMate
+        Welcome Back to Artisway
       </Heading>
 
       <Stack
@@ -113,10 +125,12 @@ export default function LoginForm() {
         </FormControl>
       </Stack>
 
+      <Text color="red.500">{authError}</Text>
+
       <Button
         bg={"#D1C7BD"}
         _hover={{ bg: "#C4BEB5" }}
-        onClick={handleSubmit}
+        onClick={handleLogin}
         mb={5}
       >
         Log In

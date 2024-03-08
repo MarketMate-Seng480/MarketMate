@@ -1,5 +1,3 @@
-"use client";
-
 import { Flex, Stack, Center, Container } from "@chakra-ui/react";
 import Image from "next/image";
 import LoginImage from "../../public/login.jpg";

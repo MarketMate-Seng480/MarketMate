@@ -1,12 +1,32 @@
 -- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "role" TEXT NOT NULL,
+    "profileImage" TEXT,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+CREATE TABLE "Cart" (
+    "id" SERIAL NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "total" DOUBLE PRECISION NOT NULL,
+
+    CONSTRAINT "Cart_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Vendor" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "email" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "shopTags" TEXT[],
-    "logo" TEXT NOT NULL,
+    "logo" TEXT,
 
     CONSTRAINT "Vendor_pkey" PRIMARY KEY ("id")
 );
@@ -15,11 +35,11 @@ CREATE TABLE "Vendor" (
 CREATE TABLE "Event" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
-    "location" TEXT NOT NULL,
-    "url" TEXT NOT NULL,
+    "location" TEXT,
+    "url" TEXT,
 
     CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
 );
@@ -28,9 +48,10 @@ CREATE TABLE "Event" (
 CREATE TABLE "Product" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "price" DOUBLE PRECISION NOT NULL,
-    "image" TEXT NOT NULL,
+    "stock" INTEGER NOT NULL,
+    "image" TEXT,
     "vendorId" INTEGER NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
