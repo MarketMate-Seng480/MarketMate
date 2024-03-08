@@ -22,7 +22,7 @@ export const CustomMenuList: React.FC<CustomMenuProps> = ({ children, ...rest })
 
 interface CustomMenuItemProps extends MenuItemProps {
     children: React.ReactNode;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 export const CustomMenuItem: React.FC<CustomMenuItemProps> = ({ children, onClick, ...rest }) => {

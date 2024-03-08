@@ -1,3 +1,4 @@
+"use client"
 import { Box, Button, ButtonProps, Heading, useBreakpointValue, useTheme } from "@chakra-ui/react";
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -69,9 +70,7 @@ export const NavLink: React.FC<NavLinkProps> = ({ children, variant, href = '#',
                     href={href}
                     target={isExternalLink ? '_blank' : undefined}
                     onClick={!isExternalLink ? handleClick : undefined}
-                    p={2}
-                    fontSize={"md"}
-                    fontWeight={600}
+                    variant={'ghost'}
                     bg={'none'}
                     color={colors.text.regularNav}
                     _hover={{
