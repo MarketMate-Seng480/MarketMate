@@ -1,12 +1,15 @@
 "use client";
 import { useState } from "react";
-import { Box, VStack, Image, HStack, Text, Center, Flex, Badge, Link, Button } from "@chakra-ui/react";
+import { Box, VStack, Image, HStack, Text, useTheme} from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
 import type { Product, Vendor } from "@prisma/client";
+import { NavLink } from "@/app/_components/navigation/CustomLinks";
+import { CustomButton } from "@/app/_components/CustomButton";
 
 
 export default function ProductPage() {
+  const colors = useTheme().colors;
   const path = usePathname();
   const slug = path.split("/").pop();
   const fetchURL = `/api/products/${slug}`;
@@ -43,34 +46,30 @@ export default function ProductPage() {
   return (
     <PageContainer>
         {product ? 
-        <Center>
-
           <HStack 
-            padding={10}
-            spacing={6}
-            
+            paddingLeft={200}
+            paddingTop={20}
+            alignItems={'start'}
+            justifyContent={'start'}
+            gap={10}
+            h={'full'}
           >
             <Box boxSize="600px">
-              <Image boxSize="600px" src={product.featureImage} alt={product.name} />
+              <Image boxSize="600px" src={product.featureImage} alt={product.name} rounded={'md'}/>
             </Box>
             <Box maxW="600px">
 
-              <VStack align="flex-start" spacing={4}>
-                <Text fontSize={32} >{product.name}</Text> 
-                <Link  fontSize={20} >{vendor?.name}</Link>
-                <Badge borderRadius='sm' px='2' fontSize={20} color={'#577D90'} >
-                ${product.price}
-                </Badge>
-                <Text fontSize={20} ></Text> 
-                <Text fontSize={20} >{product.description}</Text> 
-                <Button color={'#577D90'} size="md" >
-                  Add to Cart
-                </Button>
-              </VStack>
+            <VStack align='start' paddingTop={10}>
+                <Text fontSize="xx-large" fontWeight={700} color={colors.text.body}>{product.name}</Text>
+                <NavLink variant="emphasis" fontSize="large">{vendor?.name}</NavLink>
+                <Text fontSize="x-large" color={colors.text.caption}>${product.price}</Text>
+                <Text fontSize="20" color={colors.text.body}>{product.description}</Text>
+                <Box paddingTop={80}>
+                  <CustomButton alignSelf={'end'}>Add to Cart</CustomButton>
+                </Box>
+            </VStack>
             </Box>
           </HStack>
-        </Center>
-      
       : <Box></Box>}
     </PageContainer>
   );
