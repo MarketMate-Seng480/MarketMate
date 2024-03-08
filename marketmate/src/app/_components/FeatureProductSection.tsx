@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Flex, VStack, SimpleGrid, Heading, Text, Button } from "@chakra-ui/react";
 import ProductCard from "@components/ProductCard";
+import { CustomButton } from "./CustomButton";
 import type { Product } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
@@ -61,12 +62,12 @@ export default function FeatureProductSection() {
           {productCards}
         </SimpleGrid>
 
-        <Button
-          variant={"outline"}
+        <CustomButton
+          variant={"secondary"}
           onClick={() => router.push("/product")}
         >
-          Discover More Products
-        </Button>
+          <Text as={"b"}>Discover More Products</Text>
+        </CustomButton>
       </VStack>
     </Flex>
   );

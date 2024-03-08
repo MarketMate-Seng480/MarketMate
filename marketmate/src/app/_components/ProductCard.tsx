@@ -4,6 +4,12 @@ import type { Product, Vendor } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+function capitalizeWords(inputString: string) {
+  let words = inputString.split(" ");
+  let capitalizedWords = words.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+  return capitalizedWords.join(" ");
+}
+
 export default function ProductCard({ product }: { product: Product }) {
   const [vendor, setVendor] = useState<Vendor | null>(null);
   const router = useRouter();
@@ -39,21 +45,21 @@ export default function ProductCard({ product }: { product: Product }) {
             onClick={() => router.push("/product/" + product.id)}
             cursor={"pointer"}
           >
-            {product.name}
+            {capitalizeWords(product.name) || "Product Name"}
           </Heading>
           <Text
             size={"sm"}
-            color={"gray.600"}
+            color={"gray.200"}
             onClick={() => router.push("/shop/" + product.vendorId)}
             cursor={"pointer"}
             textDecoration={"underline"}
           >
-            {vendor?.name || "Vendor Name"}
+            {capitalizeWords(vendor?.name || "Vendor Name")}
           </Text>
           <Text
             size={"sm"}
             as={"b"}
-            color={"gray.500"}
+            color={"gray.100"}
           >
             {"$" + product.price.toFixed(2)}
           </Text>
