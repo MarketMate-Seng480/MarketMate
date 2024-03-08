@@ -7,6 +7,7 @@ import InfoSection from "@components/vendor/InfoSection";
 import ProfileEditModalContainer from "@components/vendor/ProfileEditForm";
 import { Vendor } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { CustomButton } from "@/app/_components/CustomButton";
 
 
 
@@ -54,8 +55,6 @@ export default function VendorProfilePage({
 
   return (
     <>
-      {console.log(id)}
-
       <TopBanner
         name={vendor.name || ""}
         logo={vendor.logo || ""}
@@ -65,14 +64,13 @@ export default function VendorProfilePage({
         mx={10}
         mt={10}
       >
-        <Button
+        <CustomButton
           leftIcon={<FiEdit />}
-          color={"grey.200"}
-          variant="solid"
+          variant="secondary"
           onClick={onOpen}
         >
           Edit Profile
-        </Button>
+        </CustomButton>
         <InfoSection {...vendor} />
         <ProfileEditModalContainer
           isOpen={isOpen}

@@ -1,7 +1,6 @@
 'use client';
 import React, { useState, useEffect } from "react";
 import {
-  Button,
   FormControl,
   FormLabel,
   Input,
@@ -21,35 +20,25 @@ import { useRouter } from "next/navigation";
 import { CustomButton } from "../CustomButton";
 
 
-export default function ProfileEditModalContainer({
-  isOpen,
-  onClose,
-  onSave,
-  initialVendorInfo,
+export default function ProfileCreationForm({
+    isOpen,
+    onClose,
+    onExit,
+    onSave,
+    initialVendorInfo,
 }: {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: () => void;
-  initialVendorInfo: Vendor;
+    isOpen: boolean;
+    onClose: () => void;
+    onExit: () => void;
+    onSave: (vendor_info: any) => void;
+    initialVendorInfo: any;
 }) {
+
   const [vendorInfo, setVendorInfo] = useState(initialVendorInfo);
 
   const handleInputChange = (field: keyof Vendor, value: string) => {
-    setVendorInfo((prev: Vendor) => ({ ...prev, [field]: value }));
+    setVendorInfo((prev: any) => ({ ...prev, [field]: value }));
   };
-
-  const updateVendorInfo = async (info: Vendor) => {
-    const res = await fetch(`/api/vendors/${info.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(info),
-    });
-    const vendor = await res.json();
-    return vendor.data;
-  };
-
 
   return (
     <Modal
@@ -131,13 +120,12 @@ export default function ProfileEditModalContainer({
           <CustomButton
             mr={3}
             onClick={() => {
-              updateVendorInfo(vendorInfo);
-              onSave();
+              onSave(vendorInfo);
             }}
           >
             Save
           </CustomButton>
-          <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
+          <CustomButton variant={'secondary'} onClick={onExit}>Cancel</CustomButton>
         </ModalFooter>
       </ModalContent>
     </Modal>
