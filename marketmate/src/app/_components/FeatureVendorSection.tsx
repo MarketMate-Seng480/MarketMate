@@ -2,13 +2,13 @@
 import { Button, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import VendorCarousel from "@components/VendorCarousel";
 import { useRouter } from "next/navigation";
+import { CustomButton } from "./CustomButton";
 
 export default function FeatureVendorSection() {
   const router = useRouter();
 
   return (
     <Flex
-      bg="white"
       px={10}
       w="full"
       alignContent={"center"}
@@ -28,12 +28,13 @@ export default function FeatureVendorSection() {
 
         <VendorCarousel />
 
-        <Button
-          variant={"outline"}
+        <CustomButton
+          variant={"secondary"}
           onClick={() => router.push("/shop")}
+          mt={8}
         >
-          Discover More Vendors
-        </Button>
+          <Text as={"b"}>Discover More Vendors</Text>
+        </CustomButton>
       </VStack>
     </Flex>
   );

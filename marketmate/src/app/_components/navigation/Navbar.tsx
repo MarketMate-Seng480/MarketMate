@@ -170,7 +170,7 @@ export default function Navbar() {
           flex={{ base: 1 }}
           justify={{ base: "center", md: "start" }}
         >
-          <LogoLink/>
+          <LogoLink />
           <Flex
             display={{ base: "none", md: "flex" }}
             ml={10}
@@ -230,8 +230,10 @@ export default function Navbar() {
               <NavLink variant="emphasis">
                 <FiShoppingCart />
               </NavLink>
-
-              <NavLink variant={'emphasis'} href={"/login"}>
+              <NavLink
+                variant={"emphasis"}
+                path={"login"}
+              >
                 <FiUser />
                 <Text
                   display={{ base: "none", md: "block" }}
@@ -282,7 +284,7 @@ const MobileNav = () => {
     <VStack
       p={4}
       spacing={4}
-      alignItems={'start'}
+      alignItems={"start"}
     >
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>

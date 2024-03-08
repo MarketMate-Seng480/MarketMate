@@ -15,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import NextLink from "next/link";
-import { Vendor } from "../types";
 
 export interface ArtistPreviewProps {
   id: string;
