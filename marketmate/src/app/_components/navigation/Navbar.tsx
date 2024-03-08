@@ -154,7 +154,10 @@ export default function Navbar() {
               direction={"row"}
               spacing={3}
             >
-              <NavLink variant="emphasis">
+              <NavLink
+                href="/cart"
+                variant="emphasis"
+              >
                 <FiShoppingCart />
               </NavLink>
               <Menu>
@@ -167,22 +170,16 @@ export default function Navbar() {
                 >
                   <Avatar
                     size={"md"}
-                    src={ userData?.profileImage }
+                    src={userData?.profileImage}
                   />
                 </MenuButton>
                 <CustomMenuList>
                   {userData?.role == "vendor" ? (
-                      <CustomMenuItem onClick={handleVendor}>
-                        My Store
-                      </CustomMenuItem>
+                    <CustomMenuItem onClick={handleVendor}>My Store</CustomMenuItem>
                   ) : (
-                    <CustomMenuItem onClick={handleNewVendor}>
-                      Become a Vendor
-                    </CustomMenuItem>
+                    <CustomMenuItem onClick={handleNewVendor}>Become a Vendor</CustomMenuItem>
                   )}
-                  <CustomMenuItem onClick={handleLogout}>
-                    Log Out
-                  </CustomMenuItem>
+                  <CustomMenuItem onClick={handleLogout}>Log Out</CustomMenuItem>
                 </CustomMenuList>
               </Menu>
             </Stack>
@@ -191,9 +188,12 @@ export default function Navbar() {
               flex={{ base: 1, md: 0 }}
               justify={"flex-end"}
               direction={"row"}
-              spacing={{ base: 0, md: 8}}
+              spacing={{ base: 0, md: 8 }}
             >
-              <NavLink variant="emphasis">
+              <NavLink
+                href={"/cart"}
+                variant="emphasis"
+              >
                 <FiShoppingCart />
               </NavLink>
               <NavLink
