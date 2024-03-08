@@ -30,14 +30,14 @@ export default function ProfileCreationForm({
     isOpen: boolean;
     onClose: () => void;
     onExit: () => void;
-    onSave: (vendor_info) => void;
+    onSave: (vendor_info: any) => void;
     initialVendorInfo: any;
 }) {
 
   const [vendorInfo, setVendorInfo] = useState(initialVendorInfo);
 
   const handleInputChange = (field: keyof Vendor, value: string) => {
-    setVendorInfo((prev) => ({ ...prev, [field]: value }));
+    setVendorInfo((prev: any) => ({ ...prev, [field]: value }));
   };
 
   return (

@@ -38,7 +38,7 @@ export default function VendorProfilePage({
   }, [id]);
 
 
-  const newVendor = async (vendor_info) => {
+  const newVendor = async (vendor_info: any) => {
     if (userData == null) return;
     try {
       const newVendor = await fetch(`/api/vendors`, {
@@ -69,7 +69,7 @@ export default function VendorProfilePage({
 
   };
 
-  const formClosed = async (vendor_info) => {
+  const formClosed = async (vendor_info: any) => {
     await newVendor(vendor_info);
     onClose();
     router.push(`/`);
