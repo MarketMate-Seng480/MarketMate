@@ -22,9 +22,10 @@ import { Session } from "@supabase/auth-helpers-nextjs";
 import { supabase } from "../../lib/supabase";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { User } from "@prisma/client";
+import { User, Vendor } from "@prisma/client";
 import { LogoLink, NavLink } from "./CustomLinks";
 import { CustomMenuItem, CustomMenuList } from "./CustomMenu";
+import ProfileCreationForm from "@components/vendor/ProfileCreationForm";
 
 interface NavItem {
   label: string;
@@ -84,38 +85,6 @@ export default function Navbar() {
     }
   }, [userId]);
 
-  const newVendor = async () => {
-    if (userData == null) return;
-
-    const newVendor = await fetch(`/api/vendors`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: userData.id,
-        email: userData.email,
-        name: userData.first_name + " " + userData.last_name,
-        description: "This is a new vendor",
-        phone: "888-888-8888",
-        logo: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-      }),
-    });
-    if (!newVendor) return;
-
-    const vendorData = (await newVendor.json()).data;
-
-    const res = await fetch(`/api/users/${userData.id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ role: "vendor", vendorId: vendorData.id }),
-    });
-    const updatedUserData = (await res.json()).data;
-    setUserData(updatedUserData);
-  };
-
   const handleLogout = async () => {
     setLoading(true);
     const { error } = await supabase.auth.signOut();
@@ -130,8 +99,7 @@ export default function Navbar() {
   };
 
   const handleNewVendor = () => {
-    newVendor();
-    router.push(`/vendor/profile/${userData?.vendorId}`);
+    router.push(`/creation/${userData?.id}`);
   };
 
   return (
