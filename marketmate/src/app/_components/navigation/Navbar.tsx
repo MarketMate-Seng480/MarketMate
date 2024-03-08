@@ -232,7 +232,7 @@ export default function Navbar() {
               </NavLink>
               <NavLink
                 variant={"emphasis"}
-                path={"login"}
+                href={"/login"}
               >
                 <FiUser />
                 <Text
