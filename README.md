@@ -31,3 +31,6 @@ We are following a milestones road map as part of our development process.
 - Onboard real users
 
 Our most recent milestone is **Milestone 2**. [This] ([https://www.canva.com/design/DAF8-XPU8Z0/O3nz-h0wWYL72qU0yAhlRg/edit](https://www.canva.com/design/DAF-tK0z8g4/V02pJhR_wO70kUfPaUrynQ/edit?utm_content=DAF-tK0z8g4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)https://www.canva.com/design/DAF-tK0z8g4/V02pJhR_wO70kUfPaUrynQ/edit?utm_content=DAF-tK0z8g4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) slide deck details our accomplishments and reflections for this milestone.
+
+## License
+MIT License (details in next tab over)
