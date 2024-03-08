@@ -11,7 +11,6 @@ import {
   HStack,
   VStack,
   Center,
-  Spacer,
   useToast,
 } from "@chakra-ui/react";
 import { CustomHeading } from "@components/CustomHeading";
