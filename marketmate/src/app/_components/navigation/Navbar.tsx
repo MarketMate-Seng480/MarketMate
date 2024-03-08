@@ -40,11 +40,11 @@ const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: "Vendors",
-    href: "/vendors",
+    href: "/shop",
   },
   {
     label: "Products",
-    href: "/products",
+    href: "/product",
   },
 ];
 
