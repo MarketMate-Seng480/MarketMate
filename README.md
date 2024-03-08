@@ -20,14 +20,14 @@ We are following a milestones road map as part of our development process.
 - Focus on vendor-side
 
 ### Milestone 2
-- Finish DB connection and functionality of MS1 features
-- Detailed market schedule announcements
-- Integrated payment system
-- Refine current features
+- DB connection and functionality of MS1 features
+- Apply branding and UI/UX designs to implementation
+- Cart/checkout functionality
 
 ### Milestone 3
-- Real-time chat for commissions
-- Polish payment system and market schedule
-- Further refinement of app for usability
+- Implement categorization (for vendors and products)
+- Potentially implement search
+- User testing sessions (which UI improvements will be based on)
+- Onboard real users
 
-Our most recent milestone is **Milestone 1**. [This] (https://www.canva.com/design/DAF8-XPU8Z0/O3nz-h0wWYL72qU0yAhlRg/edit) slide deck details our accomplishments and reflections for this milestone.
+Our most recent milestone is **Milestone 2**. [This] ([https://www.canva.com/design/DAF8-XPU8Z0/O3nz-h0wWYL72qU0yAhlRg/edit](https://www.canva.com/design/DAF-tK0z8g4/V02pJhR_wO70kUfPaUrynQ/edit?utm_content=DAF-tK0z8g4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)https://www.canva.com/design/DAF-tK0z8g4/V02pJhR_wO70kUfPaUrynQ/edit?utm_content=DAF-tK0z8g4&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) slide deck details our accomplishments and reflections for this milestone.
