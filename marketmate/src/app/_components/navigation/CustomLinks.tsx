@@ -30,7 +30,7 @@ export const LogoLink: React.FC = () => {
 
 interface NavLinkProps extends ButtonProps {
     children: React.ReactNode;
-    variant?: 'regular' | 'emphasis' | 'sidebar';
+    variant?: 'regular' | 'emphasis';
     href?: string;
 }
 export const NavLink: React.FC<NavLinkProps> = ({ children, variant, href = '#', ...rest}) => {

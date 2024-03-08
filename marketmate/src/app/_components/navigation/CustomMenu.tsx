@@ -39,7 +39,9 @@ export const CustomMenuItem: React.FC<CustomMenuItemProps> = ({ children, onClic
                 w={'full'}
                 padding={4}
                 justifyContent={'start'}
-            >{children}</NavLink>
+            >
+                {children}
+            </NavLink>
         </MenuItem>
     );
 };

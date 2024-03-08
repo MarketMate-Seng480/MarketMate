@@ -54,8 +54,6 @@ export default function VendorProfilePage({
 
   return (
     <>
-      {console.log(id)}
-
       <TopBanner
         name={vendor.name || ""}
         logo={vendor.logo || ""}
