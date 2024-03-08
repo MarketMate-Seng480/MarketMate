@@ -85,36 +85,6 @@ export default function Navbar() {
     }
   }, [userId]);
 
-  const newVendor = async (vendor_info) => {
-    if (userData == null) return;
-    try {
-      const newVendor = await fetch(`/api/vendors`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(vendor_info),
-      });
-
-      if (!newVendor) return;
-
-      const vendorData = (await newVendor.json()).data;
-
-      const res = await fetch(`/api/users/${userData.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ role: "vendor", vendorId: vendorData.id }),
-      });
-      const updatedUserData = (await res.json()).data;
-      setUserData(updatedUserData);
-
-    } catch (error) {
-      console.error("Error creating vendor:", error);
-    }
-  };
-
   const handleLogout = async () => {
     setLoading(true);
     const { error } = await supabase.auth.signOut();
