@@ -8,6 +8,8 @@ export const theme = extendTheme({
     heading: "'DM Sans Variable', sans-serif",
   },
   colors: {
+    white: '#FDFAF8',
+    black: '#321F0E',
     brand: {
       primary: '#577D90',
       secondary: '#CA7A6C'

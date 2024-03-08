@@ -1,4 +1,4 @@
-import { Box, Button, Heading, useBreakpointValue, useTheme } from "@chakra-ui/react";
+import { Box, Button, ButtonProps, Heading, useBreakpointValue, useTheme } from "@chakra-ui/react";
 import React from "react";
 import { useRouter } from "next/navigation";
 import '@fontsource/averia-serif-libre';
@@ -28,7 +28,7 @@ export const LogoLink: React.FC = () => {
     )
 }
 
-interface NavLinkProps {
+interface NavLinkProps extends ButtonProps {
     children: React.ReactNode;
     variant?: 'regular' | 'emphasis' | 'sidebar';
     href?: string;

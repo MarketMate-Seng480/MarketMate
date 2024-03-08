@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Box,
   Container,
@@ -8,8 +7,7 @@ import {
   useTheme,
 } from "@chakra-ui/react";
 import { FaInstagram } from "react-icons/fa";
-import { ReactNode } from "react";
-import { LogoLink, NavLink } from "./navigation/Links";
+import { LogoLink, NavLink } from "./navigation/CustomLinks";
 
 export default function Footer() {
   const colors = useTheme().colors;

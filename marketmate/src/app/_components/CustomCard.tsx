@@ -1,8 +1,8 @@
 "use client"
-import { Box, useTheme } from "@chakra-ui/react"
+import { Box, BoxProps, useTheme } from "@chakra-ui/react"
 import React from "react"
 
-interface CustomCardProps {
+interface CustomCardProps extends BoxProps{
     children: React.ReactNode;
 }
 export const CustomCard: React.FC<CustomCardProps> = ({ children, ...rest }) => {
