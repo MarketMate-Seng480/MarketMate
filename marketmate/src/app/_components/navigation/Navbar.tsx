@@ -117,8 +117,8 @@ export default function Navbar() {
     <Box>
       <Flex
         minH={"60px"}
-        py={{ base: 2 }}
-        px={{ base: 4 }}
+        py={{ base: 2, md: 4 }}
+        px={{ base: 4, md: 8 }}
         align={"center"}
       >
         <Flex
@@ -208,13 +208,13 @@ export default function Navbar() {
               flex={{ base: 1, md: 0 }}
               justify={"flex-end"}
               direction={"row"}
-              spacing={3}
+              spacing={{ base: 0, md: 8}}
             >
               <NavLink variant="emphasis">
                 <FiShoppingCart />
               </NavLink>
 
-              <NavLink variant={'emphasis'} path={"login"}>
+              <NavLink variant={'emphasis'} href={"/login"}>
                 <FiUser />
                 <Text
                   display={{ base: "none", md: "block" }}
@@ -242,7 +242,7 @@ const DesktopNav = () => {
   return (
     <Stack
       direction={"row"}
-      spacing={4}
+      spacing={8}
     >
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>

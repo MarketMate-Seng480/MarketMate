@@ -31,22 +31,34 @@ export const LogoLink: React.FC = () => {
 interface NavLinkProps {
     children: React.ReactNode;
     variant?: 'regular' | 'emphasis' | 'sidebar';
-    path?: string;
+    href?: string;
 }
-export const NavLink: React.FC<NavLinkProps> = ({ children, variant, path, ...rest}) => {
+export const NavLink: React.FC<NavLinkProps> = ({ children, variant, href = '#', ...rest}) => {
     const router = useRouter();
     const colors = useTheme().colors;
+    const isExternalLink = href.startsWith('http');
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        if (!isExternalLink && href !== "#") {
+            router.push(href);
+        }
+    };
+
     return (
         <>
             {variant === 'emphasis' ? (
                 <Button
                     as={'a'}
-                    onClick={() => router.push(`/${path}`)}
+                    href={href}
+                    target={isExternalLink ? '_blank' : undefined}
+                    onClick={!isExternalLink ? handleClick : undefined}
                     variant={'ghost'}
                     color={colors.text.emphasis}
                     _hover={{ bg: 'none', color: colors.blue[200]}}
                     _active={{ bg: 'none' }}
                     cursor={'pointer'}
+                    padding={0}
                     {...rest}
                 >
                     {children}
@@ -54,7 +66,9 @@ export const NavLink: React.FC<NavLinkProps> = ({ children, variant, path, ...re
             ) : (
                 <Button
                     as={'a'}
-                    onClick={() => router.push(`/${path}`)}
+                    href={href}
+                    target={isExternalLink ? '_blank' : undefined}
+                    onClick={!isExternalLink ? handleClick : undefined}
                     p={2}
                     fontSize={"md"}
                     fontWeight={600}
@@ -66,6 +80,7 @@ export const NavLink: React.FC<NavLinkProps> = ({ children, variant, path, ...re
                         bg: 'none'
                     }}
                     cursor={"pointer"}
+                    padding={0}
                     {...rest}
                 >
                     {children}

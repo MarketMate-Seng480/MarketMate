@@ -2,76 +2,41 @@
 
 import {
   Box,
-  chakra,
   Container,
   Stack,
   Text,
-  useColorModeValue,
-  VisuallyHidden,
-  Heading,
+  useTheme,
 } from "@chakra-ui/react";
 import { FaInstagram } from "react-icons/fa";
 import { ReactNode } from "react";
-
-const SocialButton = ({
-  children,
-  label,
-  href,
-}: {
-  children: ReactNode;
-  label: string;
-  href: string;
-}) => {
-  return (
-    <chakra.button
-      bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
-      rounded={"full"}
-      w={8}
-      h={8}
-      cursor={"pointer"}
-      as={"a"}
-      href={href}
-      display={"inline-flex"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      transition={"background 0.3s ease"}
-      _hover={{
-        bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
-      }}
-    >
-      <VisuallyHidden>{label}</VisuallyHidden>
-      {children}
-    </chakra.button>
-  );
-};
+import { LogoLink, NavLink } from "./navigation/Links";
 
 export default function Footer() {
+  const colors = useTheme().colors;
+
   return (
-    <Box
-      bg={"FEF5EF"}
-      w={"full"}
-      borderTop={"1px solid"}
-      borderColor={"gray.300"}
-    >
+    <Box bg={colors.beige[300]} w="full" h='fit-content' display="flex">
       <Container
         as={Stack}
-        maxW={"6xl"}
-        py={4}
+        maxW="6xl"
         direction={{ base: "column", md: "row" }}
-        spacing={4}
-        justify={{ base: "center", md: "space-between" }}
-        align={{ base: "center", md: "center" }}
+        align={{ base: "flex-start", md: "center" }}
+        justify={{ base: "flex-start", md: "space-between" }}
+        width="full"
+        p={4}
       >
-        <Heading size={"md"}>Artisway</Heading>
-
-        <Text fontWeight={500}>Made with ❤️ in Victoria, BC</Text>
-
-        <SocialButton
-          label={"Instagram"}
-          href={"https://www.instagram.com/artisway/"}
+        <LogoLink />
+        <Text
+          fontWeight={600}
+          size={'md'}
+          lineHeight={'md'}
+          color={colors.gray[200]}
         >
-          <FaInstagram />
-        </SocialButton>
+          Made with ❤️ in Victoria, BC
+        </Text>
+        <NavLink variant={'emphasis'} href={"https://www.instagram.com/artisway/"}>
+          <FaInstagram size="25px"/>
+        </NavLink>
       </Container>
     </Box>
   );
