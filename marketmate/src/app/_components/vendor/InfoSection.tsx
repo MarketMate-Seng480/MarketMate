@@ -76,37 +76,16 @@ export default function InfoSection(vendor: Vendor) {
       {/* Store Tags */}
       <Stack spacing={4}>
         <Heading size="md">Store Tags</Heading>
-        
       </Stack>
 
       {/* Store Info */}
       <Stack spacing={4}>
         <Heading size="md">Store Info</Heading>
         <Stack spacing={2}>
-          {InfoComponent("Phone Number", vendor.phone)}
-          {InfoComponent("Email Address", vendor.email)}
+          <Text>Phone Number: {vendor.phone}</Text>
+          <Text>Email Address: {vendor.email}</Text>
         </Stack>
       </Stack>
-
-      {/* Featured Products */}
-      <VStack spacing={6}>
-        <VStack spacing={2}>
-          <Heading
-            as="h4"
-            fontSize={{ base: "2xl", md: "3xl" }}
-          >
-            Featured Products
-          </Heading> 
-        </VStack>
-        <SimpleGrid
-          columns={{ base: 1, md: 2, lg: 3 }}
-          spacing={10}
-          p={10}
-        >
-          {productCards}
-        </SimpleGrid>
-      </VStack>
-
       <Spacer />
     </Stack>
   );

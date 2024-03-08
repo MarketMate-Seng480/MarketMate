@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { Vendor } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { CustomButton } from "../CustomButton";
 
 
 export default function ProfileEditModalContainer({
@@ -127,9 +128,7 @@ export default function ProfileEditModalContainer({
         </ModalBody>
 
         <ModalFooter>
-          <Button
-            bg={"#D1C7BD"}
-            _hover={{ bg: "#C4BEB5" }}
+          <CustomButton
             mr={3}
             onClick={() => {
               updateVendorInfo(vendorInfo);
@@ -137,8 +136,8 @@ export default function ProfileEditModalContainer({
             }}
           >
             Save
-          </Button>
-          <Button onClick={onClose}>Cancel</Button>
+          </CustomButton>
+          <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -12,7 +12,9 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   return (
     <Box bg={backgroundColor}>
       <Navbar />
-      {children}
+      <Box>
+        {children}
+      </Box>
     </Box>
   );
 };
