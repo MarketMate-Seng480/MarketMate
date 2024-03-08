@@ -1,28 +1,18 @@
 import React from "react";
-import {
-  Box,
-  Center,
-  Image,
-  Avatar,
-  VStack,
-  Heading,
-  Text,
-  Stack,
-  Button,
-  Flex,
-} from "@chakra-ui/react";
+import { Box, Center, Image, Avatar, VStack, Heading, Text, Flex, Spacer } from "@chakra-ui/react";
 import type { Vendor } from "@prisma/client";
+import { CustomButton } from "./CustomButton";
+import { CustomCard } from "./CustomCard";
+import { useRouter } from "next/navigation";
 
 export default function VendorCard({ vendor }: { vendor: Vendor }) {
+  const router = useRouter();
+
   return (
-    <Center>
-      <Box
-        maxW={"520px"}
-        w={"400px"}
-        boxShadow={"lg"}
-        rounded={"md"}
-        overflow={"hidden"}
-        mb={10}
+    <Center display={"flex"}>
+      <CustomCard
+        width={"400px"}
+        height={"500px"}
       >
         <Image
           h={"120px"}
@@ -44,7 +34,12 @@ export default function VendorCard({ vendor }: { vendor: Vendor }) {
           />
         </Flex>
 
-        <Box p={6}>
+        <Box
+          p={6}
+          height={"100%"}
+          display={"flex"}
+          flexDirection={"column"}
+        >
           <VStack
             spacing={4}
             align={"center"}
@@ -57,54 +52,24 @@ export default function VendorCard({ vendor }: { vendor: Vendor }) {
             >
               {vendor.name}
             </Heading>
-            <Text color={"gray.500"}>Frontend Developer</Text>
+            <Text
+              color={"gray.700"}
+              noOfLines={3}
+            >
+              {vendor.description}
+            </Text>
           </VStack>
 
-          <Stack
-            direction={"row"}
-            justify={"center"}
-            spacing={6}
-          >
-            <Stack
-              spacing={0}
-              align={"center"}
-            >
-              <Text fontWeight={600}>23k</Text>
-              <Text
-                fontSize={"sm"}
-                color={"gray.500"}
-              >
-                Followers
-              </Text>
-            </Stack>
-            <Stack
-              spacing={0}
-              align={"center"}
-            >
-              <Text fontWeight={600}>23k</Text>
-              <Text
-                fontSize={"sm"}
-                color={"gray.500"}
-              >
-                Followers
-              </Text>
-            </Stack>
-          </Stack>
+          <Spacer />
 
-          <Button
-            w={"full"}
-            mt={8}
-            color={"white"}
-            rounded={"md"}
-            _hover={{
-              transform: "translateY(-2px)",
-              boxShadow: "lg",
-            }}
+          <CustomButton
+            w={"100%"}
+            onClick={() => router.push(`/shop/${vendor.id}`)}
           >
-            Follow
-          </Button>
+            View Shop
+          </CustomButton>
         </Box>
-      </Box>
+      </CustomCard>
     </Center>
   );
 }

@@ -19,6 +19,7 @@ const settings = {
   swipeToSlide: true,
   slidesToShow: 3,
   slidesToScroll: 1,
+  adaptiveHeight: true,
   responsive: [
     {
       breakpoint: 1024, // Everything below this screen size, show 1 slide
