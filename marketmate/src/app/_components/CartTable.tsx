@@ -6,8 +6,6 @@ import {
   Tr,
   Th,
   Td,
-  Button,
-  IconButton,
   Image,
   Text,
   HStack,
@@ -211,7 +209,9 @@ export default function CartTable() {
       <VStack
         spacing={5}
         align={"start"}
-        maxW={"1200px"}
+        width={{ base: "100%", md: "80%", lg: "60%" }}
+        p={{ base: 5, md: 10, lg: 20 }}
+        maxWidth={"1200px"}
       >
         <CustomHeading>Cart</CustomHeading>
 
@@ -251,7 +251,10 @@ export default function CartTable() {
                   ${(product.pricePerUnit * product.quantity).toFixed(2)}
                 </Td>
                 <Td>
-                  <CustomButton onClick={() => onDeleteRow(product.id)}>
+                  <CustomButton
+                    variant="secondary"
+                    onClick={() => onDeleteRow(product.id)}
+                  >
                     <FiTrash />
                   </CustomButton>
                 </Td>
@@ -261,10 +264,9 @@ export default function CartTable() {
         </Table>
 
         <HStack
-          align={"end"}
+          align={{ base: "start", md: "center", lg: "end" }}
           width={"100%"}
         >
-          <Spacer />
           <CustomButton
             colorScheme="primary"
             size="lg"
