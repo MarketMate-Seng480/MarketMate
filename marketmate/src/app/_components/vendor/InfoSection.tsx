@@ -13,7 +13,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Vendor, Product } from "@prisma/client";
-import { UpcomingEvents } from "@components/UpcomingEvents";
 import ProductCard from "@components/ProductCard";
 import { useState, useEffect } from "react";
 
@@ -87,12 +86,6 @@ export default function InfoSection(vendor: Vendor) {
           {InfoComponent("Phone Number", vendor.phone)}
           {InfoComponent("Email Address", vendor.email)}
         </Stack>
-      </Stack>
-
-      {/* Upcoming Market Events */}
-      <Stack spacing={4}>
-        <Heading size="md">Upcoming Market Events</Heading>
-        
       </Stack>
 
       {/* Featured Products */}
