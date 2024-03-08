@@ -5,7 +5,7 @@ import VendorEmailTemplate from "@/app/_components/VendorConfirmationMail";
 import BuyerEmailTemplate from "@/app/_components/BuyerConfirmationEmail";
 import { OrderInfo, EmailProps } from "@/app/confirmation/page";
 
-const resend = new Resend(process.env.RESEND_API);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface ResendRequest {
   from: string;
