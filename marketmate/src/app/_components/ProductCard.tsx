@@ -3,6 +3,7 @@ import { VStack, Image, Heading, Text, Box } from "@chakra-ui/react";
 import type { Product, Vendor } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { NavLink } from "./navigation/CustomLinks";
 
 function capitalizeWords(inputString: string) {
   let words = inputString.split(" ");
@@ -47,15 +48,10 @@ export default function ProductCard({ product }: { product: Product }) {
           >
             {capitalizeWords(product.name) || "Product Name"}
           </Heading>
-          <Text
-            size={"sm"}
-            color={"gray.200"}
-            onClick={() => router.push("/shop/" + product.vendorId)}
-            cursor={"pointer"}
-            textDecoration={"underline"}
-          >
+          <NavLink href={"/shop/" + product.vendorId}>
             {capitalizeWords(vendor?.name || "Vendor Name")}
-          </Text>
+          </NavLink>
+
           <Text
             size={"sm"}
             as={"b"}
