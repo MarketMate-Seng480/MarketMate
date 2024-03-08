@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     const { vendorEmail, vendorName } = products[0];
 
     return {
-      from: "Artisway <onboarding@resend.dev>",
+      from: "Artisway <info@artisway.ca>",
       to: vendorEmail,
       subject: buyerName + " is Interested in Your Unique Products! 🎉",
       react: VendorEmailTemplate({
@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
   });
 
   const buyerEmailRequest: ResendRequest = {
-    from: "Artisway <onboarding@resend.dev>",
+    from: "Artisway <info@artisway.ca>",
     to: buyerEmail,
     subject: "We Have Received Your Request to Order! 🎉",
     react: BuyerEmailTemplate({

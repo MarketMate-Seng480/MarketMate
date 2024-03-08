@@ -18,23 +18,23 @@ export interface EmailProps {
 
 export default function SendVendorEmail() {
   const buyerName = "John Doe";
-  const buyerEmail = "jj@tester.com";
-  const email1 = "sample@gmail.com";
-  const email2 = "sample2@gmail.com";
+  const buyerEmail = "buyer@tester.com";
+  const email1 = "vendor1@gmail.com";
+  const email2 = "vendor2@gmail.com";
 
   const productLists: OrderInfo[] = [
     {
       productName: "Product 1",
       vendorName: "Luca Store",
       quantity: 1,
-      vendorEmail: email2,
+      vendorEmail: email1,
       vendorID: "1",
     },
     {
       productName: "Product 2",
       vendorName: "Luca Store",
       quantity: 1,
-      vendorEmail: email2,
+      vendorEmail: email1,
       vendorID: "1",
     },
     {
