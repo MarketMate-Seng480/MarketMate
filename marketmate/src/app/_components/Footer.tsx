@@ -10,7 +10,7 @@ import {
   VisuallyHidden,
   Heading,
 } from "@chakra-ui/react";
-import { FaInstagram } from "react-icons/fa";
+import { FiInstagram, FiMail } from "react-icons/fi";
 import { ReactNode } from "react";
 
 const SocialButton = ({
@@ -66,12 +66,23 @@ export default function Footer() {
 
         <Text fontWeight={500}>Made with ❤️ in Victoria, BC</Text>
 
-        <SocialButton
-          label={"Instagram"}
-          href={"https://www.instagram.com/artisway/"}
+        <Stack
+          direction={"row"}
+          spacing={6}
         >
-          <FaInstagram />
-        </SocialButton>
+          <SocialButton
+            label={"Instagram"}
+            href={"https://www.instagram.com/artisway/"}
+          >
+            <FiInstagram />
+          </SocialButton>
+          <SocialButton
+            label={"Email"}
+            href={"mailto:info@artisway.ca"}
+          >
+            <FiMail />
+          </SocialButton>
+        </Stack>
       </Container>
     </Box>
   );

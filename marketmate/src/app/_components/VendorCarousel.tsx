@@ -19,6 +19,7 @@ const settings = {
   swipeToSlide: true,
   slidesToShow: 3,
   slidesToScroll: 1,
+  adaptiveHeight: true,
   responsive: [
     {
       breakpoint: 1024, // Everything below this screen size, show 1 slide
@@ -73,6 +74,8 @@ export default function VendorCarousel() {
         zIndex={2}
         onClick={() => slider?.slickPrev()}
         display={{ base: "none", md: "flex" }}
+        color={"gray.100"}
+        bgColor={"gray.500"}
       >
         <FiChevronLeft />
       </IconButton>
@@ -88,6 +91,8 @@ export default function VendorCarousel() {
         zIndex={2}
         onClick={() => slider?.slickNext()}
         display={{ base: "none", md: "flex" }}
+        color={"gray.100"}
+        bgColor={"gray.500"}
       >
         <FiChevronRight />
       </IconButton>
