@@ -1,37 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
-import { Box, VStack } from "@chakra-ui/react";
-import CartItem from "@components/BasketProduct";
+import { useState } from "react";
+import { Box, VStack, Image, HStack, Text, Center, Flex, Badge, Link, Button } from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
-import TopBanner from "@/app/vendor/[id]/profile/TopBanner";
-import InfoSection from "@/app/vendor/[id]/profile/InfoSection";
-import type { Vendor } from "@prisma/client";
+import type { Product, Vendor } from "@prisma/client";
 
-
-// function ProfilePage(vendor: Vendor) {
-//   return (
-//     <>
-//       <TopBanner
-//         name={vendor.name}
-//         logo={vendor.logo || ""}
-//       />
-//       <Box
-//         mx={10}
-//         mt={10}
-//       >
-//         {/* <InfoSection {...vendor} /> */}
-//         <text>{vendor.description}</text>
-//       </Box>
-//     </>
-//   );
-// }
 
 export default function ProductPage() {
   const path = usePathname();
   const slug = path.split("/").pop();
   const fetchURL = `/api/products/${slug}`;
-  const [product, setProduct] = useState<Vendor | null>(null);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [vendor, setVendor] = useState<Vendor | null>(null);
 
   const fetchProduct = async () => {
     try {
@@ -43,20 +23,55 @@ export default function ProductPage() {
       console.error("Error fetching product:", error);
     }
   };
+  
+  const fetchVendor = async () => {
+    const fetchURL = `/api/vendors/${product?.vendorId}`;
+    try {
+      const response = await fetch(fetchURL);
+      const data = await response.json();
+      console.log("data", data);
+      setVendor(data.data);
+    } catch (error) {
+      console.error("Error fetching vendor:", error);
+    }
+  };
+
 
   fetchProduct();
+  fetchVendor();
 
   return (
     <PageContainer>
-      <VStack
-        padding={10}
-        spacing={6}
-      >
-        {product ? <div>it should work</div> : <Box>Product Not Found</Box>}
-        {slug}
-        {/* {vendor ? <ProfilePage {...vendor} /> : <Box>Vendor Not Found</Box>}? */}
-      </VStack>
-      this is actually the product page
+        {product ? 
+        <Center>
+
+          <HStack 
+            padding={10}
+            spacing={6}
+            
+          >
+            <Box boxSize="600px">
+              <Image boxSize="600px" src={product.featureImage} alt={product.name} />
+            </Box>
+            <Box maxW="600px">
+
+              <VStack align="flex-start" spacing={4}>
+                <Text fontSize={32} >{product.name}</Text> 
+                <Link  fontSize={20} >{vendor?.name}</Link>
+                <Badge borderRadius='sm' px='2' fontSize={20} color={'#577D90'} >
+                ${product.price}
+                </Badge>
+                <Text fontSize={20} ></Text> 
+                <Text fontSize={20} >{product.description}</Text> 
+                <Button color={'#577D90'} size="md" >
+                  Add to Cart
+                </Button>
+              </VStack>
+            </Box>
+          </HStack>
+        </Center>
+      
+      : <Box></Box>}
     </PageContainer>
   );
 }
