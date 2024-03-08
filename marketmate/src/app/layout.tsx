@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Providers } from "./providers";
-import { fonts } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Artisway - Handcrafted by Locals, Inspired by Community",
@@ -27,7 +26,6 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={[fonts.playfairDisplay.variable, fonts.openSans.variable].join(" ")}
     >
       <body>
         <Providers>{children}</Providers>

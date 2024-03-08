@@ -1,7 +1,10 @@
+import ConstructionPage from "@components/ConstructionPage";
+
 export default function AllVendorsPage() {
   return (
-    <div>
-      <h1>All Vendors Page</h1>
-    </div>
+    <ConstructionPage
+      pageName="All Vendors Page"
+      explanation="In the future you will be able to view all of our vendors here, categorized by products offered and more."
+    />
   );
 }
