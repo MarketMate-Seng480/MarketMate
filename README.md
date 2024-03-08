@@ -1,5 +1,5 @@
-# MarketMate
-MarketMate, developed by five Computer Science and Software Engineering students at the University of Victoria, is an e-commerce platform designed for local artisan vendors, initially focusing on Victoria, B.C. The platform aims to strengthen connections between arts and crafts buyers and local artisans, offering an online alternative to physical craft markets. This solution addresses accessibility and technical challenges faced by traditional markets, making it easier for craft enthusiasts to discover and purchase local artwork.
+# Artisway
+Artisway, developed by five Computer Science and Software Engineering students at the University of Victoria, is an e-commerce platform designed for local artisan vendors, initially focusing on Victoria, B.C. The platform aims to strengthen connections between arts and crafts buyers and local artisans, offering an online alternative to physical craft markets. This solution addresses accessibility and technical challenges faced by traditional markets, making it easier for craft enthusiasts to discover and purchase local artwork.
 
 ## Team
 - Preet Toor [@KanwarpreetToor] (https://github.com/KanwarpreetToor)
