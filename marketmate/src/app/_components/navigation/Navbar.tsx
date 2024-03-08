@@ -270,7 +270,7 @@ const DesktopNav = () => {
             placement={"bottom-start"}
           >
             <PopoverTrigger>
-              <NavLink>{navItem.label}</NavLink>
+              <NavLink href={navItem.href}>{navItem.label}</NavLink>
             </PopoverTrigger>
           </Popover>
         </Box>

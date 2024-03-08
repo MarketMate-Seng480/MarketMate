@@ -12,7 +12,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   return (
     <Box bg={backgroundColor}>
       <Navbar />
-      <Box paddingTop={8}>
+      <Box>
         {children}
       </Box>
     </Box>
