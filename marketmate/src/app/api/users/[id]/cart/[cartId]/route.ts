@@ -9,7 +9,7 @@ export async function GET(request: NextRequest, { params: { id, cartId } }: { pa
         id: cartId,
       },
       include: {
-        products: true,
+        Cart_Item: true,
       },
     });
     return NextResponse.json({ message: 'ok', status: 200, data: products })
@@ -17,14 +17,27 @@ export async function GET(request: NextRequest, { params: { id, cartId } }: { pa
 
 export async function PATCH(req: Request, { params: { id, cartId } }: { params: { id: string, cartId: string } }) {
     const json = await req.json();
+    const newItem = await prisma.cart_Item.create({
+      data: {
+        cartId: cartId,
+        productId: json.productId,
+        quantity: json.quantity,
+        Product: {
+          connect: {
+            id: json.productId,
+          },
+        },
+      },
+    });
+
     const updated = await prisma.cart.update({
       where: {
         id: cartId,
       },
       data: {
-        products: {
+        Cart_Item: {
           connect: {
-            id: json.productId,
+            id: newItem.id,
           },
         },
       },
