@@ -16,7 +16,8 @@ export async function POST(req: Request, { params: { id } }: { params: { id: str
       error: "Error creating cart",
       status: 500,
     });
-
+  
+  JSON.stringify(cart);
 
   const update = await prisma.user.update({
     where: {
@@ -39,29 +40,3 @@ export async function GET(request: NextRequest, { params: { id } }: { params: { 
   });
   return NextResponse.json({ message: "ok", status: 200, data: products });
 }
-
-// Patch for updating a cart
-export async function PATCH(req: Request, { params: { id } }: { params: { id: string } }) {
-    // TODO: add auth check here to require user to be logged in and be the vendor before updating a vendor profile
-  
-    const json = await req.json();
-    const updated = await prisma.cart.update({
-      where: {
-        id,
-      },
-      data: json,
-    });
-    return NextResponse.json({ message: "ok", status: 200, data: updated });
-}
-
-// Delete a cart
-export async function DELETE(req: Request, { params: { id } }: { params: { id: string } }) {
-    // TODO: add auth check here to require user to be logged in and be the vendor before updating a vendor profile
-  
-    const deleted = await prisma.cart.delete({
-      where: {
-        id,
-      },
-    });
-    return NextResponse.json({ message: "ok", status: 200, data: deleted });
-  }

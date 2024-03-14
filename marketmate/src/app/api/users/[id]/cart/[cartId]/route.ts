@@ -4,7 +4,7 @@ import prisma from "@prisma/prisma";
 
 
 // get a unique cart
-export async function GET(request: NextRequest, { params: { id, cartId } }: { params: { id: string, cartId: string } }) {
+export async function GET(req: NextRequest, { params: { id, cartId } }: { params: { id: string, cartId: string } }) {
     const products = await prisma.cart.findUnique({
       where: {
         id: cartId,
@@ -16,22 +16,29 @@ export async function GET(request: NextRequest, { params: { id, cartId } }: { pa
     return NextResponse.json({ message: 'ok', status: 200, data: products })
 }
 
+// Patch for updating a cart
+export async function PATCH(req: NextRequest, { params: { id, cartId } }: { params: { id: string, cartId: string } }) {
+  // TODO: add auth check here to require user to be logged in and be the vendor before updating a vendor profile
+
+  const json = await req.json();
+  const updated = await prisma.cart.update({
+    where: {
+      id: cartId,
+    },
+    data: json,
+  });
+  return NextResponse.json({ message: "ok", status: 200, data: updated });
+}
+
 
 // delete a unique cart
 export async function DELETE(req: Request, { params: { id, cartId } }: { params: { id: string, cartId: string } }) {
-    const json = await req.json();
-    const updated = await prisma.cart.update({
-      where: {
-        id: cartId,
-      },
-      data: {
-        products: {
-          disconnect: {
-            id: json.productId,
-          },
-        },
-      },
-    });
+  // TODO: add auth check here to require user to be logged in and be the vendor before updating a vendor profile
 
-    return NextResponse.json({ message: 'ok', status: 200, data: updated })
+  const deleted = await prisma.cart.delete({
+    where: {
+      id: cartId,
+    },
+  });
+  return NextResponse.json({ message: "ok", status: 200, data: deleted });
 }
