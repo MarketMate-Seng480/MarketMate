@@ -34,6 +34,18 @@ export async function PATCH(req: NextRequest, { params: { id, cartId } }: { para
 export async function POST(req: Request, { params: { id, cartId } }: { params: { id: string, cartId: string } }) {
   const json = await req.json();
 
+  const product = await prisma.product.findUnique({
+    where: {
+      id: json.productId,
+    },
+  });
+  if(!product) {
+    return NextResponse.json({
+      error: "Error finding product information",
+      status: 500,
+    });
+  }
+
   const item = await prisma.cart_Item.findMany({
     where: {
       cartId: cartId,
@@ -49,6 +61,28 @@ export async function POST(req: Request, { params: { id, cartId } }: { params: {
         quantity: item[0].quantity + json.quantity,
       },
     });
+    if(!updated) {
+      return NextResponse.json({
+        error: "Error updating cartItem information",
+        status: 500,
+      });
+    }
+
+    const updatedCart = await prisma.cart.update({
+      where: {
+        id: cartId,
+      },
+      data: {
+        total: JSON.stringify(updated.quantity * product.price),
+      },
+    });
+    if(!updatedCart) {
+      return NextResponse.json({
+        error: "Error updating cart information",
+        status: 500,
+      });
+    }
+
     return NextResponse.json({ message: 'ok', status: 200, data: updated })
   }
   else {
@@ -59,6 +93,12 @@ export async function POST(req: Request, { params: { id, cartId } }: { params: {
         quantity: json.quantity,
       },
     });
+    if(!newItem) {
+      return NextResponse.json({
+        error: "Error creating new cartItem",
+        status: 500,
+      });
+    }
 
     const updated = await prisma.cart.update({
       where: {
@@ -70,11 +110,18 @@ export async function POST(req: Request, { params: { id, cartId } }: { params: {
             id: newItem.id,
           },
         },
+        total: JSON.stringify(newItem.quantity * product.price),
       },
     });
-  }
+    if(!updated) {
+      return NextResponse.json({
+        error: "Error updating cart information",
+        status: 500,
+      });
+    }
 
-  return NextResponse.json({ message: 'ok', status: 200 })
+    return NextResponse.json({ message: 'ok', status: 200, data: newItem })
+  }
 }
 
 

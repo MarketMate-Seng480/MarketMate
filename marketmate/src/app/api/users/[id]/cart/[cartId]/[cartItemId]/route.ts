@@ -24,6 +24,41 @@ export async function PATCH(req: Request, { params: { id, cartId, cartItemId } }
       },
       data: json,
     });
+    if(!updated) {
+      return NextResponse.json({
+        error: "Error updating cartItem information",
+        status: 500,
+      });
+    }
+
+    const product = await prisma.product.findUnique({
+      where: {
+        id: updated.productId,
+      },
+    });
+    if(!product) {
+      return NextResponse.json({
+        error: "Error getting product information",
+        status: 500,
+      });
+    }
+
+    const updatedCart = await prisma.cart.update({
+      where: {
+        id: cartId,
+      },
+      data: {
+        total: JSON.stringify(updated.quantity * product.price),
+      },
+    });
+    if(!updatedCart) {
+      return NextResponse.json({
+        error: "Error updating cart information",
+        status: 500,
+      });
+    }
+
+
     return NextResponse.json({ message: 'ok', status: 200, data: updated })
 }
 
