@@ -134,5 +134,14 @@ export async function DELETE(req: Request, { params: { id, cartId } }: { params:
       id: cartId,
     },
   });
+
+  const update = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      cartId: null,
+    },
+  });
   return NextResponse.json({ message: "ok", status: 200, data: deleted });
 }
