@@ -24,7 +24,7 @@ export interface BuyerEmailProps {
 
 const BuyerEmailTemplate = () => {
   // temp data
-  const orderTotal = 65;
+  const orderTotal = orderList.reduce((acc, product) => acc + product.price, 0);
 
   return (
     <Html>
@@ -179,7 +179,7 @@ function VendorSection({ vendorProducts }: { vendorProducts: Record<string, Orde
                   <strong>{product.productName}</strong>
                 </Text>
                 <Text style={emailStyles.p}>Quantity: {product.quantity}</Text>
-                <Text style={emailStyles.p}>Price: ${product.price}</Text>
+                <Text style={emailStyles.p}>Price: ${product.price}/item</Text>
               </Column>
               <Hr style={emailStyles.hr} />
             </Row>

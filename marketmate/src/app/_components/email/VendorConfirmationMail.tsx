@@ -24,8 +24,8 @@ export interface VendorEmailProps {
 
 const BuyerEmailTemplate = () => {
   // temp data
-  const orderTotal = 30;
-  const order = productsByVendor[0];
+  const order = productsByVendor["vendor2"];
+  const orderTotal = order.reduce((acc, product) => acc + product.price, 0);
 
   return (
     <Html>
@@ -99,7 +99,7 @@ const BuyerEmailTemplate = () => {
           </Section>
 
           {/* Next Steps */}
-          <Section>
+          <Section style={{ marginBottom: "50px" }}>
             <Container>
               <Heading
                 as="h2"
@@ -112,6 +112,12 @@ const BuyerEmailTemplate = () => {
               Please contact your buyer as soon as possible to discuss payment and organize a
               pick-up or drop-off. Payments should be handled at the time of pick-up or drop-off.
             </Text>
+            <Button
+              href={"mailto:" + order[0].buyerEmail}
+              style={emailStyles.button}
+            >
+              Contact {order[0].buyerName}
+            </Button>
           </Section>
 
           {/* Footer */}
@@ -134,10 +140,10 @@ const BuyerEmailTemplate = () => {
             </Text>
 
             <Button
-              href="https://artisway.ca"
-              style={emailStyles.button}
+              href="https://artisway.ca/vendor"
+              style={emailStyles.secondaryButton}
             >
-              Visit Artisway
+              Manage Your Store
             </Button>
           </Section>
         </Container>
@@ -169,7 +175,7 @@ function OrderSection({ orders }: { orders: OrderInfo[] }) {
                 <strong>{order.productName}</strong>
               </Text>
               <Text style={emailStyles.p}>Quantity: {order.quantity}</Text>
-              <Text style={emailStyles.p}>Price: ${order.price}</Text>
+              <Text style={emailStyles.p}>Price: ${order.price}/item</Text>
             </Column>
             <Hr style={emailStyles.hr} />
           </Row>

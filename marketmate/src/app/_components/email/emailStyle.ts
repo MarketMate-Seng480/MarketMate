@@ -131,6 +131,19 @@ const button = {
   padding: "10px",
 };
 
+const secondaryButton = {
+  borderRadius: "10px",
+  border: "1px solid",
+  borderColor: brandTheme.colors.brand.secondary,
+  color: brandTheme.colors.brand.secondary,
+  fontWeight: "bold",
+  fontSize: "16px",
+  textDecoration: "none",
+  textAlign: "center" as const,
+  display: "block",
+  padding: "10px",
+};
+
 const emailStyles = {
   container,
   h1,
@@ -146,6 +159,7 @@ const emailStyles = {
   productImage,
   emailLink,
   button,
+  secondaryButton,
   footerStyle,
 };
 
