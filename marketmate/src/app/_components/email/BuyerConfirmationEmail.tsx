@@ -164,7 +164,8 @@ const BuyerEmailTemplate = ({ buyerName, orderList }: BuyerEmailProps) => {
             <Text style={emailStyles.p}>
               The artisans will be in contact with you as soon as possible to organize a pickup time
               and location. Payments will be handled at the time of pick-up or drop-off. If you have
-              an urgent inquiry, click on the Vendor's names shown above to contact them directly.
+              an urgent inquiry, click on the Vendor&apos;s names shown above to contact them
+              directly.
             </Text>
           </Section>
 
