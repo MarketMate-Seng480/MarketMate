@@ -1,8 +1,8 @@
 import React from "react";
 import { NextResponse, NextRequest } from "next/server";
 import { Resend } from "resend";
-import VendorEmailTemplate from "@/app/_components/VendorConfirmationMail";
-import BuyerEmailTemplate from "@/app/_components/BuyerConfirmationEmail";
+import VendorEmailTemplate from "@/app/_components/email/VendorConfirmationMail";
+import BuyerEmailTemplate from "@/app/_components/email/BuyerConfirmationEmail";
 import { OrderInfo, EmailProps } from "@/app/_components/CartTable";
 
 const resend = new Resend(process.env.RESEND_API);

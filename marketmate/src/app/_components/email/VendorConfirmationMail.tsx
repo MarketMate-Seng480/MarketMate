@@ -1,5 +1,5 @@
 import React from "react";
-import { OrderInfo } from "./CartTable";
+import { OrderInfo } from "../CartTable";
 
 export interface VendorEmailProps {
   vendorName: string;
