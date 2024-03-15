@@ -15,70 +15,16 @@ import {
   Column,
 } from "@react-email/components";
 import * as React from "react";
-// import { OrderInfo } from "../CartTable";
+import { SampleOrderInfo as OrderInfo, orderList, productsByVendor } from "./sampleEmailData";
 import emailStyles from "./emailStyle";
 
-// temp fix for the missing type
-interface OrderInfo {
-  productName: string;
-  quantity: number;
-  price: number;
-  vendorName: string;
-  vendorID: string;
-  image: string;
-}
-
 export interface BuyerEmailProps {
-  buyerName: string;
   orderList: OrderInfo[];
 }
 
-const BuyerEmailTemplate = ({ buyerName, orderList }: BuyerEmailProps) => {
+const BuyerEmailTemplate = () => {
   // temp data
-  buyerName = "Julia";
   const orderTotal = 65;
-
-  orderList = [
-    {
-      productName: "Clay Mug - Tint Blue",
-      quantity: 1,
-      price: 15,
-      vendorName: "Vendor Name 1",
-      vendorID: "vendor1",
-      image:
-        "https://images.unsplash.com/photo-1495100497150-fe209c585f50?q=80&w=2671&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      productName: "Black Tote Bag",
-      quantity: 2,
-      price: 50,
-      vendorName: "Vendor Name 2",
-      vendorID: "vendor2",
-      image:
-        "https://images.unsplash.com/photo-1578237493287-8d4d2b03591a?q=80&w=2726&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-    {
-      productName: "Handmade Soap",
-      quantity: 1,
-      price: 15,
-      vendorName: "Vendor Name 2",
-      vendorID: "vendor2",
-      image:
-        "https://images.unsplash.com/photo-1607006344380-b6775a0824a7?q=80&w=2682&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    },
-  ];
-
-  // group products by vendor
-  const vendorProducts = orderList.reduce(
-    (acc: Record<string, OrderInfo[]>, product: OrderInfo) => {
-      if (!acc[product.vendorID]) {
-        acc[product.vendorID] = [];
-      }
-      acc[product.vendorID].push(product);
-      return acc;
-    },
-    {}
-  );
 
   return (
     <Html>
@@ -128,7 +74,7 @@ const BuyerEmailTemplate = ({ buyerName, orderList }: BuyerEmailProps) => {
               Order Request Confirmed
             </Heading>
             <Text style={emailStyles.p}>
-              <strong>Hi {buyerName},</strong>
+              <strong>Hi {orderList[0].buyerName},</strong>
             </Text>
             <Text style={emailStyles.p}>
               Thank you for your order! The artisans who crafted your ordered products have received
@@ -146,7 +92,7 @@ const BuyerEmailTemplate = ({ buyerName, orderList }: BuyerEmailProps) => {
               Order Details
             </Heading>
 
-            <VendorSection vendorProducts={vendorProducts} />
+            <VendorSection vendorProducts={productsByVendor} />
 
             <Text style={emailStyles.total}>Total: ${orderTotal}</Text>
           </Section>
