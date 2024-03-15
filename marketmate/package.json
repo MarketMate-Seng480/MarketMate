@@ -19,6 +19,7 @@
     "@fontsource/averia-serif-libre": "^5.0.18",
     "@prisma/client": "^5.9.1",
     "@react-email/components": "0.0.15",
+    "@react-email/font": "0.0.5",
     "@reduxjs/toolkit": "^2.2.1",
     "@supabase/auth-helpers-nextjs": "^0.9.0",
     "@supabase/ssr": "^0.1.0",
