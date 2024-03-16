@@ -41,7 +41,6 @@
   "devDependencies": {
     "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/next-js": "^2.2.0",
-    "@chakra-ui/react": "^2.8.2",
     "@types/node": "^20.11.17",
     "@types/react": "18.2.55",
     "@types/react-dom": "^18",

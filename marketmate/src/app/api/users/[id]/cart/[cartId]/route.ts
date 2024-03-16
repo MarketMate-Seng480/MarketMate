@@ -144,5 +144,14 @@ export async function DELETE(
       id: cartId,
     },
   });
+
+  const update = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      cartId: null,
+    },
+  });
   return NextResponse.json({ message: "ok", status: 200, data: deleted });
 }
