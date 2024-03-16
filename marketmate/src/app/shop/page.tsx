@@ -4,10 +4,10 @@ import { Center, Spacer, VStack, Flex, Heading, Text, SimpleGrid } from "@chakra
 import PageContainer from "@components/PageContainer";
 import Footer from "@components/Footer";
 import VendorCard from "@components/VendorCard";
-import type { Vendor } from "@prisma/client";
+import { Vendor_Extended } from "@lib/types";
 
 export default function AllVendorsPage() {
-  const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [vendors, setVendors] = useState<Vendor_Extended[]>([]);
   const [vendorCards, setVendorCards] = useState<JSX.Element[]>([]);
 
   useEffect(() => {

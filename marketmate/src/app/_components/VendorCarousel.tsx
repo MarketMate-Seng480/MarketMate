@@ -7,7 +7,7 @@ import { FiChevronRight, FiChevronLeft } from "react-icons/fi";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import VendorCard from "./VendorCard";
-import type { Vendor } from "@prisma/client";
+import { Vendor_Extended } from "@lib/types";
 
 const settings = {
   dots: true,
@@ -31,7 +31,7 @@ const settings = {
 };
 
 export default function VendorCarousel() {
-  const [vendors, setVendors] = React.useState<Vendor[]>([]);
+  const [vendors, setVendors] = React.useState<Vendor_Extended[]>([]);
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
   const side = useBreakpointValue({ base: "30%", md: "10px", lg: "-60px" });

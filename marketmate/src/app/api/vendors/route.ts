@@ -27,6 +27,10 @@ export async function GET(request: NextRequest) {
   const vendors = await prisma.vendor.findMany({
     skip: skip ? parseInt(skip, 10) : undefined,
     take: take ? parseInt(take, 10) : undefined,
+    include: {
+      shopTags: true,
+    },
   });
+
   return NextResponse.json({ message: "ok", status: 200, data: vendors });
 }
