@@ -48,16 +48,7 @@ export default function ProductPage() {
       }
     };
 
-    const fetchCart = async () => {
-      if (authUser) {
-        const response = await fetch(`/api/cart/${authUser.id}`);
-        const data = await response.json();
-        setCart(data.data[0]);
-      }
-    };
-
     fetchUser();
-    fetchCart();
   }, [authUser]);
 
   useEffect(() => {
@@ -93,15 +84,47 @@ export default function ProductPage() {
     }
   }, [product]);
 
+  async function fetchCart() {
+    if (authUser) {
+      try {
+        const response = await fetch(`/api/users/${authUser.id}/cart`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        console.log("first Cart data:", data);
+        if (data.data == null){
+          console.log("No cart found for user, generating new cart");
+          const newCart = await fetch(`/api/users/${authUser.id}/cart`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const cartData = await newCart.json();
+          console.log("New cart:", cartData);
+          setCart(cartData.data);
+        } else {
+          setCart(null);
+        }
+      } catch (error) {
+        console.error("Error fetching cart data:", error);          
+      }
+
+    } 
+  };
+
   async function addToCart() {
-    const response = await fetch(`/api/cart/${user?.id}`, {
+    fetchCart();
+    const response = await fetch(`/api/users/cart/${cart?.id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         productId: product?.id,
-        cartId: cart?.id,
         userId: user?.id,
       }),
     });
