@@ -72,7 +72,7 @@ const BuyerEmailTemplate = () => {
               as="h1"
               style={emailStyles.h1}
             >
-              Order Request Confirmed
+              Order Request Received
             </Heading>
             <Text style={emailStyles.p}>
               <strong>Hi {order[0].vendorName},</strong>
@@ -109,8 +109,8 @@ const BuyerEmailTemplate = () => {
               </Heading>
             </Container>
             <Text style={emailStyles.p}>
-              Please contact your buyer as soon as possible to discuss payment and organize a
-              pick-up or drop-off. Payments should be handled at the time of pick-up or drop-off.
+              Please contact your buyer as soon as possible to organize a pick-up or drop-off time
+              and location. Payments should be handled at the time of pick-up or drop-off.
             </Text>
             <Button
               href={"mailto:" + order[0].buyerEmail}
@@ -134,16 +134,16 @@ const BuyerEmailTemplate = () => {
             </Text>
 
             <Text style={emailStyles.p}>
-              All the Best,
+              All the best,
               <br />
-              The Artisway Team
+              Artisway Team
             </Text>
 
             <Button
               href="https://artisway.ca/vendor"
               style={emailStyles.secondaryButton}
             >
-              Manage Your Store
+              Manage Your Artisway Store
             </Button>
           </Section>
         </Container>
