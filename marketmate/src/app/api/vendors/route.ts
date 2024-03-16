@@ -7,9 +7,11 @@ export async function POST(req: Request) {
   // additionally, check to make sure a user does not already have a vendor profile
 
   const json = await req.json();
+
   const created = await prisma.vendor.create({
     data: json,
   });
+
   if (!created)
     return NextResponse.json({
       error: "Error creating vendor",
@@ -23,14 +25,21 @@ export async function POST(req: Request) {
 export async function GET(request: NextRequest) {
   const skip = request.nextUrl.searchParams.get("skip");
   const take = request.nextUrl.searchParams.get("take");
+  const total = request.nextUrl.searchParams.get("total");
 
-  const vendors = await prisma.vendor.findMany({
-    skip: skip ? parseInt(skip, 10) : undefined,
-    take: take ? parseInt(take, 10) : undefined,
-    include: {
-      shopTags: true,
-    },
-  });
+  if (total) {
+    const count = await prisma.vendor.count();
 
-  return NextResponse.json({ message: "ok", status: 200, data: vendors });
+    return NextResponse.json({ data: count });
+  } else {
+    const data = await prisma.vendor.findMany({
+      skip: skip ? parseInt(skip, 10) : undefined,
+      take: take ? parseInt(take, 10) : undefined,
+      include: {
+        shopTags: true,
+      },
+    });
+
+    return NextResponse.json({ message: "ok", status: 200, data: data });
+  }
 }

@@ -10,6 +10,7 @@ import {
   Flex,
   Spacer,
   HStack,
+  Badge,
 } from "@chakra-ui/react";
 import { CustomButton } from "./CustomButton";
 import { CustomCard } from "./CustomCard";
@@ -20,7 +21,10 @@ export default function VendorCard({ vendor }: { vendor: Vendor_Extended }) {
   const router = useRouter();
 
   return (
-    <Center display={"flex"}>
+    <Center
+      display={"flex"}
+      key={vendor.id} // Add key prop here
+    >
       <CustomCard
         width={"400px"}
         height={"512px"}
@@ -65,24 +69,21 @@ export default function VendorCard({ vendor }: { vendor: Vendor_Extended }) {
               {vendor.name}
             </Heading>
 
-            <HStack>
+            <HStack
+              spacing={2}
+              w={"full"}
+              wrap={"wrap"}
+              textAlign={"center"}
+              justifyContent={"center"}
+            >
               {vendor.shopTags.map((tag) => (
-                <>
-                  <Text
-                    color={"gray.400"}
-                    size={"sm"}
-                  >
-                    {tag.name}
-                  </Text>
-                  {vendor.shopTags.indexOf(tag) !== vendor.shopTags.length - 1 && (
-                    <Text
-                      color={"gray.400"}
-                      size={"sm"}
-                    >
-                      •
-                    </Text>
-                  )}
-                </>
+                <Badge
+                  variant="outline"
+                  key={tag.id}
+                  color={"gray.400"}
+                >
+                  {tag.name}
+                </Badge>
               ))}
             </HStack>
 
