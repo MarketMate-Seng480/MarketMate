@@ -26,6 +26,14 @@ const BuyerEmailTemplate = () => {
   // temp data
   const orderTotal = orderList.reduce((acc, product) => acc + product.price, 0);
 
+  // find how many vendors are in the order
+  const vendors = new Set(orderList.map((product) => product.vendorID));
+
+  const instruction =
+    vendors.size === 1
+      ? "The artisan will be in contact with you as soon as possible to organize a pickup time and location. Payments will be handled at the time of pick-up or drop-off. If you have an urgent inquiry, click on the vendor's name shown above to contact them directly."
+      : "The artisans will be in contact with you as soon as possible to organize a pickup time and location. Payments will be handled at the time of pick-up or drop-off. If you have an urgent inquiry, click on the vendors' names shown above to contact them directly.";
+
   return (
     <Html>
       <Head>
@@ -107,12 +115,7 @@ const BuyerEmailTemplate = () => {
                 Next Steps
               </Heading>
             </Container>
-            <Text style={emailStyles.p}>
-              The artisans will be in contact with you as soon as possible to organize a pickup time
-              and location. Payments will be handled at the time of pick-up or drop-off. If you have
-              an urgent inquiry, click on the Vendor&apos;s names shown above to contact them
-              directly.
-            </Text>
+            <Text style={emailStyles.p}>{instruction}</Text>
           </Section>
 
           {/* Footer */}
@@ -129,7 +132,7 @@ const BuyerEmailTemplate = () => {
             </Text>
 
             <Text style={emailStyles.p}>
-              All the Best,
+              All the best,
               <br />
               The Artisway Team
             </Text>
