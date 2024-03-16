@@ -2,22 +2,27 @@ import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@prisma/prisma";
 
-
 // get a unique cart
-export async function GET(req: NextRequest, { params: { id, cartId } }: { params: { id: string, cartId: string } }) {
-    const products = await prisma.cart.findUnique({
-      where: {
-        id: cartId,
-      },
-      include: {
-        cartItem: true,
-      },
-    });
-    return NextResponse.json({ message: 'ok', status: 200, data: products })
+export async function GET(
+  req: NextRequest,
+  { params: { id, cartId } }: { params: { id: string; cartId: string } }
+) {
+  const products = await prisma.cart.findUnique({
+    where: {
+      id: cartId,
+    },
+    include: {
+      cartItem: true,
+    },
+  });
+  return NextResponse.json({ message: "ok", status: 200, data: products });
 }
 
 // Patch for updating a cart
-export async function PATCH(req: NextRequest, { params: { id, cartId } }: { params: { id: string, cartId: string } }) {
+export async function PATCH(
+  req: NextRequest,
+  { params: { id, cartId } }: { params: { id: string; cartId: string } }
+) {
   // TODO: add auth check here to require user to be logged in and be the vendor before updating a vendor profile
 
   const json = await req.json();
@@ -31,7 +36,10 @@ export async function PATCH(req: NextRequest, { params: { id, cartId } }: { para
 }
 
 // post a new product to the cart
-export async function POST(req: Request, { params: { id, cartId } }: { params: { id: string, cartId: string } }) {
+export async function POST(
+  req: Request,
+  { params: { id, cartId } }: { params: { id: string; cartId: string } }
+) {
   const json = await req.json();
 
   const product = await prisma.product.findUnique({
@@ -39,7 +47,8 @@ export async function POST(req: Request, { params: { id, cartId } }: { params: {
       id: json.productId,
     },
   });
-  if(!product) {
+
+  if (!product) {
     return NextResponse.json({
       error: "Error finding product information",
       status: 500,
@@ -52,7 +61,7 @@ export async function POST(req: Request, { params: { id, cartId } }: { params: {
       productId: json.productId,
     },
   });
-  if(item[0]) {
+  if (item[0]) {
     const updated = await prisma.cart_Item.update({
       where: {
         id: item[0].id,
@@ -61,7 +70,7 @@ export async function POST(req: Request, { params: { id, cartId } }: { params: {
         quantity: item[0].quantity + json.quantity,
       },
     });
-    if(!updated) {
+    if (!updated) {
       return NextResponse.json({
         error: "Error updating cartItem information",
         status: 500,
@@ -76,16 +85,15 @@ export async function POST(req: Request, { params: { id, cartId } }: { params: {
         total: JSON.stringify(updated.quantity * product.price),
       },
     });
-    if(!updatedCart) {
+    if (!updatedCart) {
       return NextResponse.json({
         error: "Error updating cart information",
         status: 500,
       });
     }
 
-    return NextResponse.json({ message: 'ok', status: 200, data: updated })
-  }
-  else {
+    return NextResponse.json({ message: "ok", status: 200, data: updated });
+  } else {
     const newItem = await prisma.cart_Item.create({
       data: {
         cartId: cartId,
@@ -93,7 +101,7 @@ export async function POST(req: Request, { params: { id, cartId } }: { params: {
         quantity: json.quantity,
       },
     });
-    if(!newItem) {
+    if (!newItem) {
       return NextResponse.json({
         error: "Error creating new cartItem",
         status: 500,
@@ -113,20 +121,22 @@ export async function POST(req: Request, { params: { id, cartId } }: { params: {
         total: JSON.stringify(newItem.quantity * product.price),
       },
     });
-    if(!updated) {
+    if (!updated) {
       return NextResponse.json({
         error: "Error updating cart information",
         status: 500,
       });
     }
 
-    return NextResponse.json({ message: 'ok', status: 200, data: newItem })
+    return NextResponse.json({ message: "ok", status: 200, data: newItem });
   }
 }
 
-
 // delete a unique cart
-export async function DELETE(req: Request, { params: { id, cartId } }: { params: { id: string, cartId: string } }) {
+export async function DELETE(
+  req: Request,
+  { params: { id, cartId } }: { params: { id: string; cartId: string } }
+) {
   // TODO: add auth check here to require user to be logged in and be the vendor before updating a vendor profile
 
   const deleted = await prisma.cart.delete({
