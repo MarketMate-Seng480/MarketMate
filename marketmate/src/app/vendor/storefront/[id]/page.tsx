@@ -11,7 +11,7 @@ import { CustomButton } from "@/app/_components/CustomButton";
 
 
 
-export default function VendorProfilePage({ 
+export default function StorefrontAdminPage({ 
   params: { id },
 }: {
   params: { id: string }

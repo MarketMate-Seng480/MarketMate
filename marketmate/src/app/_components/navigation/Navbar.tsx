@@ -85,21 +85,34 @@ export default function Navbar() {
     }
   }, [userId]);
 
+  const handleStorefront = () => {
+    router.push(`/vendor/storefront/${userData?.vendorId}`);
+  };
+
+  const handleProducts = () => {
+    router.push(`/vendor/products/${userData?.vendorId}`);
+  };
+
+  const handleVendorAccount = () => {
+    router.push(`/vendor/account/${userData?.vendorId}`);
+  };
+
+  const handleBuyerAccount = () => {
+    router.push(`/account/${userData?.id}`);
+  };
+
+  const handleNewVendor = () => {
+    router.push(`/creation/${userData?.id}`);
+  };
+
   const handleLogout = async () => {
     setLoading(true);
     const { error } = await supabase.auth.signOut();
     setLoading(false);
     if (!error) {
       setSession(null);
+      router.push(`/`);
     }
-  };
-
-  const handleVendor = () => {
-    router.push(`/vendor/profile/${userData?.vendorId}`);
-  };
-
-  const handleNewVendor = () => {
-    router.push(`/creation/${userData?.id}`);
   };
 
   return (
@@ -175,9 +188,16 @@ export default function Navbar() {
                 </MenuButton>
                 <CustomMenuList>
                   {userData?.role == "vendor" ? (
-                    <CustomMenuItem onClick={handleVendor}>My Store</CustomMenuItem>
+                    <>
+                      <CustomMenuItem onClick={handleStorefront}>Storefront</CustomMenuItem>
+                      <CustomMenuItem onClick={handleProducts}>Products</CustomMenuItem>
+                      <CustomMenuItem onClick={handleVendorAccount}>Account</CustomMenuItem>
+                    </>
                   ) : (
-                    <CustomMenuItem onClick={handleNewVendor}>Become a Vendor</CustomMenuItem>
+                    <>
+                      <CustomMenuItem onClick={handleBuyerAccount}>Account</CustomMenuItem>
+                      <CustomMenuItem onClick={handleNewVendor}>Become a Vendor</CustomMenuItem>
+                    </>
                   )}
                   <CustomMenuItem onClick={handleLogout}>Log Out</CustomMenuItem>
                 </CustomMenuList>
