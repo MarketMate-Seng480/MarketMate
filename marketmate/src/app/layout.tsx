@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Providers } from "./providers";
-import QueryProvider from "../components/query-provider"
+import QueryProvider from "@components/query-provider"
 
 export const metadata: Metadata = {
   title: "Artisway - Handcrafted by Locals, Inspired by Community",
