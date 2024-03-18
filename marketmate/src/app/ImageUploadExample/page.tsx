@@ -10,7 +10,7 @@ export default function TestImage2() {
   return (
     <div>
       <ImageUploader bucket="avatar" setImageUrl={setImageUrl}/>
-      <h1>Image Preview: {imageUrl}</h1>
+      <h1>Image URL: {imageUrl}</h1>
       
     </div>
   );

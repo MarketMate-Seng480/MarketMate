@@ -3,7 +3,6 @@ import React, { useRef, useState } from "react";
 import { supabase } from '../lib/supabase';
 import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
-import StatusBar from '@uppy/status-bar';
 
 import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
