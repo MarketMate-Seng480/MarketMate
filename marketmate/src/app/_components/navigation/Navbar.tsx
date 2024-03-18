@@ -101,10 +101,6 @@ export default function Navbar() {
     router.push(`/account/${userData?.id}`);
   };
 
-  const handleNewVendor = () => {
-    router.push(`/creation/${userData?.id}`);
-  };
-
   const handleLogout = async () => {
     setLoading(true);
     const { error } = await supabase.auth.signOut();
@@ -196,7 +192,6 @@ export default function Navbar() {
                   ) : (
                     <>
                       <CustomMenuItem onClick={handleBuyerAccount}>Account</CustomMenuItem>
-                      <CustomMenuItem onClick={handleNewVendor}>Become a Vendor</CustomMenuItem>
                     </>
                   )}
                   <CustomMenuItem onClick={handleLogout}>Log Out</CustomMenuItem>
