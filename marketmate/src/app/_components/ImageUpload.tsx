@@ -3,16 +3,21 @@ import React, { useRef, useState } from "react";
 import { supabase } from '../lib/supabase';
 import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
-import { Dashboard } from '@uppy/react';
+import StatusBar from '@uppy/status-bar';
 
 import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
-import { Button, Toast } from "@chakra-ui/react";
-import { buffer } from "stream/consumers";
 import useUser from "../lib/hooks";
 import { useRouter } from "next/navigation";
 
-export default function ImageUploader() {
+
+export default function ImageUploader({
+  bucket,
+  setImageUrl
+}: {
+  bucket: string,
+  setImageUrl: (url: string) => void
+}) {
 
     const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
     const {data:user} = useUser()
@@ -27,7 +32,7 @@ export default function ImageUploader() {
       new Uppy({
         restrictions:{
           maxNumberOfFiles: 1,
-          allowedFileTypes: ['image/png', 'image/jpeg', 'image/jpg'],
+          allowedFileTypes: ['image/*'],
           maxFileSize: 5 * 1000 * 1000, // 5MB
         },
       }).use(Tus, { 
@@ -47,7 +52,7 @@ export default function ImageUploader() {
     uppy.on('file-added', (file) => {
       file.meta = {
         ...file.meta,
-        bucketName: "productImage",
+        bucketName: bucket,
         contentType: file.type,
       }
 
@@ -76,28 +81,41 @@ export default function ImageUploader() {
 
       uppy.upload();
 
+      setImageUrl(
+        process.env.NEXT_PUBLIC_SUPABASE_URL +
+          "/storage/v1/object/public/" +
+          bucket +
+          "/" +
+          user?.id +
+          "/" +
+          randomUUID +
+          "/" +
+          fileName
+      );
     };
 
 
-    // .uppy-Dashboard-inner needs to be overridden to fix the width of the modal
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        uppy.addFile({
+          source: "file-added",
+          name: e.target.files[0].name,
+          type: e.target.files[0].type,
+          data: e.target.files[0],
+        });
+        
+        handleUpload();
+      }
+    };
 
     return (
       <>
-        <div className="space-y-5">
-          <Dashboard 
-            uppy={uppy} 
-            hideUploadButton
-          />
-
-          <Button 
-            className="w-full"
-            onClick={handleUpload}
-            > 
-            Upload 
-            </Button>
-
-
-        </div>
+        <input
+          type="file"
+          accept="image/*"
+          ref={inputRef}
+          onChange={handleChange}
+        />
       </>
     )
 }
