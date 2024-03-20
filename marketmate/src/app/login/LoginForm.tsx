@@ -50,8 +50,7 @@ export default function LoginForm() {
 
   const handleLogin = async () => {
     if (validateForm()) {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });  
       // If there is an error, set the error message and clear the password
       if (error) {
         setPassword("");
@@ -59,10 +58,35 @@ export default function LoginForm() {
         setAuthError(error.message);
       } else {
         console.log("Login successful", data);
-        router.push("/");
+        // Fetch user data after successful login to get the user role
+        if (data) {
+          const fetchUserData = async () => {
+            try {
+              const res = await fetch(`/api/users/${data.user.id}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              });
+              const userData = (await res.json()).data;
+              // Redirect to storefront admin for vendor role
+              if (userData.role === "vendor") {
+                router.push(`/vendor/storefront/${userData.vendorId}`);
+              } else {
+                router.push("/"); // Redirect to home for buyer role
+              }
+            } catch (err) {
+              console.error("Error fetching user data:", err);
+              // Handle error (e.g., show notification to the user)
+              router.push("/"); // Fallback redirect
+            }
+          };
+          fetchUserData();
+        }
       }
     }
   };
+  
 
   return (
     <Stack
