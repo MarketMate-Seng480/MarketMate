@@ -12,7 +12,7 @@ export const AvatarUpload: React.FC<AvatarUploadProps> = ({ savedImage, variant,
   const [displayImage, setDisplayImage] = useState(savedImage);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const changeAvatar = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
       const fileReader = new FileReader();
@@ -36,7 +36,7 @@ export const AvatarUpload: React.FC<AvatarUploadProps> = ({ savedImage, variant,
         ref={fileInputRef}
         type='file'
         accept='image/*'
-        onChange={changeAvatar}
+        onChange={handleChange}
         style={{ display: 'none' }}
       />
       {savedImage ? (
