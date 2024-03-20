@@ -29,6 +29,7 @@ model Vendor {
   phone          String
   logo           String
   userId         String         @unique
+  banner         String         @default("\"\"")
   products       Product[]
   user           User           @relation(fields: [userId], references: [id])
   upcomingEvents Event[]        @relation("EventToVendor")

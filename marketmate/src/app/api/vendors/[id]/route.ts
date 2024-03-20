@@ -7,6 +7,10 @@ export async function GET(req: Request, { params: { id } }: { params: { id: stri
     where: {
       id,
     },
+    include: {
+      products: true,
+      shopTags: true,
+    },
   });
   if (!vendor)
     return NextResponse.json({

@@ -1,21 +1,15 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from "react";
 import { Button, Box, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
-import TopBanner from "@components/vendor/TopBanner";
+import TopBanner from "@/app/_components/profile/TopBanner";
 import InfoSection from "@components/vendor/InfoSection";
 import ProfileEditModalContainer from "@components/vendor/ProfileEditForm";
 import { Vendor } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { CustomButton } from "@/app/_components/CustomButton";
 
-
-
-export default function VendorProfilePage({ 
-  params: { id },
-}: {
-  params: { id: string }
-}) {
+export default function VendorProfilePage({ params: { id } }: { params: { id: string } }) {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [vendor, setVendor] = useState<Vendor>();
@@ -24,7 +18,7 @@ export default function VendorProfilePage({
   const formClosed = () => {
     onClose();
     location.reload();
-  }
+  };
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -80,7 +74,5 @@ export default function VendorProfilePage({
         />
       </Box>
     </>
-
-  )
+  );
 }
-

@@ -3,44 +3,30 @@ import { useState, useEffect } from "react";
 import { Box, VStack } from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
-import TopBanner from "@components/vendor/TopBanner";
-import InfoSection from "@components/vendor/InfoSection";
 import type { Vendor } from "@prisma/client";
 import LoadingPage from "@components/Loading";
-
-function ProfilePage(vendor: Vendor) {
-  return (
-    <>
-      <TopBanner
-        name={vendor.name}
-        logo={vendor.logo || ""}
-      />
-      <Box
-        mx={10}
-        mt={10}
-      >
-        {/* <InfoSection {...vendor} /> */}
-        <text>{vendor.description}</text>
-      </Box>
-    </>
-  );
-}
+import PublicStoreFrontPage from "@components/profile/PublicStorefrontPage";
 
 export default function Shop() {
   const path = usePathname();
   const slug = path.split("/").pop();
   const fetchURL = `/api/vendors/${slug}`;
   const [vendor, setVendor] = useState<Vendor | null>(null);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchVendor = async () => {
       try {
         const response = await fetch(fetchURL);
         const data = await response.json();
-        console.log("data", data);
+
+        if (response.status !== 200) {
+          throw new Error("Error fetching vendor");
+        }
+        setError(false);
         setVendor(data.data);
       } catch (error) {
-        console.error("Error fetching vendor:", error);
+        setError(true);
       }
     };
 
@@ -52,8 +38,10 @@ export default function Shop() {
       <VStack
         padding={10}
         spacing={6}
+        maxW={"1400px"}
       >
-        {vendor ? <ProfilePage {...vendor} /> : <LoadingPage />}
+        {error ? <text>Error fetching vendor</text> : null}
+        {vendor ? <PublicStoreFrontPage {...vendor} /> : <LoadingPage />}
       </VStack>
     </PageContainer>
   );

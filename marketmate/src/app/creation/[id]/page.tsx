@@ -1,20 +1,15 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from "react";
 import { Button, Box, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
-import TopBanner from "@components/vendor/TopBanner";
+import TopBanner from "@/app/_components/profile/TopBanner";
 import InfoSection from "@components/vendor/InfoSection";
 import ProfileCreationForm from "@components/vendor/ProfileCreationForm";
 import { Vendor, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { CustomButton } from "@/app/_components/CustomButton";
 
-
-export default function VendorProfilePage({ 
-  params: { id },
-}: {
-  params: { id: string }
-}) {
+export default function VendorProfilePage({ params: { id } }: { params: { id: string } }) {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [vendor, setVendor] = useState<Vendor>();
@@ -36,7 +31,6 @@ export default function VendorProfilePage({
       fetchData();
     }
   }, [id]);
-
 
   const newVendor = async (vendor_info: any) => {
     if (userData == null) return;
@@ -62,23 +56,21 @@ export default function VendorProfilePage({
       });
       const updatedUserData = (await res.json()).data;
       setUserData(updatedUserData);
-
     } catch (error) {
       console.error("Error creating vendor:", error);
     }
-
   };
 
   const formClosed = async (vendor_info: any) => {
     await newVendor(vendor_info);
     onClose();
     router.push(`/`);
-  }
+  };
 
   const formExited = () => {
     onClose();
     router.push(`/`);
-  }
+  };
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -114,7 +106,7 @@ export default function VendorProfilePage({
     phone: "",
     logo: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
     userId: userData.id,
-};
+  };
 
   return (
     <>
@@ -131,6 +123,5 @@ export default function VendorProfilePage({
         />
       </Box>
     </>
-
-  )
+  );
 }
