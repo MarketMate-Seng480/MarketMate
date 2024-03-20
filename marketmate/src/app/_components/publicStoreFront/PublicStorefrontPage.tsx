@@ -64,7 +64,7 @@ export default function PublicStoreFrontPage(vendor: Vendor_Extended) {
           columns={[1, 2, 3]}
           spacing={10}
           w={"full"}
-          p={10}
+          py={10}
         >
           {vendor.products.map((product) => (
             <ProductCard

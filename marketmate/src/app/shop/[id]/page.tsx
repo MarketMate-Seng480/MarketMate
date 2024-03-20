@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Box, VStack } from "@chakra-ui/react";
+import { Flex, VStack } from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
 import { Vendor_Extended } from "@/app/lib/types";
@@ -36,16 +36,21 @@ export default function Shop() {
 
   return (
     <PageContainer>
-      <VStack
-        paddingX={{ base: 4, md: 10 }}
-        paddingBottom={10}
-        spacing={6}
-        maxW={"1400px"}
+      <Flex
+        flexDirection={"column"}
+        alignItems={"center"}
       >
-        {error ? <text>Error fetching vendor</text> : null}
-        {vendor ? <PublicStoreFrontPage {...vendor} /> : <LoadingPage />}
-      </VStack>
-      <Footer />
+        <VStack
+          paddingX={{ base: 2, md: 10 }}
+          paddingBottom={10}
+          spacing={6}
+          maxW={"1600px"}
+        >
+          {error ? <text>Error fetching vendor</text> : null}
+          {vendor ? <PublicStoreFrontPage {...vendor} /> : <LoadingPage />}
+        </VStack>
+        <Footer />
+      </Flex>
     </PageContainer>
   );
 }
