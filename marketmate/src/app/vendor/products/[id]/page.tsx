@@ -2,16 +2,17 @@
 import { useState, useEffect } from "react";
 import { Button, Box, useDisclosure, SimpleGrid } from "@chakra-ui/react";
 import { CgAdd } from "react-icons/cg";
-import { Vendor, Product } from "@prisma/client";
-import ProductCard from "@components/vendor/ProductCard";
+import { Product } from "@prisma/client";
+import { Vendor_Extended } from "@/app/lib/types";
+import EditableProductCard from "@/app/_components/vendor/EditableProductCard";
 import ProductEditModalContainer from "@components/vendor/ProductEditModalContainer";
-import TopBanner from "@/app/_components/profile/TopBanner";
+import TopBanner from "@/app/_components/publicStoreFront/TopBanner";
 import { CustomButton } from "@/app/_components/CustomButton";
 
 export default function VendorProductPage({ params: { id } }: { params: { id: string } }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [products, setProduct] = useState<Product[]>([]);
-  const [vendor, setVendor] = useState<Vendor>();
+  const [vendor, setVendor] = useState<Vendor_Extended>();
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -101,7 +102,7 @@ export default function VendorProductPage({ params: { id } }: { params: { id: st
   };
 
   const productCards = products?.map((product) => (
-    <ProductCard
+    <EditableProductCard
       key={product.id}
       product={product}
       vendorId={vendor.id}
@@ -112,8 +113,9 @@ export default function VendorProductPage({ params: { id } }: { params: { id: st
   return (
     <>
       <TopBanner
-        name={vendor.name}
-        logo={vendor.logo || ""}
+        shopName={vendor.name}
+        logo={vendor.logo}
+        banner={vendor.banner}
       />
       <Box
         mx={10}

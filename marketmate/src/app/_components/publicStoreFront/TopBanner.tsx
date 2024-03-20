@@ -35,7 +35,6 @@ export default function TopBanner({
       <Flex
         justify={"center"}
         mt={-20}
-        ml={10}
       >
         <Avatar
           w={"200px"}

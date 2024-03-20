@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Box, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
-import TopBanner from "@/app/_components/profile/TopBanner";
+import TopBanner from "@/app/_components/publicStoreFront/TopBanner";
 import InfoSection from "@components/vendor/InfoSection";
 import ProfileCreationForm from "@components/vendor/ProfileCreationForm";
 import { Vendor, User } from "@prisma/client";

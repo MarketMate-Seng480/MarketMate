@@ -3,15 +3,16 @@ import { useState, useEffect } from "react";
 import { Box, VStack } from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
-import type { Vendor } from "@prisma/client";
+import { Vendor_Extended } from "@/app/lib/types";
 import LoadingPage from "@components/Loading";
-import PublicStoreFrontPage from "@components/profile/PublicStorefrontPage";
+import PublicStoreFrontPage from "@components/publicStoreFront/PublicStorefrontPage";
+import Footer from "@components/Footer";
 
 export default function Shop() {
   const path = usePathname();
   const slug = path.split("/").pop();
   const fetchURL = `/api/vendors/${slug}`;
-  const [vendor, setVendor] = useState<Vendor | null>(null);
+  const [vendor, setVendor] = useState<Vendor_Extended | null>(null);
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
@@ -36,13 +37,15 @@ export default function Shop() {
   return (
     <PageContainer>
       <VStack
-        padding={10}
+        paddingX={{ base: 4, md: 10 }}
+        paddingBottom={10}
         spacing={6}
         maxW={"1400px"}
       >
         {error ? <text>Error fetching vendor</text> : null}
         {vendor ? <PublicStoreFrontPage {...vendor} /> : <LoadingPage />}
       </VStack>
+      <Footer />
     </PageContainer>
   );
 }

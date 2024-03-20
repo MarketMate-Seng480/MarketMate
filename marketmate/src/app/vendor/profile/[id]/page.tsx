@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Box, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
-import TopBanner from "@/app/_components/profile/TopBanner";
+import TopBanner from "@/app/_components/publicStoreFront/TopBanner";
 import InfoSection from "@components/vendor/InfoSection";
 import ProfileEditModalContainer from "@components/vendor/ProfileEditForm";
 import { Vendor } from "@prisma/client";
@@ -50,8 +50,9 @@ export default function VendorProfilePage({ params: { id } }: { params: { id: st
   return (
     <>
       <TopBanner
-        name={vendor.name || ""}
-        logo={vendor.logo || ""}
+        shopName={vendor.name}
+        logo={vendor.logo}
+        banner={vendor.banner}
       />
 
       <Box
