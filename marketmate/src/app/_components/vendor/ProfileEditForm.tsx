@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import { Vendor } from "@prisma/client";
 import { CustomButton } from "../CustomButton";
-import { AvatarUpload } from "./AvatarUpload";
 import Uppy from '@uppy/core';
 import Tus from '@uppy/tus';
 import '@uppy/core/dist/style.min.css';
@@ -24,6 +23,7 @@ import '@uppy/dashboard/dist/style.min.css';
 import { supabase } from "../../lib/supabase";
 import useUser from "../../lib/hooks";
 import { useRouter } from "next/navigation";
+import { ImageUploader } from "../ImageUpload";
 
 export default function ProfileEditModalContainer({
   isOpen,
@@ -37,90 +37,15 @@ export default function ProfileEditModalContainer({
   initialVendorInfo: Vendor;
 }) {
   const [vendorInfo, setVendorInfo] = useState(initialVendorInfo);
-  // To delete
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const {data:user} = useUser();
-  const router = useRouter();
-  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-
-  const handleFileSelected = (newFile: File) => {
-    setSelectedFile(newFile);
-      uppy.addFile({
-        source: "file-added",
-        name: newFile.name,
-        type: newFile.type,
-        data: newFile
-      });
-    }
-
-  // Executed before upload request is sent
-  const onBeforeRequest = async (req: any) => {
-    const { data } = await supabase.auth.getSession();
-    req.setHeader("Authorization", `Bearer ${data.session?.access_token}`);
-  };
-
-  // Initialize Uppy with specific restrictions
-  const [uppy] = useState(() => 
-      new Uppy({
-        restrictions:{
-          maxNumberOfFiles: 1,
-          allowedFileTypes: ['image/*'],
-          maxFileSize: 5 * 1000 * 1000, // 5MB
-        },
-  // Use Tus protocol by specifying an endpoint for uploads 
-    }).use(Tus, { 
-      endpoint: process.env.NEXT_PUBLIC_SUPABASE_URL + "/storage/v1/upload/resumable",
-      onBeforeRequest,
-      allowedMetaFields: [
-        "bucketName",
-        "objectName",
-        "contentType",
-        "cacheControl",
-      ],
-    })
-  );
-
-  uppy.on('file-added', (file) => {
-    file.meta = {
-            ...file.meta,
-      bucketName: 'avatar',
-      contentType: file.type,
-    }
-
-  });
-
-  uppy.on("upload-success", () => {
-    uppy.cancelAll();
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
-    document.getElementById("trigger-close")?.click();
-    router.refresh();
-  });  
-
-  const handleFileUpload = () => {
-    if (uppy.getFiles().length === 0) console.error("No file to upload");
-
-    const randomUUID = crypto.randomUUID();
-
-    uppy.setFileMeta(uppy.getFiles()[0].id, {
-      objectName: user?.id + "/" + randomUUID + "/" + uppy.getFiles()[0].name,
-    });
-
-    const filename = uppy.getFiles()[0].name;
-    console.log('filename', filename);
-
-    uppy.upload();
-  };
+  const [imageUrl, setImageUrl] = useState<string>("");
 
   const handleInputChange = (field: keyof Vendor, value: string) => {
     setVendorInfo((prev: Vendor) => ({ ...prev, [field]: value }));
   };
 
   const updateVendorInfo = async (info: Vendor) => {
-    if (selectedFile) {
-      console.log('trying to upload file');
-      handleFileUpload();
+    if (imageUrl) {
+      setVendorInfo(prev => ({ ...prev, logo: imageUrl }));
     }
     const res = await fetch(`/api/vendors/${info.id}`, {
       method: "PATCH",
@@ -163,11 +88,7 @@ export default function ProfileEditModalContainer({
                 spacing={8}
               >
                 <FormLabel fontWeight={600}>Shop Logo</FormLabel>
-                <AvatarUpload
-                  variant='avatar' 
-                  savedImage={vendorInfo?.logo}
-                  onFileSelected={handleFileSelected}
-                />
+                <ImageUploader bucket="avatar" setImageUrl={setImageUrl} savedImage={vendorInfo?.logo}/>
               </Stack>
             </FormControl>
 
