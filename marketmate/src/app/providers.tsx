@@ -1,9 +1,11 @@
 "use client";
 import { ChakraProvider, extendTheme, Box } from "@chakra-ui/react";
 import "@fontsource-variable/dm-sans";
+import "@fontsource/averia-serif-libre";
 
-export const theme = extendTheme({
+export const brandTheme = {
   fonts: {
+    logo: "'Averia Serif Libre', serif",
     body: "'DM Sans Variable', sans-serif",
     heading: "'DM Sans Variable', sans-serif",
   },
@@ -57,7 +59,9 @@ export const theme = extendTheme({
       caption: "#9FADAC",
     },
   },
-});
+};
+
+export const theme = extendTheme(brandTheme);
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (

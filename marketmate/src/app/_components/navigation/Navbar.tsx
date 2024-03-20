@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 import {
   Box,
   Flex,
@@ -14,18 +15,15 @@ import {
   PopoverTrigger,
   useDisclosure,
   VStack,
-  useTheme,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { FiShoppingCart, FiUser } from "react-icons/fi";
 import { Session } from "@supabase/auth-helpers-nextjs";
 import { supabase } from "../../lib/supabase";
-import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { User, Vendor } from "@prisma/client";
+import { User } from "@prisma/client";
 import { LogoLink, NavLink } from "./CustomLinks";
 import { CustomMenuItem, CustomMenuList } from "./CustomMenu";
-import ProfileCreationForm from "@components/vendor/ProfileCreationForm";
 
 interface NavItem {
   label: string;
@@ -134,9 +132,10 @@ export default function Navbar() {
             aria-label={"Toggle Navigation"}
           />
         </Flex>
+
         <Flex
           flex={{ base: 1 }}
-          justify={{ base: "center", md: "start" }}
+          justify={"start"}
         >
           <LogoLink />
           <Flex
@@ -146,6 +145,7 @@ export default function Navbar() {
             <DesktopNav />
           </Flex>
         </Flex>
+
         <Flex alignItems={"center"}>
           {session ? (
             <Stack

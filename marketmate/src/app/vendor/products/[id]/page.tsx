@@ -2,20 +2,17 @@
 import { useState, useEffect } from "react";
 import { Button, Box, useDisclosure, SimpleGrid } from "@chakra-ui/react";
 import { CgAdd } from "react-icons/cg";
-import { Vendor, Product } from "@prisma/client";
-import ProductCard from "@components/vendor/ProductCard";
+import { Product } from "@prisma/client";
+import { Vendor_Extended } from "@/app/lib/types";
+import EditableProductCard from "@/app/_components/vendor/EditableProductCard";
 import ProductEditModalContainer from "@components/vendor/ProductEditModalContainer";
-import TopBanner from "@components/vendor/TopBanner";
+import TopBanner from "@/app/_components/publicStoreFront/TopBanner";
 import { CustomButton } from "@/app/_components/CustomButton";
 
-export default function VendorProductPage({ 
-  params: { id },
-}: {
-  params: { id: string }
-}) {
+export default function VendorProductPage({ params: { id } }: { params: { id: string } }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [products, setProduct] = useState<Product[]>([]);
-  const [vendor, setVendor] = useState<Vendor>();
+  const [vendor, setVendor] = useState<Vendor_Extended>();
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -56,7 +53,6 @@ export default function VendorProductPage({
       }
     };
     fetchProducts();
-  
   }, [id]);
 
   if (isLoading) {
@@ -88,7 +84,7 @@ export default function VendorProductPage({
   const formClosed = () => {
     onClose();
     location.reload();
-  }
+  };
 
   const initialProductInfo: Product = {
     id: "",
@@ -97,13 +93,16 @@ export default function VendorProductPage({
     price: 0,
     stock: 0,
     vendorId: vendor.id,
-    detailImage: ["https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=1658&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"],
-    featureImage: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=1658&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    detailImage: [
+      "https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=1658&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    ],
+    featureImage:
+      "https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=1658&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     isFeatured: false,
   };
 
   const productCards = products?.map((product) => (
-    <ProductCard
+    <EditableProductCard
       key={product.id}
       product={product}
       vendorId={vendor.id}
@@ -114,8 +113,9 @@ export default function VendorProductPage({
   return (
     <>
       <TopBanner
-        name={vendor.name}
-        logo={vendor.logo || ""}
+        shopName={vendor.name}
+        logo={vendor.logo}
+        banner={vendor.banner}
       />
       <Box
         mx={10}

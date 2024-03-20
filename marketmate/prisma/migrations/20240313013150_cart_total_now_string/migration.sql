@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Cart" ALTER COLUMN "total" SET DATA TYPE TEXT;

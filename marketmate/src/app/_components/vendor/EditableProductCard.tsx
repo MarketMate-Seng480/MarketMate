@@ -4,12 +4,11 @@ import type { Product, Vendor } from "@prisma/client";
 import ProductEditModalContainer from "@components/vendor/ProductEditModalContainer";
 import { useEffect, useState } from "react";
 
-
-export default function ProductCard({ 
+export default function EditableProductCard({
   product,
   vendorId,
-  onSave, 
-}: { 
+  onSave,
+}: {
   product: Product;
   vendorId: string;
   onSave: () => void;
@@ -27,7 +26,6 @@ export default function ProductCard({
     const product = await res.json();
     return product.data;
   };
-
 
   return (
     <Box>
@@ -60,13 +58,13 @@ export default function ProductCard({
       </VStack>
 
       <ProductEditModalContainer
-          isOpen={isOpen}
-          onClose={onClose}
-          onSave={onSave}
-          initialProductInfo={product}
-          alterProductInfo={updateProductInfo}
-          vendorId={vendorId}
-        />
+        isOpen={isOpen}
+        onClose={onClose}
+        onSave={onSave}
+        initialProductInfo={product}
+        alterProductInfo={updateProductInfo}
+        vendorId={vendorId}
+      />
     </Box>
   );
 }
