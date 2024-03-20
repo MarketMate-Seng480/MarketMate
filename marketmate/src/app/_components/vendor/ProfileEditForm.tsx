@@ -1,12 +1,10 @@
 'use client';
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-  Button,
   FormControl,
   FormLabel,
   Input,
   Stack,
-  Avatar,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -17,9 +15,8 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { Vendor } from "@prisma/client";
-import { useRouter } from "next/navigation";
 import { CustomButton } from "../CustomButton";
-
+import { AvatarUpload } from "./AvatarUpload";
 
 export default function ProfileEditModalContainer({
   isOpen,
@@ -33,6 +30,11 @@ export default function ProfileEditModalContainer({
   initialVendorInfo: Vendor;
 }) {
   const [vendorInfo, setVendorInfo] = useState(initialVendorInfo);
+  const [selectedLogo, setSelectedLogo] = useState<File | null>(null);
+
+  const handleLogoSelected = (newLogo: File) => {
+    setSelectedLogo(newLogo);
+  };
 
   const handleInputChange = (field: keyof Vendor, value: string) => {
     setVendorInfo((prev: Vendor) => ({ ...prev, [field]: value }));
@@ -50,7 +52,6 @@ export default function ProfileEditModalContainer({
     return vendor.data;
   };
 
-
   return (
     <Modal
       isOpen={isOpen}
@@ -61,7 +62,7 @@ export default function ProfileEditModalContainer({
       <ModalOverlay />
 
       <ModalContent>
-        <ModalHeader>Edit Profile</ModalHeader>
+        <ModalHeader>Edit Storefront</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
@@ -77,20 +78,14 @@ export default function ProfileEditModalContainer({
 
             <FormControl id="logo">
               <Stack
-                direction={["column", "row"]}
-                spacing={10}
+                direction={["column"]}
+                spacing={8}
               >
-                <FormControl id="logo">
-                  <FormLabel fontWeight={600}>Shop Logo URL</FormLabel>
-                  <Input
-                    type="text"
-                    value={vendorInfo?.logo}
-                    onChange={(e) => handleInputChange("logo", e.target.value)}
-                  />
-                </FormControl>
-                <Avatar
-                  size="xl"
-                  src={vendorInfo?.logo}
+                <FormLabel fontWeight={600}>Shop Logo</FormLabel>
+                <AvatarUpload
+                  variant='avatar' 
+                  savedImage={vendorInfo?.logo}
+                  onFileSelected={handleLogoSelected}
                 />
               </Stack>
             </FormControl>
@@ -128,6 +123,7 @@ export default function ProfileEditModalContainer({
         </ModalBody>
 
         <ModalFooter>
+        <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
           <CustomButton
             mr={3}
             onClick={() => {
@@ -137,7 +133,6 @@ export default function ProfileEditModalContainer({
           >
             Save
           </CustomButton>
-          <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

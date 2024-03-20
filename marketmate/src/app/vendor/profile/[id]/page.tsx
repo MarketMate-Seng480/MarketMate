@@ -69,7 +69,7 @@ export default function VendorProfilePage({
           variant="secondary"
           onClick={onOpen}
         >
-          Edit Profile
+          Edit Storefront
         </CustomButton>
         <InfoSection {...vendor} />
         <ProfileEditModalContainer
