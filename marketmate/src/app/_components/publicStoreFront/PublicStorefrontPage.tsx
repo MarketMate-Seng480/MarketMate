@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TopBanner from "./TopBanner";
-import { Box, VStack, Badge, HStack, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, VStack, Badge, HStack, SimpleGrid, Text, Link } from "@chakra-ui/react";
 import { Vendor_Extended } from "@/app/lib/types";
 import { CustomHeading } from "../CustomHeading";
 import ProductCard from "../ProductCard";
@@ -46,6 +46,26 @@ export default function PublicStoreFrontPage(vendor: Vendor_Extended) {
             </Badge>
           ))}
         </HStack>
+      </VStack>
+
+      <VStack>
+        <CustomHeading size="md">Contact</CustomHeading>
+        <Box
+          w={"full"}
+          textAlign={"center"}
+        >
+          <Text size={"md"}>
+            Email:{" "}
+            <Link
+              href={"mailto:" + vendor.email}
+              isExternal
+              color={"text.emphasis"}
+              fontWeight={"bold"}
+            >
+              {vendor.email}
+            </Link>
+          </Text>
+        </Box>
       </VStack>
 
       <VStack>
