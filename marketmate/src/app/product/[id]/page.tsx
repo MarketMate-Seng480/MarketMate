@@ -20,11 +20,11 @@ export default function ProductPage() {
   const toast = useToast();
   const [authUser, setAuthUser] = useState<AuthUser | null>();
   const [user, setUser] = useState<User | null>();
-  const [cart, setCart] = useState<PrismaCart | null>();
   const colors = useTheme().colors;
   const path = usePathname();
   const slug = path.split("/").pop();
   const fetchURL = `/api/products/${slug}`;
+  const [cartId, setCartId] = useState<String | null>(null);
   const [product, setProduct] = useState<Product | null>(null);
   const [vendor, setVendor] = useState<Vendor | null>(null);
 
@@ -84,62 +84,55 @@ export default function ProductPage() {
     }
   }, [product]);
 
-  async function fetchCart() {
-    if (authUser) {
-      try {
-        const response = await fetch(`/api/users/${authUser.id}/cart`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-        console.log("first Cart data:", data);
-        if (data.data == null){
+  async function addToCart() {
+    try{
+      if (user?.cartId != null) {
+          console.log("cartID is not null");
+      } else {
           console.log("No cart found for user, generating new cart");
-          const newCart = await fetch(`/api/users/${authUser.id}/cart`, {
+          const newCart = await fetch(`/api/users/${user?.id}/cart`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
           });
           const cartData = await newCart.json();
+          setCartId(cartData.id);
           console.log("New cart:", cartData);
-          setCart(cartData.data);
-        } else {
-          setCart(null);
-        }
-      } catch (error) {
-        console.error("Error fetching cart data:", error);          
       }
-
-    } 
-  };
-
-  async function addToCart() {
-    fetchCart();
-    const response = await fetch(`/api/users/cart/${cart?.id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        productId: product?.id,
-        userId: user?.id,
-      }),
-    });
-
-    const data = await response.json();
-    console.log("data", data);
-
-    toast.promise(Promise.resolve(response), {
-      success: {
-        title: "Product added to cart",
-        description: "Check your cart to proceed to checkout",
-      },
-      loading: { title: "Adding to cart", description: "Please wait..." },
-      error: { title: "Failed to add item to cart", description: "Please try again later" },
-    });
+    } catch (error) {
+      console.error("Error fetching cart data:", error); 
+    } finally {
+      console.log("Cart id", user?.cartId);
+      console.log("user id", user?.id);
+      
+      if (user?.cartId == null) {
+          console.log("cartid from usestate: ",cartId);
+      } else {
+        const response = await fetch(`/api/users/${authUser?.id}/cart/${user?.cartId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productId: product?.id,
+            quantity: 1,
+          }),
+        });
+        
+        const data = await response.json();
+        console.log("add to cart data", data);
+    
+        toast.promise(Promise.resolve(response), {
+          success: {
+            title: "Product added to cart",
+            description: "Check your cart to proceed to checkout",
+          },
+          loading: { title: "Adding to cart", description: "Please wait..." },
+          error: { title: "Failed to add item to cart", description: "Please try again later" },
+        });
+      }
+    }
   }
 
   return (
