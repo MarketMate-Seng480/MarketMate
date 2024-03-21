@@ -16,13 +16,6 @@ import {
 } from "@chakra-ui/react";
 import { Vendor } from "@prisma/client";
 import { CustomButton } from "../CustomButton";
-import Uppy from '@uppy/core';
-import Tus from '@uppy/tus';
-import '@uppy/core/dist/style.min.css';
-import '@uppy/dashboard/dist/style.min.css';
-import { supabase } from "../../lib/supabase";
-import useUser from "../../lib/hooks";
-import { useRouter } from "next/navigation";
 import { ImageUploader } from "../ImageUpload";
 
 export default function ProfileEditModalContainer({
