@@ -27,6 +27,7 @@ export default function ProductPage() {
   const [cartId, setCartId] = useState<String | null>(null);
   const [product, setProduct] = useState<Product | null>(null);
   const [vendor, setVendor] = useState<Vendor | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     supabase.auth
@@ -41,15 +42,21 @@ export default function ProductPage() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      if (authUser) {
-        const response = await fetch(`/api/users/${authUser.id}`);
-        const data = await response.json();
-        setUser(data.data);
+      try {
+        if (authUser) {
+          const response = await fetch(`/api/users/${authUser.id}`);
+          const data = await response.json();
+          setUser(data.data);
+        }
+      } catch (error) {
+        console.log("Error fetching user", error);
       }
     };
-
+    
     fetchUser();
   }, [authUser]);
+
+  // the issue is that this fetchCart runs on mount and when user is changing
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -65,6 +72,33 @@ export default function ProductPage() {
 
     fetchProduct();
   }, [fetchURL]);
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try{
+        if (user?.cartId != null) {
+            console.log("cartID is not null");
+            setCartId(user.cartId);
+        } else {
+            console.log("No cart found for user, generating new cart");
+            const newCart = await fetch(`/api/users/${user?.id}/cart`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+            const cartData = await newCart.json();
+            setCartId(cartData.id);
+            console.log("New cart:", cartData);
+        }
+      } catch (error) {
+        console.error("Error fetching cart data:", error); 
+      }
+    };
+    if (user != null) {
+      fetchCart();
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -84,56 +118,45 @@ export default function ProductPage() {
     }
   }, [product]);
 
-  async function addToCart() {
-    try{
-      if (user?.cartId != null) {
-          console.log("cartID is not null");
-      } else {
-          console.log("No cart found for user, generating new cart");
-          const newCart = await fetch(`/api/users/${user?.id}/cart`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-          const cartData = await newCart.json();
-          setCartId(cartData.id);
-          console.log("New cart:", cartData);
+  useEffect(() => {
+      if (cartId != null) {
+          setIsLoading(false);
       }
-    } catch (error) {
-      console.error("Error fetching cart data:", error); 
-    } finally {
+  }, [cartId]);
+
+
+  async function addToCart() {
+      setIsLoading(true);
       console.log("Cart id", user?.cartId);
       console.log("user id", user?.id);
+      console.log("cart id from usestate: ", cartId);
+      // add isloading here to the button, 
       
-      if (user?.cartId == null) {
-          console.log("cartid from usestate: ",cartId);
-      } else {
-        const response = await fetch(`/api/users/${authUser?.id}/cart/${user?.cartId}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            productId: product?.id,
-            quantity: 1,
-          }),
-        });
-        
-        const data = await response.json();
-        console.log("add to cart data", data);
-    
-        toast.promise(Promise.resolve(response), {
-          success: {
-            title: "Product added to cart",
-            description: "Check your cart to proceed to checkout",
-          },
-          loading: { title: "Adding to cart", description: "Please wait..." },
-          error: { title: "Failed to add item to cart", description: "Please try again later" },
-        });
-      }
+      const response = await fetch(`/api/users/${authUser?.id}/cart/${cartId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: product?.id,
+          quantity: 1,
+        }),
+      });
+      
+      const data = await response.json();
+      console.log("add to cart data", data);
+      
+      toast.promise(Promise.resolve(response), {
+        success: {
+          title: "Product added to cart",
+          description: "Check your cart to proceed to checkout",
+        },
+        loading: { title: "Adding to cart", description: "Please wait..." },
+        error: { title: "Failed to add item to cart", description: "Please try again later" },
+      });
+      setIsLoading(false);
     }
-  }
+  
 
   return (
     <PageContainer>
@@ -180,6 +203,7 @@ export default function ProductPage() {
               {product.description}
             </Text>
             <CustomButton
+              isLoading={isLoading}
               alignSelf={"start"}
               onClick={addToCart}
             >
