@@ -17,6 +17,8 @@ import {
 import { Vendor } from "@prisma/client";
 import { CustomButton } from "../CustomButton";
 import { ImageUploader } from "../ImageUpload";
+import useUser from "@/app/lib/hooks";
+import { supabase } from "@/app/lib/supabase";
 
 export default function ProfileEditModalContainer({
   isOpen,
@@ -30,16 +32,44 @@ export default function ProfileEditModalContainer({
   initialVendorInfo: Vendor;
 }) {
   const [vendorInfo, setVendorInfo] = useState(initialVendorInfo);
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const {data:user} = useUser();
 
   const handleInputChange = (field: keyof Vendor, value: string) => {
     setVendorInfo((prev: Vendor) => ({ ...prev, [field]: value }));
   };
 
-  const updateVendorInfo = async (info: Vendor) => {
-    if (imageUrl) {
-      setVendorInfo(prev => ({ ...prev, logo: imageUrl }));
+  const uploadFileToStorage = async (file: File, bucket: string): Promise<string | undefined> => {
+    if (!file) {
+      console.log("No file selected to upload");
+      return;
     }
+
+    try {
+      const filePath = `${user?.id}/${bucket}`;
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: true
+        });
+      // Bug: program never reaches here (stops executing after upload)
+      if (error) {
+        console.error("Upload error:", error.message);
+        return;
+      }
+      const fileUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      + '/storage/v1/object/public/'
+      + bucket
+      + '/'
+      + data.path;
+      return fileUrl;   
+    } catch (e) {
+      console.error("Error during file upload:", e);
+    }
+  };
+
+  const updateVendorInfo = async (info: Vendor) => {
     const res = await fetch(`/api/vendors/${info.id}`, {
       method: "PATCH",
       headers: {
@@ -51,6 +81,22 @@ export default function ProfileEditModalContainer({
     return vendor.data;
   };
 
+  const handleSubmit = async () => {
+    try {
+      let updatedVendorInfo = { ...vendorInfo };
+      if (avatarFile) {
+        const uploadedUrl = await uploadFileToStorage(avatarFile, 'avatar');
+        // Bug: program stops in uploadFileToStorage (never reaches this if statement)
+        if (uploadedUrl) {
+          updatedVendorInfo.logo = uploadedUrl;
+        }
+      }
+      await updateVendorInfo(updatedVendorInfo);
+    } catch (e) {
+      console.error("Error in submit:", e);
+    }
+  }
+  
   return (
     <Modal
       isOpen={isOpen}
@@ -81,7 +127,7 @@ export default function ProfileEditModalContainer({
                 spacing={8}
               >
                 <FormLabel fontWeight={600}>Shop Logo</FormLabel>
-                <ImageUploader bucket="avatar" setImageUrl={setImageUrl} savedImage={vendorInfo?.logo}/>
+                <ImageUploader bucket="avatar" setSelectedFile={setAvatarFile} savedImage={vendorInfo?.logo}/>
               </Stack>
             </FormControl>
 
@@ -122,7 +168,7 @@ export default function ProfileEditModalContainer({
           <CustomButton
             mr={3}
             onClick={() => {
-              updateVendorInfo(vendorInfo);
+              handleSubmit();
               onSave();
             }}
           >

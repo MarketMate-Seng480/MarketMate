@@ -1,23 +1,19 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { supabase } from '../lib/supabase';
-import useUser from "../lib/hooks";
 import { CustomButton } from "./CustomButton";
 import { Avatar, AvatarProps, VStack } from "@chakra-ui/react";
 
 interface ImageUploaderProps extends AvatarProps {
   savedImage?: string;
   bucket: 'avatar' | 'banner' | 'product' | 'logo';
-  setImageUrl: (url: string) => void;
+  setSelectedFile: (file: File) => void;
 }
 
 export const ImageUploader: React.FC<ImageUploaderProps> = ({
-  savedImage, bucket, setImageUrl
+  savedImage, bucket, setSelectedFile
 }) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [displayImage, setDisplayImage] = useState(savedImage);
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const {data:user} = useUser()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -29,34 +25,6 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
       fileReader.readAsDataURL(file);
       setSelectedFile(file);
     }
-  };
-
-  const handleUpload = async () => {
-    if (!selectedFile) {
-      console.log("No file selected to upload");
-      return;
-    }
-
-    const filePath = `${user?.id}/${bucket}`;
-    const { data, error } = await supabase.storage
-      .from(bucket)
-      .upload(filePath, selectedFile, {
-        cacheControl: '3600',
-        upsert: true
-      });
-
-    if (error) {
-      console.error("Upload error:", error.message);
-      return;
-    }
-
-    setImageUrl(
-      process.env.NEXT_PUBLIC_SUPABASE_URL
-      + '/storage/v1/object/public/'
-      + bucket
-      + '/'
-      + data.path
-    )
   };
 
   const openFileBrowser = () => {
@@ -90,8 +58,6 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           Add
       </CustomButton>
     )}
-    {/* TODO: Remove this so upload happens on parent component submission */}
-    <CustomButton onClick={handleUpload}>Submit</CustomButton>
   </VStack>
   )
 }
