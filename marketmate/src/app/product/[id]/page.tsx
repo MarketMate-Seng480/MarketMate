@@ -41,6 +41,7 @@ export default function ProductPage() {
     fetchProduct();
   }, [fetchURL]);
 
+
   useEffect(() => {
     const fetchUser = async () => {
       const session = (await supabase.auth.getSession()).data.session;
@@ -60,36 +61,26 @@ export default function ProductPage() {
     fetchUser();
   }, []);
 
+
   useEffect(() => {
     const fetchCart = async () => {
       try{
         if (user === null) return;
-        if (user?.cartId !== null) {
-            console.log("cartID is not null");
-           // setCartId(user.cartId);
-        } else {
-            console.log("No cart found for user, generating new cart");
+        if (user?.cartId === null) {
             const newCart = await fetch(`/api/users/${user?.id}/cart`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
             });
-            const cartData = await newCart.json();
-          //  setCartId(cartData.id);
-            console.log("New cart:", cartData);
         }
       } catch (error) {
         console.error("Error fetching cart data:", error); 
       }
     };
-
-
-    if (user !== null) {
-      fetchCart();
-    }
-
+    fetchCart();
   }, [user]);
+
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -114,21 +105,18 @@ export default function ProductPage() {
       if(product !== null) {
         setIsLoading(false);
       }
-
   }, [product]);
 
 
   async function addToCart() {
     setIsLoading(true);
-    console.log("Cart id", user?.cartId);
-    console.log("user id", user?.id);
 
     if(!user || !product || !user.cartId) {
       console.error("User, product or cart not found");
       setIsLoading(false);
       return;
     }
-    
+
     const response = await fetch(`/api/users/${user.id}/cart/${user.cartId}`, {
       method: "POST",
       headers: {
@@ -139,9 +127,6 @@ export default function ProductPage() {
         quantity: 1,
       }),
     });
-    
-    const data = await response.json();
-    console.log("add to cart data", data);
     
     toast.promise(Promise.resolve(response), {
       success: {
@@ -199,13 +184,24 @@ export default function ProductPage() {
             >
               {product.description}
             </Text>
-            <CustomButton
-              isLoading={isLoading}
-              alignSelf={"start"}
-              onClick={addToCart}
-            >
-              Add to Cart
-            </CustomButton>
+
+            {!user ? (
+              <CustomButton
+                isLoading={isLoading}
+                alignSelf={"start"}
+              >
+                Add to Cart
+              </CustomButton>
+            ) : (
+              <CustomButton
+                isLoading={isLoading}
+                alignSelf={"start"}
+                onClick={addToCart}
+              >
+                Add to Cart
+              </CustomButton>
+            )}
+
           </VStack>
         </SimpleGrid>
       ) : (

@@ -12,7 +12,15 @@ export async function GET(
       id: cartId,
     },
     include: {
-      cartItem: true,
+      cartItem: {
+        include: {
+          product: {
+            include: {
+              vendor: true,
+            }
+          },
+        },
+      }
     },
   });
   if (!cart) {
