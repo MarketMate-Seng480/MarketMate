@@ -17,13 +17,12 @@ import {
 import { Product } from "@prisma/client";
 import { CustomButton } from "../CustomButton";
 
-export default function ProductEditModalContainer({
+export default function ProductCreationModalContainer({
   isOpen,
   onClose,
   onSave,
   initialProductInfo,
   alterProductInfo,
-  deleteProductInfo,
   vendorId,
 }: {
   isOpen: boolean;
@@ -31,7 +30,6 @@ export default function ProductEditModalContainer({
   onSave: () => void;
   initialProductInfo: Product;
   alterProductInfo: (info: Product) => void;
-  deleteProductInfo: (info: Product) => void;
   vendorId: string;
 }) {
   const [productInfo, setProductInfo] = useState(initialProductInfo);
@@ -99,15 +97,6 @@ export default function ProductEditModalContainer({
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <CustomButton
-            mr={3}
-            onClick = {() => {
-              deleteProductInfo(productInfo);
-              onSave();
-            }}
-          >
-            Delete
-          </CustomButton>
           <CustomButton
             mr={3}
             onClick={() => {
