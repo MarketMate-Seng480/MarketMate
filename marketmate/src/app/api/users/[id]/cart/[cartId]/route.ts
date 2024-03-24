@@ -12,7 +12,15 @@ export async function GET(
       id: cartId,
     },
     include: {
-      cartItem: true,
+      cartItem: {
+        include: {
+          product: {
+            include: {
+              vendor: true,
+            }
+          },
+        },
+      }
     },
   });
   if (!cart) {
@@ -92,12 +100,24 @@ export async function POST(
       });
     }
 
+    const cart = await prisma.cart.findUnique({
+      where: {
+        id: cartId,
+      },
+    });
+    if (!cart) {
+      return NextResponse.json({
+        error: "Error finding cart information",
+        status: 500,
+      });
+    }
+
     const updatedCart = await prisma.cart.update({
       where: {
         id: cartId,
       },
       data: {
-        total: JSON.stringify(updated.quantity * product.price),
+        total: JSON.stringify(Number(cart.total) + json.quantity * product.price),
       },
     });
     if (!updatedCart) {
@@ -123,6 +143,18 @@ export async function POST(
       });
     }
 
+    const cart = await prisma.cart.findUnique({
+      where: {
+        id: cartId,
+      },
+    });
+    if (!cart) {
+      return NextResponse.json({
+        error: "Error finding cart information",
+        status: 500,
+      });
+    }
+
     const updated = await prisma.cart.update({
       where: {
         id: cartId,
@@ -133,7 +165,7 @@ export async function POST(
             id: newItem.id,
           },
         },
-        total: JSON.stringify(newItem.quantity * product.price),
+        total: JSON.stringify(Number(cart.total) + newItem.quantity * product.price),
       },
     });
     if (!updated) {
@@ -147,7 +179,7 @@ export async function POST(
   }
 }
 
-// delete a unique cart
+// delete all items in the cart
 export async function DELETE(
   req: Request,
   { params: { id, cartId } }: { params: { id: string; cartId: string } }
@@ -159,35 +191,6 @@ export async function DELETE(
       cartId: cartId,
     },
   });
-
-  // Delete the cart it self
-  const deleted = await prisma.cart.delete({
-    where: {
-      id: cartId,
-    },
-  });
-  if (!deleted) {
-    return NextResponse.json({
-      error: "Error deleting cart",
-      status: 500,
-    });
-  }
-
-  // Update the user cartId to null
-  const update = await prisma.user.update({
-    where: {
-      id,
-    },
-    data: {
-      cartId: null,
-    },
-  });
-  if (!update) {
-    return NextResponse.json({
-      error: "Error updating user cartId",
-      status: 500,
-    });
-  }
   
-  return NextResponse.json({ message: "ok", status: 200, data: deleted });
+  return NextResponse.json({ message: "ok", status: 200, data: deletedItems });
 }

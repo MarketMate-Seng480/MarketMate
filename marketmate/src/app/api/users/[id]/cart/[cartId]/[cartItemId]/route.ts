@@ -10,7 +10,11 @@ export async function GET(req: Request, { params: { id, cartId, cartItemId } }: 
         id: cartItemId,
       },
       include: {
-        product: true,
+        product: {
+          include: {
+            vendor: true,
+          }
+        },
       },
     });
     if (!products) {
@@ -82,5 +86,46 @@ export async function DELETE(req: Request, { params: { id, cartId, cartItemId } 
         status: 500,
       });
     }
+
+    const product = await prisma.product.findUnique({
+      where: {
+        id: deleted.productId,
+      },
+    });
+    if (!product) {
+      return NextResponse.json({
+        error: "Error finding product information",
+        status: 500,
+      });
+    }
+    
+    const cart = await prisma.cart.findUnique({
+      where: {
+        id: cartId,
+      },
+    });
+    if (!cart) {
+      return NextResponse.json({
+        error: "Error finding cart information",
+        status: 500,
+      });
+    }
+
+    const updatedCart = await prisma.cart.update({
+      where: {
+        id: cartId,
+      },
+      data: {
+        total: JSON.stringify(Number(cart.total) - deleted.quantity * product.price),
+      },
+    });
+    if (!updatedCart) {
+      return NextResponse.json({
+        error: "Error updating cart information",
+        status: 500,
+      });
+    }
+
+
     return NextResponse.json({ message: 'ok', status: 200, data: deleted })
 }

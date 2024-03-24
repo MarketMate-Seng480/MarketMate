@@ -57,17 +57,28 @@ export async function POST(req: Request, { params: { id } }: { params: { id: str
 
 // Get cart
 export async function GET(request: NextRequest, { params: { id } }: { params: { id: string } }) {
-  const products = await prisma.cart.findUnique({
+  const cart = await prisma.cart.findUnique({
     where: {
       userId: id,
     },
+    include: {
+      cartItem: {
+        include: {
+          product: {
+            include: {
+              vendor: true,
+            }
+          },
+        },
+      }
+    },
   });
-  if (!products) {
+  if (!cart) {
     return NextResponse.json({
       error: "Error finding cart",
       status: 500,
     });
   }
 
-  return NextResponse.json({ message: "ok", status: 200, data: products });
+  return NextResponse.json({ message: "ok", status: 200, data: cart });
 }
