@@ -8,6 +8,7 @@ import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
 import useUser from "../lib/hooks";
 import { useRouter } from "next/navigation";
+import { current } from "@reduxjs/toolkit";
 
 
 export default function ImageUploader({
@@ -34,6 +35,8 @@ export default function ImageUploader({
           allowedFileTypes: ['image/*'],
           maxFileSize: 5 * 1000 * 1000, // 5MB
         },
+        allowMultipleUploadBatches: true,
+        onBeforeFileAdded: (currentFile, files) => !Object.hasOwn(files, currentFile.id),
       }).use(Tus, { 
         endpoint: process.env.NEXT_PUBLIC_SUPABASE_URL + "/storage/v1/upload/resumable",
 
@@ -57,7 +60,7 @@ export default function ImageUploader({
 
     });
 
-    uppy.on("upload-success", () => {
+    uppy.on("upload-success", (file, response) => {
       uppy.cancelAll();
       if (inputRef.current) {
         inputRef.current.value = "";
@@ -70,27 +73,18 @@ export default function ImageUploader({
     const handleUpload = () => {
       if (uppy.getFiles().length === 0) console.error("No file to upload");
 
-      const randomUUID = crypto.randomUUID();
+      //const randomUUID = crypto.randomUUID();
 
       uppy.setFileMeta(uppy.getFiles()[0].id, {
-        objectName: user?.id + "/" + randomUUID + "/" + uppy.getFiles()[0].name,
+        objectName: user?.id + "/" + uppy.getFiles()[0].id + "/" + uppy.getFiles()[0].name,
       });
-
-      const fileName = uppy.getFiles()[0].name;
 
       uppy.upload();
 
-      setImageUrl(
-        process.env.NEXT_PUBLIC_SUPABASE_URL +
-          "/storage/v1/object/public/" +
-          bucket +
-          "/" +
-          user?.id +
-          "/" +
-          randomUUID +
-          "/" +
-          fileName
-      );
+      setImageUrl(process.env.NEXT_PUBLIC_SUPABASE_URL + "/storage/v1/object/public/" + 
+                  bucket + "/" + user?.id + "/" +
+                  uppy.getFiles()[0].id + "/" + uppy.getFiles()[0].name);
+
     };
 
 
@@ -98,6 +92,7 @@ export default function ImageUploader({
       if (e.target.files) {
         uppy.addFile({
           source: "file-added",
+          id: crypto.randomUUID(),
           name: e.target.files[0].name,
           type: e.target.files[0].type,
           data: e.target.files[0],

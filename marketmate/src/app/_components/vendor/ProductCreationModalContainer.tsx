@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { Product } from "@prisma/client";
 import { CustomButton } from "../CustomButton";
+import ImageUploader from "@components/ImageUpload";
 
 export default function ProductCreationModalContainer({
   isOpen,
@@ -43,6 +44,15 @@ export default function ProductCreationModalContainer({
       [field]: value,
     }));
   };
+
+  const setImageUrl = (url: string) => {
+    console.log(url);
+    setProductInfo((prevState) => ({
+      ...prevState,
+      detailImage: [url],
+      featureImage: url,
+    }));
+  }
 
   return (
     <Modal
@@ -89,10 +99,7 @@ export default function ProductCreationModalContainer({
             </FormControl>
             <FormControl id="image">
               <FormLabel>Image URL</FormLabel>
-              <Input
-                value={productInfo.featureImage}
-                onChange={(e) => handleInputChange("featureImage", e.target.value)}
-              />
+              <ImageUploader bucket="product" setImageUrl={setImageUrl} />
             </FormControl>
           </Stack>
         </ModalBody>
