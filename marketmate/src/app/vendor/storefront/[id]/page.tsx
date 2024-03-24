@@ -1,15 +1,13 @@
 'use client';
 import React, { useState, useEffect } from "react";
-import { Button, Box, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
 import TopBanner from "@components/vendor/TopBanner";
 import InfoSection from "@components/vendor/InfoSection";
-import ProfileEditModalContainer from "@components/vendor/ProfileEditForm";
 import { Vendor } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { CustomButton } from "@/app/_components/CustomButton";
-
-
+import ProfileEditModal from "@/app/_components/vendor/ProfileEditForm";
 
 export default function StorefrontAdminPage({ 
   params: { id },
@@ -23,7 +21,6 @@ export default function StorefrontAdminPage({
 
   const formClosed = () => {
     onClose();
-    location.reload();
   }
 
   useEffect(() => {
@@ -72,11 +69,12 @@ export default function StorefrontAdminPage({
           Edit Storefront
         </CustomButton>
         <InfoSection {...vendor} />
-        <ProfileEditModalContainer
+        <ProfileEditModal
           isOpen={isOpen}
           onClose={onClose}
           onSave={formClosed}
           initialVendorInfo={vendor}
+          setPageVendorInfo={setVendor}
         />
       </Box>
     </>

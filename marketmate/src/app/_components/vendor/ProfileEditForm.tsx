@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   FormControl,
   FormLabel,
@@ -20,23 +20,25 @@ import { ImageUploader } from "../ImageUpload";
 import useUser from "@/app/lib/hooks";
 import { supabase } from "@/app/lib/supabase";
 
-export default function ProfileEditModalContainer({
+export default function ProfileEditModal({
   isOpen,
   onClose,
   onSave,
   initialVendorInfo,
+  setPageVendorInfo
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSave: () => void;
   initialVendorInfo: Vendor;
+  setPageVendorInfo: ((vendor: Vendor) => void);
 }) {
-  const [vendorInfo, setVendorInfo] = useState(initialVendorInfo);
+  const [modalVendorInfo, setModalVendorInfo] = useState(initialVendorInfo);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const {data:user} = useUser();
 
   const handleInputChange = (field: keyof Vendor, value: string) => {
-    setVendorInfo((prev: Vendor) => ({ ...prev, [field]: value }));
+    setModalVendorInfo((prev: Vendor) => ({ ...prev, [field]: value }));
   };
 
   const uploadFileToStorage = async (file: File, bucket: string): Promise<string | undefined> => {
@@ -44,20 +46,24 @@ export default function ProfileEditModalContainer({
       console.log("No file selected to upload");
       return;
     }
-
     try {
-      const filePath = `${user?.id}/${bucket}`;
+      // Append current timestamp to file path
+      const timestamp = Date.now();
+      const filePath = `${user?.id}/${file.name}-${timestamp}`;
+
+      // Upload to Supabase storage
       const { data, error } = await supabase.storage
         .from(bucket)
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: true
         });
-      // Bug: program never reaches here (stops executing after upload)
       if (error) {
         console.error("Upload error:", error.message);
         return;
       }
+
+      // Get file storage path to be saved in DB 
       const fileUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
       + '/storage/v1/object/public/'
       + bucket
@@ -68,8 +74,8 @@ export default function ProfileEditModalContainer({
       console.error("Error during file upload:", e);
     }
   };
-
-  const updateVendorInfo = async (info: Vendor) => {
+  
+  const uploadVendorToDatabase = async (info: Vendor) => {
     const res = await fetch(`/api/vendors/${info.id}`, {
       method: "PATCH",
       headers: {
@@ -83,15 +89,16 @@ export default function ProfileEditModalContainer({
 
   const handleSubmit = async () => {
     try {
-      let updatedVendorInfo = { ...vendorInfo };
+      let updatedVendorInfo = { ...modalVendorInfo };
       if (avatarFile) {
         const uploadedUrl = await uploadFileToStorage(avatarFile, 'avatar');
-        // Bug: program stops in uploadFileToStorage (never reaches this if statement)
         if (uploadedUrl) {
           updatedVendorInfo.logo = uploadedUrl;
         }
       }
-      await updateVendorInfo(updatedVendorInfo);
+      await uploadVendorToDatabase(updatedVendorInfo);
+      setModalVendorInfo(updatedVendorInfo);
+      setPageVendorInfo(updatedVendorInfo);
     } catch (e) {
       console.error("Error in submit:", e);
     }
@@ -116,7 +123,7 @@ export default function ProfileEditModalContainer({
               <FormLabel fontWeight={600}>Shop Name</FormLabel>
               <Input
                 type="text"
-                value={vendorInfo?.name}
+                value={modalVendorInfo?.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
               />
             </FormControl>
@@ -127,7 +134,7 @@ export default function ProfileEditModalContainer({
                 spacing={8}
               >
                 <FormLabel fontWeight={600}>Shop Logo</FormLabel>
-                <ImageUploader bucket="avatar" setSelectedFile={setAvatarFile} savedImage={vendorInfo?.logo}/>
+                <ImageUploader bucket="avatar" setSelectedFile={setAvatarFile} savedImage={modalVendorInfo?.logo}/>
               </Stack>
             </FormControl>
 
@@ -135,7 +142,7 @@ export default function ProfileEditModalContainer({
               <FormLabel fontWeight={600}>Email</FormLabel>
               <Input
                 type="email"
-                value={vendorInfo?.email}
+                value={modalVendorInfo?.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
               />
             </FormControl>
@@ -144,7 +151,7 @@ export default function ProfileEditModalContainer({
               <FormLabel fontWeight={600}>Phone</FormLabel>
               <Input
                 type="tel"
-                value={vendorInfo?.phone}
+                value={modalVendorInfo?.phone}
                 onChange={(e) => handleInputChange("phone", e.target.value)}
               />
             </FormControl>
@@ -156,7 +163,7 @@ export default function ProfileEditModalContainer({
             <FormControl id="aboutUs">
               <FormLabel fontWeight={600}>About Us</FormLabel>
               <Textarea
-                value={vendorInfo?.description}
+                value={modalVendorInfo?.description}
                 onChange={(e) => handleInputChange("description", e.target.value)}
               />
             </FormControl>
