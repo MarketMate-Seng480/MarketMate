@@ -13,6 +13,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Textarea,
+  HStack,
 } from "@chakra-ui/react";
 import { Vendor } from "@prisma/client";
 import { CustomButton } from "../CustomButton";
@@ -34,7 +35,8 @@ export default function ProfileEditModal({
   setPageVendorInfo: ((vendor: Vendor) => void);
 }) {
   const [modalVendorInfo, setModalVendorInfo] = useState(initialVendorInfo);
-  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
   const {data:user} = useUser();
 
   const handleInputChange = (field: keyof Vendor, value: string) => {
@@ -90,10 +92,16 @@ export default function ProfileEditModal({
   const handleSubmit = async () => {
     try {
       let updatedVendorInfo = { ...modalVendorInfo };
-      if (avatarFile) {
-        const uploadedUrl = await uploadFileToStorage(avatarFile, 'avatar');
-        if (uploadedUrl) {
-          updatedVendorInfo.logo = uploadedUrl;
+      if (logoFile) {
+        const uploadedLogoUrl = await uploadFileToStorage(logoFile, 'logo');
+        if (uploadedLogoUrl) {
+          updatedVendorInfo.logo = uploadedLogoUrl;
+        }
+      }
+      if (bannerFile) {
+        const uploadedBannerUrl = await uploadFileToStorage(bannerFile, 'banner');
+        if (uploadedBannerUrl) {
+          updatedVendorInfo.banner = uploadedBannerUrl;
         }
       }
       await uploadVendorToDatabase(updatedVendorInfo);
@@ -128,15 +136,28 @@ export default function ProfileEditModal({
               />
             </FormControl>
 
-            <FormControl id="logo">
-              <Stack
-                direction={["column"]}
-                spacing={8}
-              >
-                <FormLabel fontWeight={600}>Shop Logo</FormLabel>
-                <ImageUploader bucket="avatar" setSelectedFile={setAvatarFile} savedImage={modalVendorInfo?.logo}/>
-              </Stack>
-            </FormControl>
+            <HStack display='flex' justifyContent='space-between'>
+              <FormControl id="logo" width='fit-content'>
+                <Stack
+                  direction={["column"]}
+                  alignItems='start'
+                  width='fit-content'
+                >
+                  <FormLabel fontWeight={600}>Shop Logo</FormLabel>
+                  <ImageUploader bucket="logo" setSelectedFile={setLogoFile} savedImage={modalVendorInfo?.logo}/>
+                </Stack>
+              </FormControl>
+              <FormControl id="banner" width='fit-content'>
+                <Stack
+                  direction={["column"]}
+                  alignItems='start'
+                  width='fit-content'
+                >
+                  <FormLabel fontWeight={600}>Banner Image</FormLabel>
+                  <ImageUploader bucket="banner" setSelectedFile={setBannerFile} savedImage={modalVendorInfo?.banner}/>
+                </Stack>
+              </FormControl>
+            </HStack>
 
             <FormControl id="email">
               <FormLabel fontWeight={600}>Email</FormLabel>
@@ -170,8 +191,8 @@ export default function ProfileEditModal({
           </Stack>
         </ModalBody>
 
-        <ModalFooter>
-        <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
+        <ModalFooter gap='1rem'>
+          <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
           <CustomButton
             mr={3}
             onClick={() => {

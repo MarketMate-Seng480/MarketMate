@@ -55,6 +55,7 @@ export default function StorefrontAdminPage({
       <TopBanner
         name={vendor.name || ""}
         logo={vendor.logo || ""}
+        banner={vendor.banner || ""}
       />
 
       <Box

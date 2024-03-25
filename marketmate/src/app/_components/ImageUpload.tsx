@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { CustomButton } from "./CustomButton";
-import { Avatar, AvatarProps, VStack } from "@chakra-ui/react";
+import { Avatar, AvatarProps, Image, VStack } from "@chakra-ui/react";
 
 interface ImageUploaderProps extends AvatarProps {
   savedImage?: string;
@@ -33,31 +33,53 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
   return (
     <VStack>
-    <Avatar size='2xl' src={displayImage} />
-    <input
-      type="file"
-      accept="image/*"
-      ref={inputRef}
-      onChange={handleChange}
-      style={{ display: 'none' }}
-    />
-    {savedImage ? (
-      <CustomButton
-          variant="secondary" 
-          w='fit-content'
-          onClick={openFileBrowser}
-      >
-          Change
-      </CustomButton>
-    ) : (
-      <CustomButton
-          variant="secondary" 
-          w='fit-content'
-          onClick={openFileBrowser}
-      >
-          Add
-      </CustomButton>
-    )}
+      <>
+        {bucket === 'banner' ? (
+          <Image 
+            alt={'banner-upload'} 
+            src={displayImage} 
+            borderRadius='md'
+            height='128px'
+            width='400px'
+            objectFit='cover'
+          />
+        ) : bucket === 'product' ? (
+          <Image 
+            alt={'product-upload'} 
+            src={displayImage} 
+            borderRadius='md'
+            height='128px'
+            width='128px'
+            objectFit='cover'
+          />
+        ) : (
+          <Avatar size='2xl' src={displayImage} />
+        )}
+      </>
+      <input
+        type="file"
+        accept="image/*"
+        ref={inputRef}
+        onChange={handleChange}
+        style={{ display: 'none' }}
+      />
+      {savedImage ? (
+        <CustomButton
+            variant="secondary" 
+            w='fit-content'
+            onClick={openFileBrowser}
+        >
+            Change
+        </CustomButton>
+      ) : (
+        <CustomButton
+            variant="secondary" 
+            w='fit-content'
+            onClick={openFileBrowser}
+        >
+            Add
+        </CustomButton>
+      )}
   </VStack>
   )
 }
