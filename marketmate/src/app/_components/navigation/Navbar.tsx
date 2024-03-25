@@ -16,13 +16,13 @@ import {
   VStack,
   useTheme,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { FiShoppingCart, FiUser } from "react-icons/fi";
 import { Session } from "@supabase/auth-helpers-nextjs";
 import { supabase } from "../../lib/supabase";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { User, Vendor } from "@prisma/client";
+import { User } from "@prisma/client";
 import { LogoLink, NavLink } from "./CustomLinks";
 import { CustomMenuItem, CustomMenuList } from "./CustomMenu";
 import ProfileCreationForm from "@components/vendor/ProfileCreationForm";
@@ -141,6 +141,7 @@ export default function Navbar() {
             }
             variant={"ghost"}
             aria-label={"Toggle Navigation"}
+            _hover={{ bgColor: "gray.500" }}
           />
         </Flex>
         <Flex

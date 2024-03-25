@@ -1,15 +1,13 @@
 "use client";
 import { VStack, Image, Heading, Text, Box, useDisclosure } from "@chakra-ui/react";
-import type { Product, Vendor } from "@prisma/client";
+import type { Product } from "@prisma/client";
 import ProductEditModalContainer from "@components/vendor/ProductEditModalContainer";
-import { useEffect, useState } from "react";
 
-
-export default function ProductCard({ 
+export default function ProductCard({
   product,
   vendorId,
-  onSave, 
-}: { 
+  onSave,
+}: {
   product: Product;
   vendorId: string;
   onSave: () => void;
@@ -45,7 +43,6 @@ export default function ProductCard({
     return deleted;
   };
 
-
   return (
     <Box>
       <VStack spacing={8}>
@@ -77,14 +74,14 @@ export default function ProductCard({
       </VStack>
 
       <ProductEditModalContainer
-          isOpen={isOpen}
-          onClose={onClose}
-          onSave={onSave}
-          initialProductInfo={product}
-          alterProductInfo={updateProductInfo}
-          deleteProductInfo={deleteProduct}
-          vendorId={vendorId}
-        />
+        isOpen={isOpen}
+        onClose={onClose}
+        onSave={onSave}
+        initialProductInfo={product}
+        alterProductInfo={updateProductInfo}
+        deleteProductInfo={deleteProduct}
+        vendorId={vendorId}
+      />
     </Box>
   );
 }

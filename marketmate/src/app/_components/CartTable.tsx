@@ -90,11 +90,10 @@ function processedCartItem(cartItems: CartItem[]): ProcessedCartItem[] {
       vendor: cartItem.product.vendor,
     };
     console.log("Processed Product:", processedProducts[cartItem.id]);
-  });  
+  });
 
   return Object.values(processedProducts);
 }
-
 
 function prepareOrderRequest(user: UserDB, products: ProcessedCartItem[]): EmailProps {
   const orderInfo: OrderInfo[] = products.map((product) => ({
@@ -205,7 +204,6 @@ export default function CartTable() {
           console.log("User data:", userData);
           setUser(userData);
 
-
           const res = await fetch(`/api/users/${authUser.id}/cart`, {
             method: "GET",
             headers: {
@@ -220,15 +218,13 @@ export default function CartTable() {
           console.log("CartItem data:", cartData.cartItem);
 
           setProducts(processedCartItem(cartData.cartItem));
-
         } catch (error) {
           console.error("Error fetching cart data:", error);
-        };
-      }
+        }
+      };
       fetchData();
     }
   }, [authUser]); // Only re-run this effect when the user changes
-
 
   return (
     <Center>
@@ -260,8 +256,10 @@ export default function CartTable() {
                     <Image
                       src={product.featureImage}
                       alt={product.name}
-                      boxSize={{ base: "50px", md: "100px" }}
+                      width={{ base: "50px", md: "100px" }}
+                      height={{ base: "50px", md: "100px" }}
                       borderRadius={"lg"}
+                      objectFit="cover"
                     />
                     <VStack align="start">
                       <Text fontWeight="bold">{product.name}</Text>

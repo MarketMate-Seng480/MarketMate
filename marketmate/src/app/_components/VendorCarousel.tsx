@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import VendorCard from "./VendorCard";
 import { Vendor_Extended } from "@lib/types";
+import { brandTheme } from "../providers";
 
 const settings = {
   dots: true,
@@ -22,7 +23,7 @@ const settings = {
   adaptiveHeight: true,
   responsive: [
     {
-      breakpoint: 1024, // Everything below this screen size, show 1 slide
+      breakpoint: 1100, // Everything below this screen size, show 1 slide
       settings: {
         slidesToShow: 1,
       },
@@ -74,8 +75,9 @@ export default function VendorCarousel() {
         zIndex={2}
         onClick={() => slider?.slickPrev()}
         display={{ base: "none", md: "flex" }}
-        color={"gray.100"}
-        bgColor={"gray.500"}
+        color={"gray.900"}
+        bgColor={brandTheme.colors.gray[500]}
+        _hover={{ bgColor: brandTheme.colors.text.caption }}
       >
         <FiChevronLeft />
       </IconButton>
@@ -92,7 +94,8 @@ export default function VendorCarousel() {
         onClick={() => slider?.slickNext()}
         display={{ base: "none", md: "flex" }}
         color={"gray.100"}
-        bgColor={"gray.500"}
+        bgColor={brandTheme.colors.gray[500]}
+        _hover={{ bgColor: brandTheme.colors.text.caption }}
       >
         <FiChevronRight />
       </IconButton>

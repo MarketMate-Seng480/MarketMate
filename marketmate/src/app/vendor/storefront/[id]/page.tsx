@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from "react";
 import { Button, Box, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
@@ -9,13 +9,7 @@ import { Vendor } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { CustomButton } from "@/app/_components/CustomButton";
 
-
-
-export default function StorefrontAdminPage({ 
-  params: { id },
-}: {
-  params: { id: string }
-}) {
+export default function StorefrontAdminPage({ params: { id } }: { params: { id: string } }) {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [vendor, setVendor] = useState<Vendor>();
@@ -24,7 +18,7 @@ export default function StorefrontAdminPage({
   const formClosed = () => {
     onClose();
     location.reload();
-  }
+  };
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -80,7 +74,5 @@ export default function StorefrontAdminPage({
         />
       </Box>
     </>
-
-  )
+  );
 }
-
