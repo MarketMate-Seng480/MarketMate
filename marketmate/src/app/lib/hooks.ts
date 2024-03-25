@@ -9,6 +9,7 @@ const initUser = {
 	profileImage: "",
 };
 
+// Careful using this hook, the state does not update right away on user info change (*needs a fix*)
 export default function useUser() {
     return useQuery({
         queryKey: ["user"],

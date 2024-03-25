@@ -1,69 +1,36 @@
 "use client";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { VStack, Image, Text, useTheme, SimpleGrid, useToast } from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
-import type { Product, Vendor } from "@prisma/client";
+import type { Product, Vendor, User } from "@prisma/client";
 import { NavLink } from "@components/navigation/CustomLinks";
 import { CustomButton } from "@components/CustomButton";
 import LoadingPage from "@components/Loading";
-import { User as AuthUser } from "@supabase/auth-helpers-nextjs";
 import { supabase } from "@/app/lib/supabase";
-import type {
-  User,
-  Product as PrismaProduct,
-  Vendor as PrismaVendor,
-  Cart as PrismaCart,
-} from "@prisma/client";
+
 
 export default function ProductPage() {
   const toast = useToast();
-  const [authUser, setAuthUser] = useState<AuthUser | null>();
-  const [user, setUser] = useState<User | null>();
-  const [cart, setCart] = useState<PrismaCart | null>();
   const colors = useTheme().colors;
   const path = usePathname();
   const slug = path.split("/").pop();
   const fetchURL = `/api/products/${slug}`;
   const [product, setProduct] = useState<Product | null>(null);
   const [vendor, setVendor] = useState<Vendor | null>(null);
-
-  useEffect(() => {
-    supabase.auth
-      .getSession()
-      .then((session) => {
-        setAuthUser(session?.data?.session?.user ?? null);
-      })
-      .catch((err) => {
-        console.log("ERROR GET SESSION: ", err);
-      });
-  }, []); // Empty dependency array ensures this effect runs only once on mount
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (authUser) {
-        const response = await fetch(`/api/users/${authUser.id}`);
-        const data = await response.json();
-        setUser(data.data);
-      }
-    };
-
-    const fetchCart = async () => {
-      if (authUser) {
-        const response = await fetch(`/api/cart/${authUser.id}`);
-        const data = await response.json();
-        setCart(data.data[0]);
-      }
-    };
-
-    fetchUser();
-    fetchCart();
-  }, [authUser]);
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(fetchURL);
+        const response = await fetch(fetchURL, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         const data = await response.json();
         console.log("data", data);
         setProduct(data.data);
@@ -71,9 +38,49 @@ export default function ProductPage() {
         console.error("Error fetching product:", error);
       }
     };
-
     fetchProduct();
   }, [fetchURL]);
+
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const session = (await supabase.auth.getSession()).data.session;
+      if (!session) return;
+
+      const userData = await fetch(`/api/users/${session.user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const userDataJson = await userData.json();
+      console.log("user data", userDataJson);
+      setUser(userDataJson.data);
+    }
+    
+    fetchUser();
+  }, []);
+
+
+  useEffect(() => {
+    const fetchCart = async () => {
+      try{
+        if (user === null) return;
+        if (user?.cartId === null) {
+            const newCart = await fetch(`/api/users/${user?.id}/cart`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+        }
+      } catch (error) {
+        console.error("Error fetching cart data:", error); 
+      }
+    };
+    fetchCart();
+  }, [user]);
+
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -93,22 +100,34 @@ export default function ProductPage() {
     }
   }, [product]);
 
+
+  useEffect(() => {
+      if(product !== null) {
+        setIsLoading(false);
+      }
+  }, [product]);
+
+
   async function addToCart() {
-    const response = await fetch(`/api/cart/${user?.id}`, {
+    setIsLoading(true);
+
+    if(!user || !product || !user.cartId) {
+      console.error("User, product or cart not found");
+      setIsLoading(false);
+      return;
+    }
+
+    const response = await fetch(`/api/users/${user.id}/cart/${user.cartId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         productId: product?.id,
-        cartId: cart?.id,
-        userId: user?.id,
+        quantity: 1,
       }),
     });
-
-    const data = await response.json();
-    console.log("data", data);
-
+    
     toast.promise(Promise.resolve(response), {
       success: {
         title: "Product added to cart",
@@ -117,11 +136,13 @@ export default function ProductPage() {
       loading: { title: "Adding to cart", description: "Please wait..." },
       error: { title: "Failed to add item to cart", description: "Please try again later" },
     });
+    setIsLoading(false);
   }
+
 
   return (
     <PageContainer>
-      {product ? (
+      {(!isLoading && product) ? (
         <SimpleGrid
           columns={{ base: 1, md: 2 }}
           spacing={10}
@@ -163,12 +184,24 @@ export default function ProductPage() {
             >
               {product.description}
             </Text>
-            <CustomButton
-              alignSelf={"start"}
-              onClick={addToCart}
-            >
-              Add to Cart
-            </CustomButton>
+
+            {!user ? (
+              <CustomButton
+                isLoading={isLoading}
+                alignSelf={"start"}
+              >
+                Add to Cart
+              </CustomButton>
+            ) : (
+              <CustomButton
+                isLoading={isLoading}
+                alignSelf={"start"}
+                onClick={addToCart}
+              >
+                Add to Cart
+              </CustomButton>
+            )}
+
           </VStack>
         </SimpleGrid>
       ) : (

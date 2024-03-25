@@ -5,6 +5,7 @@ import { CgAdd } from "react-icons/cg";
 import { Vendor, Product } from "@prisma/client";
 import ProductCard from "@components/vendor/ProductCard";
 import ProductEditModalContainer from "@components/vendor/ProductEditModalContainer";
+import ProductCreationModalContainer from "@components/vendor/ProductCreationModalContainer";
 import TopBanner from "@components/vendor/TopBanner";
 import { CustomButton } from "@/app/_components/CustomButton";
 
@@ -129,7 +130,7 @@ export default function VendorProductPage({
           Add Product
         </CustomButton>
 
-        <ProductEditModalContainer
+        <ProductCreationModalContainer
           isOpen={isOpen}
           onClose={onClose}
           onSave={formClosed}
