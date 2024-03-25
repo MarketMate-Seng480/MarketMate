@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Button,
   FormControl,
   FormLabel,
   Input,
@@ -101,7 +100,7 @@ export default function ProductEditModalContainer({
         <ModalFooter>
           <CustomButton
             mr={3}
-            onClick = {() => {
+            onClick={() => {
               deleteProductInfo(productInfo);
               onSave();
             }}
@@ -117,7 +116,12 @@ export default function ProductEditModalContainer({
           >
             Save
           </CustomButton>
-          <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
+          <CustomButton
+            variant={"secondary"}
+            onClick={onClose}
+          >
+            Cancel
+          </CustomButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

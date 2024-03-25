@@ -29,7 +29,7 @@ export default function ProductCard({ product }: { product: Product }) {
   }, [product.vendorId]);
 
   return (
-    <Box>
+    <Box w={"300px"}>
       <VStack spacing={8}>
         <Image
           src={product.featureImage}

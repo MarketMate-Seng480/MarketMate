@@ -1,46 +1,33 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Box, VStack } from "@chakra-ui/react";
+import { Flex, VStack } from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
-import TopBanner from "@components/vendor/TopBanner";
-import type { Vendor } from "@prisma/client";
+import { Vendor_Extended } from "@/app/lib/types";
 import LoadingPage from "@components/Loading";
-
-function ProfilePage(vendor: Vendor) {
-  return (
-    <>
-      <TopBanner
-        name={vendor.name}
-        logo={vendor.logo || ""}
-        banner={vendor.banner || ""}
-      />
-      <Box
-        mx={10}
-        mt={10}
-      >
-        {/* <InfoSection {...vendor} /> */}
-        <text>{vendor.description}</text>
-      </Box>
-    </>
-  );
-}
+import PublicStoreFrontPage from "@components/publicStoreFront/PublicStorefrontPage";
+import Footer from "@components/Footer";
 
 export default function Shop() {
   const path = usePathname();
   const slug = path.split("/").pop();
   const fetchURL = `/api/vendors/${slug}`;
-  const [vendor, setVendor] = useState<Vendor | null>(null);
+  const [vendor, setVendor] = useState<Vendor_Extended | null>(null);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchVendor = async () => {
       try {
         const response = await fetch(fetchURL);
         const data = await response.json();
-        console.log("data", data);
+
+        if (response.status !== 200) {
+          throw new Error("Error fetching vendor");
+        }
+        setError(false);
         setVendor(data.data);
       } catch (error) {
-        console.error("Error fetching vendor:", error);
+        setError(true);
       }
     };
 
@@ -49,12 +36,21 @@ export default function Shop() {
 
   return (
     <PageContainer>
-      <VStack
-        padding={10}
-        spacing={6}
+      <Flex
+        flexDirection={"column"}
+        alignItems={"center"}
       >
-        {vendor ? <ProfilePage {...vendor} /> : <LoadingPage />}
-      </VStack>
+        <VStack
+          paddingX={{ base: 2, md: 10 }}
+          paddingBottom={10}
+          spacing={6}
+          maxW={"1600px"}
+        >
+          {error ? <text>Error fetching vendor</text> : null}
+          {vendor ? <PublicStoreFrontPage {...vendor} /> : <LoadingPage />}
+        </VStack>
+        <Footer />
+      </Flex>
     </PageContainer>
   );
 }

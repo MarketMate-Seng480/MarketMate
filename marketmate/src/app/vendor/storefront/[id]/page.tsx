@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from "react";
 import { Box, useDisclosure } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
@@ -9,11 +9,7 @@ import { useRouter } from "next/navigation";
 import { CustomButton } from "@/app/_components/CustomButton";
 import ProfileEditModal from "@/app/_components/vendor/ProfileEditForm";
 
-export default function StorefrontAdminPage({ 
-  params: { id },
-}: {
-  params: { id: string }
-}) {
+export default function StorefrontAdminPage({ params: { id } }: { params: { id: string } }) {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [vendor, setVendor] = useState<Vendor>();
@@ -21,7 +17,7 @@ export default function StorefrontAdminPage({
 
   const formClosed = () => {
     onClose();
-  }
+  };
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -79,7 +75,5 @@ export default function StorefrontAdminPage({
         />
       </Box>
     </>
-
-  )
+  );
 }
-
