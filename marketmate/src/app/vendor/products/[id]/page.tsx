@@ -4,7 +4,6 @@ import { Button, Box, useDisclosure, SimpleGrid } from "@chakra-ui/react";
 import { CgAdd } from "react-icons/cg";
 import { Vendor, Product } from "@prisma/client";
 import ProductCard from "@components/vendor/ProductCard";
-import ProductEditModalContainer from "@components/vendor/ProductEditModalContainer";
 import ProductCreationModalContainer from "@components/vendor/ProductCreationModalContainer";
 import TopBanner from "@components/vendor/TopBanner";
 import { CustomButton } from "@/app/_components/CustomButton";
@@ -117,6 +116,7 @@ export default function VendorProductPage({
       <TopBanner
         name={vendor.name}
         logo={vendor.logo || ""}
+        banner={vendor.banner || ""}
       />
       <Box
         mx={10}

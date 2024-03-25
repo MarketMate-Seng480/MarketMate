@@ -1,12 +1,10 @@
 'use client';
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
-  Button,
   FormControl,
   FormLabel,
   Input,
   Stack,
-  Avatar,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -15,30 +13,71 @@ import {
   ModalBody,
   ModalCloseButton,
   Textarea,
+  HStack,
 } from "@chakra-ui/react";
 import { Vendor } from "@prisma/client";
-import { useRouter } from "next/navigation";
 import { CustomButton } from "../CustomButton";
+import { ImageUploader } from "../ImageUpload";
+import useUser from "@/app/lib/hooks";
+import { supabase } from "@/app/lib/supabase";
 
-
-export default function ProfileEditModalContainer({
+export default function ProfileEditModal({
   isOpen,
   onClose,
   onSave,
   initialVendorInfo,
+  setPageVendorInfo
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSave: () => void;
   initialVendorInfo: Vendor;
+  setPageVendorInfo: ((vendor: Vendor) => void);
 }) {
-  const [vendorInfo, setVendorInfo] = useState(initialVendorInfo);
+  const [modalVendorInfo, setModalVendorInfo] = useState(initialVendorInfo);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const {data:user} = useUser();
 
   const handleInputChange = (field: keyof Vendor, value: string) => {
-    setVendorInfo((prev: Vendor) => ({ ...prev, [field]: value }));
+    setModalVendorInfo((prev: Vendor) => ({ ...prev, [field]: value }));
   };
 
-  const updateVendorInfo = async (info: Vendor) => {
+  const uploadFileToStorage = async (file: File, bucket: string): Promise<string | undefined> => {
+    if (!file) {
+      console.log("No file selected to upload");
+      return;
+    }
+    try {
+      // Append current timestamp to file path
+      const timestamp = Date.now();
+      const filePath = `${user?.id}/${file.name}-${timestamp}`;
+
+      // Upload to Supabase storage
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: true
+        });
+      if (error) {
+        console.error("Upload error:", error.message);
+        return;
+      }
+
+      // Get file storage path to be saved in DB 
+      const fileUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+      + '/storage/v1/object/public/'
+      + bucket
+      + '/'
+      + data.path;
+      return fileUrl;   
+    } catch (e) {
+      console.error("Error during file upload:", e);
+    }
+  };
+  
+  const uploadVendorToDatabase = async (info: Vendor) => {
     const res = await fetch(`/api/vendors/${info.id}`, {
       method: "PATCH",
       headers: {
@@ -50,7 +89,29 @@ export default function ProfileEditModalContainer({
     return vendor.data;
   };
 
-
+  const handleSubmit = async () => {
+    try {
+      let updatedVendorInfo = { ...modalVendorInfo };
+      if (logoFile) {
+        const uploadedLogoUrl = await uploadFileToStorage(logoFile, 'logo');
+        if (uploadedLogoUrl) {
+          updatedVendorInfo.logo = uploadedLogoUrl;
+        }
+      }
+      if (bannerFile) {
+        const uploadedBannerUrl = await uploadFileToStorage(bannerFile, 'banner');
+        if (uploadedBannerUrl) {
+          updatedVendorInfo.banner = uploadedBannerUrl;
+        }
+      }
+      await uploadVendorToDatabase(updatedVendorInfo);
+      setModalVendorInfo(updatedVendorInfo);
+      setPageVendorInfo(updatedVendorInfo);
+    } catch (e) {
+      console.error("Error in submit:", e);
+    }
+  }
+  
   return (
     <Modal
       isOpen={isOpen}
@@ -61,7 +122,7 @@ export default function ProfileEditModalContainer({
       <ModalOverlay />
 
       <ModalContent>
-        <ModalHeader>Edit Profile</ModalHeader>
+        <ModalHeader>Edit Storefront</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
@@ -70,36 +131,39 @@ export default function ProfileEditModalContainer({
               <FormLabel fontWeight={600}>Shop Name</FormLabel>
               <Input
                 type="text"
-                value={vendorInfo?.name}
+                value={modalVendorInfo?.name}
                 onChange={(e) => handleInputChange("name", e.target.value)}
               />
             </FormControl>
 
-            <FormControl id="logo">
-              <Stack
-                direction={["column", "row"]}
-                spacing={10}
-              >
-                <FormControl id="logo">
-                  <FormLabel fontWeight={600}>Shop Logo URL</FormLabel>
-                  <Input
-                    type="text"
-                    value={vendorInfo?.logo}
-                    onChange={(e) => handleInputChange("logo", e.target.value)}
-                  />
-                </FormControl>
-                <Avatar
-                  size="xl"
-                  src={vendorInfo?.logo}
-                />
-              </Stack>
-            </FormControl>
+            <HStack display='flex' justifyContent='space-between'>
+              <FormControl id="logo" width='fit-content'>
+                <Stack
+                  direction={["column"]}
+                  alignItems='start'
+                  width='fit-content'
+                >
+                  <FormLabel fontWeight={600}>Shop Logo</FormLabel>
+                  <ImageUploader bucket="logo" setSelectedFile={setLogoFile} savedImage={modalVendorInfo?.logo}/>
+                </Stack>
+              </FormControl>
+              <FormControl id="banner" width='fit-content'>
+                <Stack
+                  direction={["column"]}
+                  alignItems='start'
+                  width='fit-content'
+                >
+                  <FormLabel fontWeight={600}>Banner Image</FormLabel>
+                  <ImageUploader bucket="banner" setSelectedFile={setBannerFile} savedImage={modalVendorInfo?.banner}/>
+                </Stack>
+              </FormControl>
+            </HStack>
 
             <FormControl id="email">
               <FormLabel fontWeight={600}>Email</FormLabel>
               <Input
                 type="email"
-                value={vendorInfo?.email}
+                value={modalVendorInfo?.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
               />
             </FormControl>
@@ -108,7 +172,7 @@ export default function ProfileEditModalContainer({
               <FormLabel fontWeight={600}>Phone</FormLabel>
               <Input
                 type="tel"
-                value={vendorInfo?.phone}
+                value={modalVendorInfo?.phone}
                 onChange={(e) => handleInputChange("phone", e.target.value)}
               />
             </FormControl>
@@ -120,24 +184,24 @@ export default function ProfileEditModalContainer({
             <FormControl id="aboutUs">
               <FormLabel fontWeight={600}>About Us</FormLabel>
               <Textarea
-                value={vendorInfo?.description}
+                value={modalVendorInfo?.description}
                 onChange={(e) => handleInputChange("description", e.target.value)}
               />
             </FormControl>
           </Stack>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter gap='1rem'>
+          <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
           <CustomButton
             mr={3}
             onClick={() => {
-              updateVendorInfo(vendorInfo);
+              handleSubmit();
               onSave();
             }}
           >
             Save
           </CustomButton>
-          <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

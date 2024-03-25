@@ -1,6 +1,6 @@
-import { Box, Flex, Heading, Avatar, useColorModeValue } from "@chakra-ui/react";
+import { Box, Flex, Avatar, useColorModeValue, Image } from "@chakra-ui/react";
 
-export default function TopBanner({ name, logo }: { name: string; logo: string }) {
+export default function TopBanner({ name, logo, banner }: { name: string; logo: string, banner: string }) {
   return (
     <Box
       w={"full"}
@@ -9,21 +9,13 @@ export default function TopBanner({ name, logo }: { name: string; logo: string }
       overflow={"hidden"}
     >
       {/* Background Image with Vendor Shop Name */}
-      <Box
-        backgroundColor={"#EFEDEE"}
-        h={"200px"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        display={"flex"}
-      >
-        <Heading
-          as="h1"
-          size="2xl"
-          color={"black"}
-        >
-          {name}
-        </Heading>
-      </Box>
+        <Image
+          alt='banner' 
+          src={banner} 
+          h={"200px"} 
+          w='full' 
+          objectFit='cover'
+        />
 
       {/* Vendor Logo */}
       <Flex

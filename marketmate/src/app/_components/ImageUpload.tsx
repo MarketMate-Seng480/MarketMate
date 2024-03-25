@@ -1,120 +1,85 @@
 "use client";
 import React, { useRef, useState } from "react";
-import { supabase } from '../lib/supabase';
-import Uppy from '@uppy/core';
-import Tus from '@uppy/tus';
+import { CustomButton } from "./CustomButton";
+import { Avatar, AvatarProps, Image, VStack } from "@chakra-ui/react";
 
-import '@uppy/core/dist/style.min.css';
-import '@uppy/dashboard/dist/style.min.css';
-import useUser from "../lib/hooks";
-import { useRouter } from "next/navigation";
+interface ImageUploaderProps extends AvatarProps {
+  savedImage?: string;
+  bucket: 'avatar' | 'banner' | 'product' | 'logo';
+  setSelectedFile: (file: File) => void;
+}
 
+export const ImageUploader: React.FC<ImageUploaderProps> = ({
+  savedImage, bucket, setSelectedFile
+}) => {
+  const [displayImage, setDisplayImage] = useState(savedImage);
+  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
-export default function ImageUploader({
-  bucket,
-  setImageUrl
-}: {
-  bucket: string,
-  setImageUrl: (url: string) => void
-}) {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const fileReader = new FileReader();
+      fileReader.onload = (e) => {
+        setDisplayImage(e.target?.result as string);
+      };
+      fileReader.readAsDataURL(file);
+      setSelectedFile(file);
+    }
+  };
 
-    const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-    const {data:user} = useUser()
-    const router = useRouter();
+  const openFileBrowser = () => {
+    inputRef.current?.click();
+  };
 
-    const onBeforeRequest = async (req: any) => {
-      const { data } = await supabase.auth.getSession();
-		  req.setHeader("Authorization", `Bearer ${data.session?.access_token}`);
-    };
-
-    const [uppy] = useState(() => 
-      new Uppy({
-        restrictions:{
-          maxNumberOfFiles: 1,
-          allowedFileTypes: ['image/*'],
-          maxFileSize: 5 * 1000 * 1000, // 5MB
-        },
-      }).use(Tus, { 
-        endpoint: process.env.NEXT_PUBLIC_SUPABASE_URL + "/storage/v1/upload/resumable",
-
-        onBeforeRequest,
-
-        allowedMetaFields: [
-          "bucketName",
-          "objectName",
-          "contentType",
-          "cacheControl",
-        ],
-      })
-    );
-
-    uppy.on('file-added', (file) => {
-      file.meta = {
-        ...file.meta,
-        bucketName: bucket,
-        contentType: file.type,
-      }
-
-    });
-
-    uppy.on("upload-success", () => {
-      uppy.cancelAll();
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
-      document.getElementById("trigger-close")?.click();
-      router.refresh();
-    });
-
-
-    const handleUpload = () => {
-      if (uppy.getFiles().length === 0) console.error("No file to upload");
-
-      const randomUUID = crypto.randomUUID();
-
-      uppy.setFileMeta(uppy.getFiles()[0].id, {
-        objectName: user?.id + "/" + randomUUID + "/" + uppy.getFiles()[0].name,
-      });
-
-      const fileName = uppy.getFiles()[0].name;
-
-      uppy.upload();
-
-      setImageUrl(
-        process.env.NEXT_PUBLIC_SUPABASE_URL +
-          "/storage/v1/object/public/" +
-          bucket +
-          "/" +
-          user?.id +
-          "/" +
-          randomUUID +
-          "/" +
-          fileName
-      );
-    };
-
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        uppy.addFile({
-          source: "file-added",
-          name: e.target.files[0].name,
-          type: e.target.files[0].type,
-          data: e.target.files[0],
-        });
-        
-        handleUpload();
-      }
-    };
-
-    return (
+  return (
+    <VStack>
       <>
-        <input
-          type="file"
-          accept="image/*"
-          ref={inputRef}
-          onChange={handleChange}
-        />
+        {bucket === 'banner' ? (
+          <Image 
+            alt={'banner-upload'} 
+            src={displayImage} 
+            borderRadius='md'
+            height='128px'
+            width='400px'
+            objectFit='cover'
+          />
+        ) : bucket === 'product' ? (
+          <Image 
+            alt={'product-upload'} 
+            src={displayImage} 
+            borderRadius='md'
+            height='128px'
+            width='128px'
+            objectFit='cover'
+          />
+        ) : (
+          <Avatar size='2xl' src={displayImage} />
+        )}
       </>
-    )
+      <input
+        type="file"
+        accept="image/*"
+        ref={inputRef}
+        onChange={handleChange}
+        style={{ display: 'none' }}
+      />
+      {savedImage ? (
+        <CustomButton
+            variant="secondary" 
+            w='fit-content'
+            onClick={openFileBrowser}
+        >
+            Change
+        </CustomButton>
+      ) : (
+        <CustomButton
+            variant="secondary" 
+            w='fit-content'
+            onClick={openFileBrowser}
+        >
+            Add
+        </CustomButton>
+      )}
+  </VStack>
+  )
 }
