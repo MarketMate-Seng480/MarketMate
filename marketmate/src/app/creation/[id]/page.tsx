@@ -1,8 +1,6 @@
 'use client';
 import React, { useState, useEffect } from "react";
-import { Button, Box, useColorModeValue, useDisclosure } from "@chakra-ui/react";
-import TopBanner from "@components/vendor/TopBanner";
-import InfoSection from "@components/vendor/InfoSection";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import ProfileCreationForm from "@components/vendor/ProfileCreationForm";
 import { Vendor, User } from "@prisma/client";
 import { useRouter } from "next/navigation";

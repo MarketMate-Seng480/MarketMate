@@ -4,7 +4,6 @@ import { Box, VStack } from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
 import TopBanner from "@components/vendor/TopBanner";
-import InfoSection from "@components/vendor/InfoSection";
 import type { Vendor } from "@prisma/client";
 import LoadingPage from "@components/Loading";
 
@@ -14,6 +13,7 @@ function ProfilePage(vendor: Vendor) {
       <TopBanner
         name={vendor.name}
         logo={vendor.logo || ""}
+        banner={vendor.banner || ""}
       />
       <Box
         mx={10}
