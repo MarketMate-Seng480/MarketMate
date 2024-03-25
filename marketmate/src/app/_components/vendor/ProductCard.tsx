@@ -28,6 +28,23 @@ export default function ProductCard({
     return product.data;
   };
 
+  const deleteProduct = async (product: Product) => {
+    const res = await fetch(`/api/vendors/${vendorId}/products/${product.id}`, {
+      method: "DELETE",
+    });
+    if (res.status === 204) {
+      console.log("Product deleted successfully");
+    }
+    if (res.status === 404) {
+      console.log("Product not found");
+    }
+    if (res.status === 500) {
+      console.log("Internal server error");
+    }
+    const deleted = await res.json();
+    return deleted;
+  };
+
 
   return (
     <Box>
@@ -65,6 +82,7 @@ export default function ProductCard({
           onSave={onSave}
           initialProductInfo={product}
           alterProductInfo={updateProductInfo}
+          deleteProductInfo={deleteProduct}
           vendorId={vendorId}
         />
     </Box>
