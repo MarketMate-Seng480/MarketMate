@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React, { useState } from "react";
 import {
   FormControl,
@@ -20,24 +20,26 @@ import { CustomButton } from "../CustomButton";
 import { ImageUploader } from "../ImageUpload";
 import useUser from "@/app/lib/hooks";
 import { supabase } from "@/app/lib/supabase";
+import { useToast } from "@chakra-ui/react";
 
 export default function ProfileEditModal({
   isOpen,
   onClose,
   onSave,
   initialVendorInfo,
-  setPageVendorInfo
+  setPageVendorInfo,
 }: {
   isOpen: boolean;
   onClose: () => void;
   onSave: () => void;
   initialVendorInfo: Vendor;
-  setPageVendorInfo: ((vendor: Vendor) => void);
+  setPageVendorInfo: (vendor: Vendor) => void;
 }) {
   const [modalVendorInfo, setModalVendorInfo] = useState(initialVendorInfo);
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [bannerFile, setBannerFile] = useState<File | null>(null);
-  const {data:user} = useUser();
+  const { data: user } = useUser();
+  const toast = useToast();
 
   const handleInputChange = (field: keyof Vendor, value: string) => {
     setModalVendorInfo((prev: Vendor) => ({ ...prev, [field]: value }));
@@ -54,38 +56,59 @@ export default function ProfileEditModal({
       const filePath = `${user?.id}/${file.name}-${timestamp}`;
 
       // Upload to Supabase storage
-      const { data, error } = await supabase.storage
-        .from(bucket)
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: true
-        });
+      const { data, error } = await supabase.storage.from(bucket).upload(filePath, file, {
+        cacheControl: "3600",
+        upsert: true,
+      });
       if (error) {
         console.error("Upload error:", error.message);
         return;
       }
 
-      // Get file storage path to be saved in DB 
-      const fileUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-      + '/storage/v1/object/public/'
-      + bucket
-      + '/'
-      + data.path;
-      return fileUrl;   
+      // Get file storage path to be saved in DB
+      const fileUrl =
+        process.env.NEXT_PUBLIC_SUPABASE_URL +
+        "/storage/v1/object/public/" +
+        bucket +
+        "/" +
+        data.path;
+      return fileUrl;
     } catch (e) {
       console.error("Error during file upload:", e);
     }
   };
-  
+
   const uploadVendorToDatabase = async (info: Vendor) => {
+    const selectedInfo = {
+      name: info.name,
+      email: info.email,
+      phone: info.phone,
+      description: info.description,
+      logo: info.logo,
+      banner: info.banner,
+      // storeTags: info.storeTags,
+    };
+
     const res = await fetch(`/api/vendors/${info.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(info),
+      body: JSON.stringify(selectedInfo),
     });
     const vendor = await res.json();
+    if (res.status !== 200) {
+      console.error("Error updating vendor from profile edit", vendor.error);
+      return;
+    }
+
+    toast({
+      title: "Storefront info updated successfully",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+    });
+
     return vendor.data;
   };
 
@@ -93,13 +116,13 @@ export default function ProfileEditModal({
     try {
       let updatedVendorInfo = { ...modalVendorInfo };
       if (logoFile) {
-        const uploadedLogoUrl = await uploadFileToStorage(logoFile, 'logo');
+        const uploadedLogoUrl = await uploadFileToStorage(logoFile, "logo");
         if (uploadedLogoUrl) {
           updatedVendorInfo.logo = uploadedLogoUrl;
         }
       }
       if (bannerFile) {
-        const uploadedBannerUrl = await uploadFileToStorage(bannerFile, 'banner');
+        const uploadedBannerUrl = await uploadFileToStorage(bannerFile, "banner");
         if (uploadedBannerUrl) {
           updatedVendorInfo.banner = uploadedBannerUrl;
         }
@@ -110,8 +133,8 @@ export default function ProfileEditModal({
     } catch (e) {
       console.error("Error in submit:", e);
     }
-  }
-  
+  };
+
   return (
     <Modal
       isOpen={isOpen}
@@ -136,25 +159,42 @@ export default function ProfileEditModal({
               />
             </FormControl>
 
-            <HStack display='flex' justifyContent='space-between'>
-              <FormControl id="logo" width='fit-content'>
+            <HStack
+              display="flex"
+              justifyContent="space-between"
+            >
+              <FormControl
+                id="logo"
+                width="fit-content"
+              >
                 <Stack
                   direction={["column"]}
-                  alignItems='start'
-                  width='fit-content'
+                  alignItems="start"
+                  width="fit-content"
                 >
                   <FormLabel fontWeight={600}>Shop Logo</FormLabel>
-                  <ImageUploader bucket="logo" setSelectedFile={setLogoFile} savedImage={modalVendorInfo?.logo}/>
+                  <ImageUploader
+                    bucket="logo"
+                    setSelectedFile={setLogoFile}
+                    savedImage={modalVendorInfo?.logo}
+                  />
                 </Stack>
               </FormControl>
-              <FormControl id="banner" width='fit-content'>
+              <FormControl
+                id="banner"
+                width="fit-content"
+              >
                 <Stack
                   direction={["column"]}
-                  alignItems='start'
-                  width='fit-content'
+                  alignItems="start"
+                  width="fit-content"
                 >
                   <FormLabel fontWeight={600}>Banner Image</FormLabel>
-                  <ImageUploader bucket="banner" setSelectedFile={setBannerFile} savedImage={modalVendorInfo?.banner}/>
+                  <ImageUploader
+                    bucket="banner"
+                    setSelectedFile={setBannerFile}
+                    savedImage={modalVendorInfo?.banner}
+                  />
                 </Stack>
               </FormControl>
             </HStack>
@@ -191,8 +231,13 @@ export default function ProfileEditModal({
           </Stack>
         </ModalBody>
 
-        <ModalFooter gap='1rem'>
-          <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
+        <ModalFooter gap="1rem">
+          <CustomButton
+            variant={"secondary"}
+            onClick={onClose}
+          >
+            Cancel
+          </CustomButton>
           <CustomButton
             mr={3}
             onClick={() => {
