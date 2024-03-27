@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Button, Box, useDisclosure, SimpleGrid } from "@chakra-ui/react";
+import { Button, Box, useDisclosure, SimpleGrid, Spacer, Flex } from "@chakra-ui/react";
 import { CgAdd } from "react-icons/cg";
 import { Product } from "@prisma/client";
 import { Vendor_Extended } from "@/app/lib/types";
 import EditableProductCard from "@components/vendor/EditableProductCard";
 import ProductCreationModalContainer from "@components/vendor/ProductCreationModalContainer";
-import TopBanner from "@components/publicStoreFront/TopBanner";
+import TopBanner from "@components/vendor/TopBanner";
 import { CustomButton } from "@components/CustomButton";
 
 export default function VendorProductPage({ params: { id } }: { params: { id: string } }) {
@@ -111,9 +111,9 @@ export default function VendorProductPage({ params: { id } }: { params: { id: st
   ));
 
   return (
-    <>
+    <Box>
       <TopBanner
-        shopName={vendor.name}
+        name={vendor.name}
         logo={vendor.logo || ""}
         banner={vendor.banner || ""}
       />
@@ -147,6 +147,6 @@ export default function VendorProductPage({ params: { id } }: { params: { id: st
           </SimpleGrid>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }

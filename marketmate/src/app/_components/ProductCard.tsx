@@ -39,6 +39,22 @@ export default function ProductCard({ product }: { product: Product }) {
           h={350}
           onClick={() => router.push("/product/" + product.id)}
           cursor={"pointer"}
+          objectFit={"cover"}
+          fallback={
+            <Box
+              w={320}
+              h={350}
+              bg={"gray.500"}
+              borderRadius={10}
+              display={"flex"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              onClick={() => router.push("/product/" + product.id)}
+              cursor={"pointer"}
+            >
+              <Text color={"black"}>{product.name} Image</Text>
+            </Box>
+          }
         />
         <VStack spacing={2}>
           <Heading

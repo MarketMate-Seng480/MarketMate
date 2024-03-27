@@ -139,6 +139,7 @@ export default function Navbar() {
             }
             variant={"ghost"}
             aria-label={"Toggle Navigation"}
+            _hover={{ bgColor: "gray.500" }}
           />
         </Flex>
 

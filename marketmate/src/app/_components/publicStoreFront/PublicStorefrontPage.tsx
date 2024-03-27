@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TopBanner from "./TopBanner";
+import TopBanner from "../vendor/TopBanner";
 import { Box, VStack, Badge, HStack, SimpleGrid, Text, Link } from "@chakra-ui/react";
 import { Vendor_Extended } from "@/app/lib/types";
 import { CustomHeading } from "../CustomHeading";
@@ -18,7 +18,7 @@ export default function PublicStoreFrontPage(vendor: Vendor_Extended) {
       spacing={10}
     >
       <TopBanner
-        shopName={vendor.name}
+        name={vendor.name}
         logo={vendor.logo}
         banner={vendor.banner}
       />

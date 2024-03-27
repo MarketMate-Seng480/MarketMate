@@ -1,6 +1,6 @@
 "use client";
-import { use, useEffect, useState } from "react";
-import { VStack, Image, Text, useTheme, SimpleGrid, useToast } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { VStack, Image, Text, useTheme, SimpleGrid, useToast, Box, Center } from "@chakra-ui/react";
 import PageContainer from "@components/PageContainer";
 import { usePathname } from "next/navigation";
 import type { Product, Vendor, User } from "@prisma/client";
@@ -8,7 +8,7 @@ import { NavLink } from "@components/navigation/CustomLinks";
 import { CustomButton } from "@components/CustomButton";
 import LoadingPage from "@components/Loading";
 import { supabase } from "@/app/lib/supabase";
-
+import { useRouter } from "next/navigation";
 
 export default function ProductPage() {
   const toast = useToast();
@@ -20,7 +20,8 @@ export default function ProductPage() {
   const [vendor, setVendor] = useState<Vendor | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -41,7 +42,6 @@ export default function ProductPage() {
     fetchProduct();
   }, [fetchURL]);
 
-
   useEffect(() => {
     const fetchUser = async () => {
       const session = (await supabase.auth.getSession()).data.session;
@@ -56,31 +56,29 @@ export default function ProductPage() {
       const userDataJson = await userData.json();
       console.log("user data", userDataJson);
       setUser(userDataJson.data);
-    }
-    
+    };
+
     fetchUser();
   }, []);
 
-
   useEffect(() => {
     const fetchCart = async () => {
-      try{
+      try {
         if (user === null) return;
         if (user?.cartId === null) {
-            const newCart = await fetch(`/api/users/${user?.id}/cart`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
+          const newCart = await fetch(`/api/users/${user?.id}/cart`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
         }
       } catch (error) {
-        console.error("Error fetching cart data:", error); 
+        console.error("Error fetching cart data:", error);
       }
     };
     fetchCart();
   }, [user]);
-
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -100,18 +98,16 @@ export default function ProductPage() {
     }
   }, [product]);
 
-
   useEffect(() => {
-      if(product !== null) {
-        setIsLoading(false);
-      }
+    if (product !== null) {
+      setIsLoading(false);
+    }
   }, [product]);
 
-
   async function addToCart() {
-    setIsLoading(true);
+    setIsAddingToCart(true);
 
-    if(!user || !product || !user.cartId) {
+    if (!user || !product || !user.cartId) {
       console.error("User, product or cart not found");
       setIsLoading(false);
       return;
@@ -127,7 +123,7 @@ export default function ProductPage() {
         quantity: 1,
       }),
     });
-    
+
     toast.promise(Promise.resolve(response), {
       success: {
         title: "Product added to cart",
@@ -136,13 +132,13 @@ export default function ProductPage() {
       loading: { title: "Adding to cart", description: "Please wait..." },
       error: { title: "Failed to add item to cart", description: "Please try again later" },
     });
-    setIsLoading(false);
-  }
 
+    setIsAddingToCart(false);
+  }
 
   return (
     <PageContainer>
-      {(!isLoading && product) ? (
+      {!isLoading && product ? (
         <SimpleGrid
           columns={{ base: 1, md: 2 }}
           spacing={10}
@@ -153,6 +149,19 @@ export default function ProductPage() {
             src={product.featureImage}
             alt={product.name}
             rounded={"md"}
+            w={{ base: "100%", md: "auto" }}
+            h={{ base: "auto", md: "100%" }}
+            fallback={
+              <Box
+                background={"gray.500"}
+                alignContent={"center"}
+                justifyContent={"center"}
+              >
+                <Center>
+                  <Text color={"black"}>{product.name} Image</Text>
+                </Center>
+              </Box>
+            }
           />
           <VStack
             align="start"
@@ -185,23 +194,14 @@ export default function ProductPage() {
               {product.description}
             </Text>
 
-            {!user ? (
-              <CustomButton
-                isLoading={isLoading}
-                alignSelf={"start"}
-              >
-                Add to Cart
-              </CustomButton>
-            ) : (
-              <CustomButton
-                isLoading={isLoading}
-                alignSelf={"start"}
-                onClick={addToCart}
-              >
-                Add to Cart
-              </CustomButton>
-            )}
-
+            <CustomButton
+              isLoading={isLoading}
+              alignSelf={"start"}
+              onClick={!user ? () => router.push("/login") : addToCart}
+              isDisabled={isAddingToCart}
+            >
+              {isAddingToCart ? "Adding to Cart..." : "Add to Cart"}
+            </CustomButton>
           </VStack>
         </SimpleGrid>
       ) : (
