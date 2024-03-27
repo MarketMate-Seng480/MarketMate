@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Button,
   FormControl,
   FormLabel,
   Input,
@@ -13,6 +12,8 @@ import {
   ModalBody,
   ModalCloseButton,
   Textarea,
+  HStack,
+  Spacer,
 } from "@chakra-ui/react";
 import { Product } from "@prisma/client";
 import { CustomButton } from "../CustomButton";
@@ -20,7 +21,6 @@ import { CustomButton } from "../CustomButton";
 export default function ProductEditModalContainer({
   isOpen,
   onClose,
-  onSave,
   initialProductInfo,
   alterProductInfo,
   deleteProductInfo,
@@ -28,7 +28,6 @@ export default function ProductEditModalContainer({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onSave: () => void;
   initialProductInfo: Product;
   alterProductInfo: (info: Product) => void;
   deleteProductInfo: (info: Product) => void;
@@ -56,7 +55,7 @@ export default function ProductEditModalContainer({
       <ModalOverlay />
 
       <ModalContent>
-        <ModalHeader>Add New Product</ModalHeader>
+        <ModalHeader>Edit Product</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
@@ -99,25 +98,33 @@ export default function ProductEditModalContainer({
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <CustomButton
-            mr={3}
-            onClick = {() => {
-              deleteProductInfo(productInfo);
-              onSave();
-            }}
-          >
-            Delete
-          </CustomButton>
-          <CustomButton
-            mr={3}
-            onClick={() => {
-              alterProductInfo(productInfo);
-              onSave();
-            }}
-          >
-            Save
-          </CustomButton>
-          <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
+          <HStack w={"100%"}>
+            <CustomButton
+              mr={3}
+              onClick={() => {
+                deleteProductInfo(productInfo);
+                // onSave();
+              }}
+            >
+              Delete
+            </CustomButton>
+            <Spacer />
+            <CustomButton
+              mr={3}
+              onClick={() => {
+                alterProductInfo(productInfo);
+                // onSave();
+              }}
+            >
+              Save
+            </CustomButton>
+            <CustomButton
+              variant={"secondary"}
+              onClick={onClose}
+            >
+              Cancel
+            </CustomButton>
+          </HStack>
         </ModalFooter>
       </ModalContent>
     </Modal>

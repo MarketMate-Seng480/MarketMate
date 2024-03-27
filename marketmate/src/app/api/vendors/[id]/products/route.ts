@@ -1,4 +1,3 @@
-
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@prisma/prisma";
@@ -26,7 +25,7 @@ export async function POST(req: Request, { params: { id } }: { params: { id: str
       status: 500,
     });
 
-  return new NextResponse(JSON.stringify(created), { status: 201 });
+  return NextResponse.json({ message: "ok", status: 201, data: created });
 }
 
 // Get products using paging to control the number to skip and the number of records to take

@@ -10,7 +10,7 @@ import {
   Link,
   CloseButton,
   useTheme,
-  Stack
+  Stack,
 } from "@chakra-ui/react";
 import { IconType } from "react-icons";
 import { usePathname, useRouter } from "next/navigation";
@@ -85,7 +85,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       borderRight="1px"
       borderRightColor={colors.gray[500]}
       w={{ base: "full", md: 60 }}
-      h="full"
+      h="100%"
       {...rest}
     >
       <Flex
@@ -157,9 +157,7 @@ const NavItem = ({ icon, url, label, ...rest }: NavItemProps) => {
 const SideBar = () => {
   const { onClose } = useDisclosure();
 
-  return (
-    <SidebarContent onClose={onClose} />
-  );
+  return <SidebarContent onClose={onClose} />;
 };
 
 export default SideBar;
