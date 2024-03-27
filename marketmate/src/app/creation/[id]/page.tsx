@@ -1,15 +1,11 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Button, Box, useColorModeValue, useDisclosure } from "@chakra-ui/react";
-import { FiEdit } from "react-icons/fi";
-import TopBanner from "@/app/_components/publicStoreFront/TopBanner";
-import InfoSection from "@components/vendor/InfoSection";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import ProfileCreationForm from "@components/vendor/ProfileCreationForm";
 import { Vendor, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { CustomButton } from "@/app/_components/CustomButton";
 
-export default function VendorProfilePage({ params: { id } }: { params: { id: string } }) {
+export default function VendorCreationPage({ params: { id } }: { params: { id: string } }) {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [vendor, setVendor] = useState<Vendor>();

@@ -10,15 +10,15 @@ import {
   Link,
   CloseButton,
   useTheme,
-  Stack
+  Stack,
 } from "@chakra-ui/react";
-import { FiUser, FiMenu, FiShoppingCart } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { usePathname, useRouter } from "next/navigation";
 import { Session } from "@supabase/auth-helpers-nextjs";
 import { supabase } from "../../lib/supabase";
 import { useEffect, useState } from "react";
 import { User, Vendor } from "@prisma/client";
+import { FaStore, FaTag, FaUser } from "react-icons/fa";
 
 interface LinkItemProps {
   name: string;
@@ -41,8 +41,9 @@ interface SidebarProps extends BoxProps {
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Profile", icon: FiUser, url: "/vendor/profile" },
-  { name: "Products", icon: FiShoppingCart, url: "/vendor/products" },
+  { name: "Storefront", icon: FaStore, url: "/vendor/storefront" },
+  { name: "Products", icon: FaTag, url: "/vendor/products" },
+  { name: "Account", icon: FaUser, url: "/vendor/account" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
@@ -84,7 +85,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       borderRight="1px"
       borderRightColor={colors.gray[500]}
       w={{ base: "full", md: 60 }}
-      h="full"
+      h="100%"
       {...rest}
     >
       <Flex
@@ -156,9 +157,7 @@ const NavItem = ({ icon, url, label, ...rest }: NavItemProps) => {
 const SideBar = () => {
   const { onClose } = useDisclosure();
 
-  return (
-    <SidebarContent onClose={onClose} />
-  );
+  return <SidebarContent onClose={onClose} />;
 };
 
 export default SideBar;

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import TopBanner from "./TopBanner";
-import { Box, VStack, Badge, HStack, SimpleGrid, Text, Link } from "@chakra-ui/react";
+import PublicTopBanner from "./PublicTopBanner";
+import { Box, VStack, Badge, HStack, SimpleGrid, Text, Link, Spacer } from "@chakra-ui/react";
 import { Vendor_Extended } from "@/app/lib/types";
 import { CustomHeading } from "../CustomHeading";
 import ProductCard from "../ProductCard";
@@ -11,13 +11,50 @@ export default function PublicStoreFrontPage(vendor: Vendor_Extended) {
   let maxPerLoad = 6;
   let [currentProducts, setCurrentProducts] = useState(products.slice(0, maxPerLoad));
 
+  const ProductSection = () => {
+    if (products.length === 0) {
+      return (
+        <Text size={"md"}>This shop has not set up any products. Please check back later!</Text>
+      );
+    }
+
+    return (
+      <>
+        <SimpleGrid
+          columns={[1, 2, 3]}
+          spacing={10}
+          w={"full"}
+          py={10}
+        >
+          {vendor.products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+            />
+          ))}
+        </SimpleGrid>
+
+        {currentProducts.length < products.length && (
+          <CustomButton
+            variant="secondary"
+            onClick={() =>
+              setCurrentProducts(products.slice(0, currentProducts.length + maxPerLoad))
+            }
+          >
+            Load more products
+          </CustomButton>
+        )}
+      </>
+    );
+  };
+
   return (
     <VStack
-      w={"full"}
+      w={"100%"}
       alignContent={"center"}
       spacing={10}
     >
-      <TopBanner
+      <PublicTopBanner
         shopName={vendor.name}
         logo={vendor.logo}
         banner={vendor.banner}
@@ -68,42 +105,22 @@ export default function PublicStoreFrontPage(vendor: Vendor_Extended) {
         </Box>
       </VStack>
 
-      <VStack>
-        <CustomHeading size="md">About Us</CustomHeading>
-        <Box
-          w={"full"}
-          textAlign={"center"}
-        >
-          <Text size={"md"}>{vendor.description}</Text>
-        </Box>
-      </VStack>
+      {vendor.description && (
+        <VStack>
+          <CustomHeading size="md">About Us</CustomHeading>
+          <Box
+            w={"full"}
+            textAlign={"center"}
+          >
+            <Text size={"md"}>{vendor.description}</Text>
+          </Box>
+        </VStack>
+      )}
 
       <VStack>
         <CustomHeading size="md">Products</CustomHeading>
-        <SimpleGrid
-          columns={[1, 2, 3]}
-          spacing={10}
-          w={"full"}
-          py={10}
-        >
-          {vendor.products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-            />
-          ))}
-        </SimpleGrid>
-
-        {currentProducts.length < products.length && (
-          <CustomButton
-            variant="secondary"
-            onClick={() =>
-              setCurrentProducts(products.slice(0, currentProducts.length + maxPerLoad))
-            }
-          >
-            Load more products
-          </CustomButton>
-        )}
+        <ProductSection />
+        <Spacer />
       </VStack>
     </VStack>
   );

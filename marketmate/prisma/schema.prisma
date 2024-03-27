@@ -29,7 +29,7 @@ model Vendor {
   phone          String
   logo           String
   userId         String         @unique
-  banner         String         @default("\"\"")
+  banner         String         @default("https://image-assets.aus-2.volcanic.cloud/api/v1/assets/images/57937968d9a50e1e67171caa2db2247c?t=1688533841")
   products       Product[]
   user           User           @relation(fields: [userId], references: [id])
   upcomingEvents Event[]        @relation("EventToVendor")

@@ -67,6 +67,12 @@ export default function InfoSection(vendor: Vendor) {
       mt={10}
       spacing={8}
     >
+      {/* Shop Name */}
+      <Stack spacing={4}>
+        <Heading size="md">Shop Name</Heading>
+        <Text>{vendor.name}</Text>
+      </Stack>
+
       {/* About Us */}
       <Stack spacing={4}>
         <Heading size="md">About Us</Heading>

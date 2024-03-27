@@ -108,6 +108,15 @@ export default function SignUpForm() {
           },
           body: JSON.stringify(user),
         });
+        const userData = await res.json();
+
+        // create a new cart for the user
+        const cart = await fetch (`/api/users/${userData.data.id}/cart`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         router.push("/");
       }

@@ -1,15 +1,16 @@
 "use client";
+"use client";
 import React, { useState, useEffect } from "react";
-import { Button, Box, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import { FiEdit } from "react-icons/fi";
-import TopBanner from "@/app/_components/publicStoreFront/TopBanner";
+import TopBanner from "@components/vendor/TopBanner";
 import InfoSection from "@components/vendor/InfoSection";
-import ProfileEditModalContainer from "@components/vendor/ProfileEditForm";
 import { Vendor } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { CustomButton } from "@/app/_components/CustomButton";
+import ProfileEditModal from "@/app/_components/vendor/ProfileEditForm";
 
-export default function VendorProfilePage({ params: { id } }: { params: { id: string } }) {
+export default function StorefrontAdminPage({ params: { id } }: { params: { id: string } }) {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [vendor, setVendor] = useState<Vendor>();
@@ -17,7 +18,6 @@ export default function VendorProfilePage({ params: { id } }: { params: { id: st
 
   const formClosed = () => {
     onClose();
-    location.reload();
   };
 
   useEffect(() => {
@@ -50,9 +50,9 @@ export default function VendorProfilePage({ params: { id } }: { params: { id: st
   return (
     <>
       <TopBanner
-        shopName={vendor.name}
-        logo={vendor.logo}
-        banner={vendor.banner}
+        name={vendor.name || ""}
+        logo={vendor.logo || ""}
+        banner={vendor.banner || ""}
       />
 
       <Box
@@ -64,14 +64,15 @@ export default function VendorProfilePage({ params: { id } }: { params: { id: st
           variant="secondary"
           onClick={onOpen}
         >
-          Edit Profile
+          Edit Storefront
         </CustomButton>
         <InfoSection {...vendor} />
-        <ProfileEditModalContainer
+        <ProfileEditModal
           isOpen={isOpen}
           onClose={onClose}
           onSave={formClosed}
           initialVendorInfo={vendor}
+          setPageVendorInfo={setVendor}
         />
       </Box>
     </>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  Button,
   FormControl,
   FormLabel,
   Input,
@@ -12,25 +13,21 @@ import {
   ModalBody,
   ModalCloseButton,
   Textarea,
-  HStack,
-  Spacer,
 } from "@chakra-ui/react";
 import { Product } from "@prisma/client";
 import { CustomButton } from "../CustomButton";
 
-export default function ProductEditModalContainer({
+export default function ProductCreationModalContainer({
   isOpen,
   onClose,
   initialProductInfo,
   alterProductInfo,
-  deleteProductInfo,
   vendorId,
 }: {
   isOpen: boolean;
   onClose: () => void;
   initialProductInfo: Product;
   alterProductInfo: (info: Product) => void;
-  deleteProductInfo: (info: Product) => void;
   vendorId: string;
 }) {
   const [productInfo, setProductInfo] = useState(initialProductInfo);
@@ -55,7 +52,7 @@ export default function ProductEditModalContainer({
       <ModalOverlay />
 
       <ModalContent>
-        <ModalHeader>Edit Product</ModalHeader>
+        <ModalHeader>Add New Product</ModalHeader>
         <ModalCloseButton />
 
         <ModalBody>
@@ -98,33 +95,20 @@ export default function ProductEditModalContainer({
           </Stack>
         </ModalBody>
         <ModalFooter>
-          <HStack w={"100%"}>
-            <CustomButton
-              mr={3}
-              onClick={() => {
-                deleteProductInfo(productInfo);
-                // onSave();
-              }}
-            >
-              Delete
-            </CustomButton>
-            <Spacer />
-            <CustomButton
-              mr={3}
-              onClick={() => {
-                alterProductInfo(productInfo);
-                // onSave();
-              }}
-            >
-              Save
-            </CustomButton>
-            <CustomButton
-              variant={"secondary"}
-              onClick={onClose}
-            >
-              Cancel
-            </CustomButton>
-          </HStack>
+          <CustomButton
+            mr={3}
+            onClick={() => {
+              alterProductInfo(productInfo);
+            }}
+          >
+            Save
+          </CustomButton>
+          <CustomButton
+            variant={"secondary"}
+            onClick={onClose}
+          >
+            Cancel
+          </CustomButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

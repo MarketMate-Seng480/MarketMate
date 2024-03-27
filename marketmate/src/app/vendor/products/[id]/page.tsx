@@ -1,19 +1,21 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Button, Box, useDisclosure, SimpleGrid } from "@chakra-ui/react";
+import { Button, Box, useDisclosure, SimpleGrid, Spacer, Flex } from "@chakra-ui/react";
 import { CgAdd } from "react-icons/cg";
 import { Product } from "@prisma/client";
 import { Vendor_Extended } from "@/app/lib/types";
-import EditableProductCard from "@/app/_components/vendor/EditableProductCard";
-import ProductEditModalContainer from "@components/vendor/ProductEditModalContainer";
-import TopBanner from "@/app/_components/publicStoreFront/TopBanner";
-import { CustomButton } from "@/app/_components/CustomButton";
+import EditableProductCard from "@components/vendor/EditableProductCard";
+import ProductCreationModalContainer from "@components/vendor/ProductCreationModalContainer";
+import TopBanner from "@components/vendor/TopBanner";
+import { CustomButton } from "@components/CustomButton";
+import { useToast } from "@chakra-ui/react";
 
 export default function VendorProductPage({ params: { id } }: { params: { id: string } }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [products, setProduct] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [vendor, setVendor] = useState<Vendor_Extended>();
   const [isLoading, setLoading] = useState(true);
+  const toast = useToast();
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -46,7 +48,7 @@ export default function VendorProductPage({ params: { id } }: { params: { id: st
         });
         const data = await response.json();
         const products = await data.data;
-        setProduct(products);
+        setProducts(products);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -78,12 +80,19 @@ export default function VendorProductPage({ params: { id } }: { params: { id: st
       }),
     });
     const product = await res.json();
-    return product.data;
-  };
 
-  const formClosed = () => {
-    onClose();
-    location.reload();
+    if (res.status === 200) {
+      setProducts([...products, product.data]);
+      toast({
+        title: "Product added successfully",
+        status: "success",
+        duration: 1000,
+        isClosable: true,
+      });
+      onClose();
+    }
+
+    return product.data;
   };
 
   const initialProductInfo: Product = {
@@ -106,16 +115,17 @@ export default function VendorProductPage({ params: { id } }: { params: { id: st
       key={product.id}
       product={product}
       vendorId={vendor.id}
-      onSave={formClosed}
+      allProducts={products}
+      setProducts={setProducts}
     />
   ));
 
   return (
-    <>
+    <Box>
       <TopBanner
-        shopName={vendor.name}
-        logo={vendor.logo}
-        banner={vendor.banner}
+        name={vendor.name}
+        logo={vendor.logo || ""}
+        banner={vendor.banner || ""}
       />
       <Box
         mx={10}
@@ -129,14 +139,14 @@ export default function VendorProductPage({ params: { id } }: { params: { id: st
           Add Product
         </CustomButton>
 
-        <ProductEditModalContainer
+        <ProductCreationModalContainer
           isOpen={isOpen}
           onClose={onClose}
-          onSave={formClosed}
           initialProductInfo={initialProductInfo}
           alterProductInfo={addProductInfo}
           vendorId={vendor.id}
         />
+
         <Box mt="50px">
           <SimpleGrid
             columns={{ base: 1, md: 2, lg: 3 }}
@@ -147,6 +157,6 @@ export default function VendorProductPage({ params: { id } }: { params: { id: st
           </SimpleGrid>
         </Box>
       </Box>
-    </>
+    </Box>
   );
 }

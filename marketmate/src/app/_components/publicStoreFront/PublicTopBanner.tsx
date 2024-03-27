@@ -1,7 +1,7 @@
 import { Box, Flex, Avatar, useColorModeValue, Image } from "@chakra-ui/react";
 
 /// TopBanner component for vendor profile page, including the banner and logo
-export default function TopBanner({
+export default function PublicTopBanner({
   shopName,
   logo,
   banner,
@@ -24,10 +24,14 @@ export default function TopBanner({
         justifyContent={"center"}
         alignItems={"center"}
         display={"flex"}
+        overflow={"hidden"}
       >
         <Image
           src={banner}
           alt={shopName}
+          h={"200px"}
+          w="full"
+          objectFit="cover"
         />
       </Box>
 

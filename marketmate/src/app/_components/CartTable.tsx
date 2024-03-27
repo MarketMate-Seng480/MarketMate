@@ -12,6 +12,7 @@ import {
   VStack,
   Center,
   useToast,
+  Box,
 } from "@chakra-ui/react";
 import { CustomHeading } from "@components/CustomHeading";
 import { CustomButton } from "@components/CustomButton";
@@ -23,6 +24,7 @@ import type {
   Product as PrismaProduct,
   Vendor as PrismaVendor,
   Cart as PrismaCart,
+  Cart_Item as PrismaCartItem,
 } from "@prisma/client";
 
 export interface OrderInfo {
@@ -40,12 +42,18 @@ export interface EmailProps {
 
 interface CartProps extends PrismaCart {
   user: UserDB;
-  products: Product[];
+  products: CartItem[];
 }
 
 interface Vendor extends PrismaVendor {
   userId: string;
   user: UserDB;
+}
+
+interface CartItem extends PrismaCartItem {
+  cart: CartProps;
+  product: Product;
+  quantity: number;
 }
 
 interface Product extends PrismaProduct {
@@ -59,8 +67,9 @@ interface UserDB extends PrismaUser {
   vendor?: Vendor;
 }
 
-interface ProcessedProduct {
+interface ProcessedCartItem {
   id: string;
+  productID: string;
   name: string;
   pricePerUnit: number;
   quantity: number;
@@ -68,26 +77,26 @@ interface ProcessedProduct {
   vendor: Vendor;
 }
 
-function processedProducts(products: Product[]): ProcessedProduct[] {
-  const processedProducts: { [key: string]: ProcessedProduct } = {};
-  products.forEach((product) => {
-    if (processedProducts[product.id]) {
-      processedProducts[product.id].quantity++;
-    } else {
-      processedProducts[product.id] = {
-        id: product.id,
-        name: product.name,
-        pricePerUnit: product.price,
-        quantity: 1,
-        featureImage: product.featureImage,
-        vendor: product.vendor,
-      };
-    }
+function processedCartItem(cartItems: CartItem[]): ProcessedCartItem[] {
+  const processedProducts: { [key: string]: ProcessedCartItem } = {};
+  cartItems.forEach((cartItem) => {
+    console.log("Cart Item:", cartItem);
+    processedProducts[cartItem.id] = {
+      id: cartItem.id,
+      productID: cartItem.product.id,
+      name: cartItem.product.name,
+      pricePerUnit: cartItem.product.price,
+      quantity: cartItem.quantity,
+      featureImage: cartItem.product.featureImage,
+      vendor: cartItem.product.vendor,
+    };
+    console.log("Processed Product:", processedProducts[cartItem.id]);
   });
+
   return Object.values(processedProducts);
 }
 
-function prepareOrderRequest(user: UserDB, products: ProcessedProduct[]): EmailProps {
+function prepareOrderRequest(user: UserDB, products: ProcessedCartItem[]): EmailProps {
   const orderInfo: OrderInfo[] = products.map((product) => ({
     productName: product.name,
     quantity: product.quantity,
@@ -107,7 +116,7 @@ export default function CartTable() {
   const [authUser, setAuthUser] = useState<User | null>();
   const [user, setUser] = useState<UserDB | null>();
   const [cart, setCart] = useState<CartProps>();
-  const [products, setProducts] = useState<ProcessedProduct[]>([]);
+  const [products, setProducts] = useState<ProcessedCartItem[]>([]);
   const toast = useToast();
 
   async function onDeleteRow(productId: string) {
@@ -118,14 +127,12 @@ export default function CartTable() {
       return;
     }
 
-    const response = await fetch(`/api/cart/${user.id}`, {
+    const response = await fetch(`/api/users/${user.id}/cart/${cart.id}/${productId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ productID: productId, cartID: cart.id, userID: user.id }),
     });
-    console.log(response);
 
     // Update the cart state to remove the 1st occurrence of the product
     const index = products.findIndex((product) => product.id === productId);
@@ -188,17 +195,34 @@ export default function CartTable() {
       console.log("User:", authUser);
       const fetchData = async () => {
         try {
-          const res = await fetch(`/api/cart/${authUser.id}`);
-          const cartData = await res.json();
-          console.log("Cart data:", cartData.data[0]);
-          setUser(cartData.data[0].user);
-          setCart(cartData.data);
-          setProducts(processedProducts(cartData.data[0].products));
+          const userRes = await fetch(`/api/users/${authUser.id}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const userData = (await userRes.json()).data;
+          console.log("User data:", userData);
+          setUser(userData);
+
+          const res = await fetch(`/api/users/${authUser.id}/cart`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          const cartData = (await res.json()).data;
+          console.log("Cart data:", cartData);
+          setCart(cartData);
+
+          console.log("CartItem data:", cartData.cartItem);
+
+          setProducts(processedCartItem(cartData.cartItem));
         } catch (error) {
           console.error("Error fetching cart data:", error);
         }
       };
-
       fetchData();
     }
   }, [authUser]); // Only re-run this effect when the user changes
@@ -233,8 +257,22 @@ export default function CartTable() {
                     <Image
                       src={product.featureImage}
                       alt={product.name}
-                      boxSize={{ base: "50px", md: "100px" }}
+                      width={{ base: "50px", md: "100px" }}
+                      height={{ base: "50px", md: "100px" }}
                       borderRadius={"lg"}
+                      objectFit="cover"
+                      fallback={
+                        <Box>
+                          <Center
+                            width={{ base: "50px", md: "100px" }}
+                            height={{ base: "50px", md: "100px" }}
+                            bg={"gray.500"}
+                            borderRadius={"lg"}
+                          >
+                            <Text color={"black"}>Image</Text>
+                          </Center>
+                        </Box>
+                      }
                     />
                     <VStack align="start">
                       <Text fontWeight="bold">{product.name}</Text>

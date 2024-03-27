@@ -7,16 +7,32 @@ export async function GET(
   req: NextRequest,
   { params: { id, cartId } }: { params: { id: string; cartId: string } }
 ) {
-  const products = await prisma.cart.findUnique({
+  const cart = await prisma.cart.findUnique({
     where: {
       id: cartId,
     },
     include: {
-      cartItem: true,
+      cartItem: {
+        include: {
+          product: {
+            include: {
+              vendor: true,
+            }
+          },
+        },
+      }
     },
   });
-  return NextResponse.json({ message: "ok", status: 200, data: products });
+  if (!cart) {
+    return NextResponse.json({
+      error: "Error finding cart information",
+      status: 500,
+    });
+  }
+
+  return NextResponse.json({ message: "ok", status: 200, data: cart });
 }
+
 
 // Patch for updating a cart
 export async function PATCH(
@@ -32,8 +48,16 @@ export async function PATCH(
     },
     data: json,
   });
+  if (!updated) {
+    return NextResponse.json({
+      error: "Error updating cart information",
+      status: 500,
+    });
+  }
+
   return NextResponse.json({ message: "ok", status: 200, data: updated });
 }
+
 
 // post a new product to the cart
 export async function POST(
@@ -47,7 +71,6 @@ export async function POST(
       id: json.productId,
     },
   });
-
   if (!product) {
     return NextResponse.json({
       error: "Error finding product information",
@@ -77,12 +100,24 @@ export async function POST(
       });
     }
 
+    const cart = await prisma.cart.findUnique({
+      where: {
+        id: cartId,
+      },
+    });
+    if (!cart) {
+      return NextResponse.json({
+        error: "Error finding cart information",
+        status: 500,
+      });
+    }
+
     const updatedCart = await prisma.cart.update({
       where: {
         id: cartId,
       },
       data: {
-        total: JSON.stringify(updated.quantity * product.price),
+        total: JSON.stringify(Number(cart.total) + json.quantity * product.price),
       },
     });
     if (!updatedCart) {
@@ -91,8 +126,8 @@ export async function POST(
         status: 500,
       });
     }
-
     return NextResponse.json({ message: "ok", status: 200, data: updated });
+
   } else {
     const newItem = await prisma.cart_Item.create({
       data: {
@@ -108,6 +143,18 @@ export async function POST(
       });
     }
 
+    const cart = await prisma.cart.findUnique({
+      where: {
+        id: cartId,
+      },
+    });
+    if (!cart) {
+      return NextResponse.json({
+        error: "Error finding cart information",
+        status: 500,
+      });
+    }
+
     const updated = await prisma.cart.update({
       where: {
         id: cartId,
@@ -118,7 +165,7 @@ export async function POST(
             id: newItem.id,
           },
         },
-        total: JSON.stringify(newItem.quantity * product.price),
+        total: JSON.stringify(Number(cart.total) + newItem.quantity * product.price),
       },
     });
     if (!updated) {
@@ -132,26 +179,18 @@ export async function POST(
   }
 }
 
-// delete a unique cart
+// delete all items in the cart
 export async function DELETE(
   req: Request,
   { params: { id, cartId } }: { params: { id: string; cartId: string } }
 ) {
-  // TODO: add auth check here to require user to be logged in and be the vendor before updating a vendor profile
-
-  const deleted = await prisma.cart.delete({
+  
+  // Delete all cartItems linked to the cart
+  const deletedItems = await prisma.cart_Item.deleteMany({
     where: {
-      id: cartId,
+      cartId: cartId,
     },
   });
-
-  const update = await prisma.user.update({
-    where: {
-      id,
-    },
-    data: {
-      cartId: null,
-    },
-  });
-  return NextResponse.json({ message: "ok", status: 200, data: deleted });
+  
+  return NextResponse.json({ message: "ok", status: 200, data: deletedItems });
 }

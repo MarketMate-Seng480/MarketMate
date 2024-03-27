@@ -45,6 +45,7 @@ export default function Shop() {
           paddingBottom={10}
           spacing={6}
           maxW={"1600px"}
+          w={"100%"}
         >
           {error ? <text>Error fetching vendor</text> : null}
           {vendor ? <PublicStoreFrontPage {...vendor} /> : <LoadingPage />}
