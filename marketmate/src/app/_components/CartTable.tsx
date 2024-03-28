@@ -80,7 +80,6 @@ interface ProcessedCartItem {
 function processedCartItem(cartItems: CartItem[]): ProcessedCartItem[] {
   const processedProducts: { [key: string]: ProcessedCartItem } = {};
   cartItems.forEach((cartItem) => {
-    console.log("Cart Item:", cartItem);
     processedProducts[cartItem.id] = {
       id: cartItem.id,
       productID: cartItem.product.id,
@@ -90,7 +89,6 @@ function processedCartItem(cartItems: CartItem[]): ProcessedCartItem[] {
       featureImage: cartItem.product.featureImage,
       vendor: cartItem.product.vendor,
     };
-    console.log("Processed Product:", processedProducts[cartItem.id]);
   });
 
   return Object.values(processedProducts);
@@ -161,7 +159,6 @@ export default function CartTable() {
 
       if (response.ok) {
         const data = await response.json();
-        // console.log(data);
       } else {
         console.error("Email sending failed");
       }
@@ -192,7 +189,6 @@ export default function CartTable() {
 
   useEffect(() => {
     if (authUser) {
-      console.log("User:", authUser);
       const fetchData = async () => {
         try {
           const userRes = await fetch(`/api/users/${authUser.id}`, {
@@ -202,7 +198,6 @@ export default function CartTable() {
             },
           });
           const userData = (await userRes.json()).data;
-          console.log("User data:", userData);
           setUser(userData);
 
           const res = await fetch(`/api/users/${authUser.id}/cart`, {
@@ -213,11 +208,7 @@ export default function CartTable() {
           });
 
           const cartData = (await res.json()).data;
-          console.log("Cart data:", cartData);
           setCart(cartData);
-
-          console.log("CartItem data:", cartData.cartItem);
-
           setProducts(processedCartItem(cartData.cartItem));
         } catch (error) {
           console.error("Error fetching cart data:", error);

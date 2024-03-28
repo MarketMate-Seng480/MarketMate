@@ -11,8 +11,6 @@ import {
   Button,
   Stack,
   Collapse,
-  Popover,
-  PopoverTrigger,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
@@ -29,7 +27,7 @@ interface NavItem {
   label: string;
   subLabel?: string;
   children?: Array<NavItem>;
-  href?: string;
+  href: string;
 }
 
 const NAV_ITEMS: Array<NavItem> = [
@@ -247,14 +245,7 @@ const DesktopNav = () => {
     >
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
-          <Popover
-            trigger={"hover"}
-            placement={"bottom-start"}
-          >
-            <PopoverTrigger>
-              <NavLink href={navItem.href}>{navItem.label}</NavLink>
-            </PopoverTrigger>
-          </Popover>
+            <NavLink href={navItem.href}>{navItem.label}</NavLink>
         </Box>
       ))}
     </Stack>
@@ -270,14 +261,7 @@ const MobileNav = () => {
     >
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
-          <Popover
-            trigger={"click"}
-            placement={"bottom-start"}
-          >
-            <PopoverTrigger>
-              <NavLink>{navItem.label}</NavLink>
-            </PopoverTrigger>
-          </Popover>
+            <NavLink href={navItem.href}>{navItem.label}</NavLink>
         </Box>
       ))}
     </VStack>
