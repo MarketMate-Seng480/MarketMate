@@ -6,5 +6,6 @@
         "Chakra",
         "supabase"
     ],
-    "prettier.singleAttributePerLine": true
+    "prettier.singleAttributePerLine": true,
+    "editor.formatOnSave": true
 }
