@@ -4,8 +4,10 @@
     "cSpell.words": [
         "Artisway",
         "Chakra",
-        "supabase"
+        "supabase",
+        "upsert"
     ],
     "prettier.singleAttributePerLine": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "prettier.tabWidth": 4
 }
