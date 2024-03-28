@@ -31,9 +31,15 @@ export default function AllProductsPage() {
 
     async function fetchTotalProducts() {
       try {
-        const response = await fetch("/api/products?total=true");
+        const response = await fetch("/api/products?total=true", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        
         const data = await response.json();
-        setTotalNumberOfProducts(data.data);
+        setTotalNumberOfProducts(data.data.length);
       } catch (error) {
         console.error("Error fetching total products:", error);
       }
@@ -85,14 +91,16 @@ export default function AllProductsPage() {
                 {productCards}
               </SimpleGrid>
 
-              {/* {products.length < totalNumberOfProducts && (
-                <CustomButton onClick={loadMoreProducts} variant="secondary" size="lg" mt={10}>
+              {products.length < totalNumberOfProducts && (
+                <CustomButton
+                  onClick={loadMoreProducts}
+                  variant="secondary"
+                  size="lg"
+                  mt={10}
+                >
                   Load more products
                 </CustomButton>
-              )} */}
-              {true && (
-  <CustomButton onClick={loadMoreProducts}>Load more products</CustomButton>
-)}
+              )}
             </Center>
           </Flex>
           
