@@ -16,6 +16,7 @@ import { CustomButton } from "./CustomButton";
 import { CustomCard } from "./CustomCard";
 import { useRouter } from "next/navigation";
 import { Vendor_Extended } from "@lib/types";
+import { brandTheme } from "../providers";
 
 export default function VendorCard({ vendor }: { vendor: Vendor_Extended }) {
   const router = useRouter();
@@ -24,22 +25,31 @@ export default function VendorCard({ vendor }: { vendor: Vendor_Extended }) {
     <Center
       display={"flex"}
       key={vendor.id} // Add key prop here
+      mx={2}
     >
       <CustomCard
         width={"400px"}
         height={"512px"}
       >
         <Image
-          h={"124px"}
+          h={"150px"}
           w={"full"}
-          src={vendor.logo}
+          src={vendor.banner}
           objectFit="cover"
           alt={vendor.name + " logo"}
           borderRadius={4}
+          fallback={
+            <Box
+              background={brandTheme.colors.text.caption}
+              w={"full"}
+              h={"320px"}
+              borderRadius={4}
+            />
+          }
         />
         <Flex
           justify={"center"}
-          mt={-12}
+          mt={-55}
         >
           <Avatar
             size={"xl"}
@@ -51,7 +61,8 @@ export default function VendorCard({ vendor }: { vendor: Vendor_Extended }) {
         </Flex>
 
         <Box
-          p={6}
+          px={6}
+          pb={6}
           height={"100%"}
           display={"flex"}
           flexDirection={"column"}
@@ -81,6 +92,7 @@ export default function VendorCard({ vendor }: { vendor: Vendor_Extended }) {
                   variant="outline"
                   key={tag.id}
                   color={"gray.400"}
+                  size={"xs"}
                 >
                   {tag.name}
                 </Badge>
@@ -89,7 +101,7 @@ export default function VendorCard({ vendor }: { vendor: Vendor_Extended }) {
 
             <Text
               color={"gray.700"}
-              noOfLines={5}
+              noOfLines={vendor.shopTags.length > 0 ? 3 : 4}
             >
               {vendor.description}
             </Text>

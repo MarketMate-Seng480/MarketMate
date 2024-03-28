@@ -1,17 +1,11 @@
-'use client';
+"use client";
 import React, { useState, useEffect } from "react";
 import { Box, useDisclosure } from "@chakra-ui/react";
 import ProfileCreationForm from "@components/vendor/ProfileCreationForm";
 import { Vendor, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import { CustomButton } from "@/app/_components/CustomButton";
 
-
-export default function VendorCreationPage({ 
-  params: { id },
-}: {
-  params: { id: string }
-}) {
+export default function VendorCreationPage({ params: { id } }: { params: { id: string } }) {
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [vendor, setVendor] = useState<Vendor>();
@@ -33,7 +27,6 @@ export default function VendorCreationPage({
       fetchData();
     }
   }, [id]);
-
 
   const newVendor = async (vendor_info: any) => {
     if (userData == null) return;
@@ -59,23 +52,21 @@ export default function VendorCreationPage({
       });
       const updatedUserData = (await res.json()).data;
       setUserData(updatedUserData);
-
     } catch (error) {
       console.error("Error creating vendor:", error);
     }
-
   };
 
   const formClosed = async (vendor_info: any) => {
     await newVendor(vendor_info);
     onClose();
     router.push(`/`);
-  }
+  };
 
   const formExited = () => {
     onClose();
     router.push(`/`);
-  }
+  };
 
   useEffect(() => {
     const fetchVendor = async () => {
@@ -111,7 +102,7 @@ export default function VendorCreationPage({
     phone: "",
     logo: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
     userId: userData.id,
-};
+  };
 
   return (
     <>
@@ -128,6 +119,5 @@ export default function VendorCreationPage({
         />
       </Box>
     </>
-
-  )
+  );
 }

@@ -5,7 +5,7 @@ import PageContainer from "@components/PageContainer";
 import Footer from "@components/Footer";
 import VendorCard from "@components/VendorCard";
 import { Vendor_Extended } from "@lib/types";
-import { CustomButton } from "../_components/CustomButton";
+import { CustomButton } from "@components/CustomButton";
 
 async function fetchVendors(skip: number, take: number) {
   const response = await fetch("/api/vendors?take=" + take + "&skip=" + skip);
@@ -14,7 +14,7 @@ async function fetchVendors(skip: number, take: number) {
 }
 
 export default function AllVendorsPage() {
-  const maxPerLoad = 3;
+  const maxPerLoad = 10;
   const [totalNumberOfVendors, setTotalNumberOfVendors] = useState<number>(0);
   const [vendors, setVendors] = useState<Vendor_Extended[]>([]);
   const [vendorCards, setVendorCards] = useState<JSX.Element[]>([]);

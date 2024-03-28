@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Box, useTheme } from "@chakra-ui/react";
 import React from "react";
 import Navbar from "./navigation/Navbar";
@@ -12,9 +12,7 @@ const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
   return (
     <Box bg={backgroundColor}>
       <Navbar />
-      <Box>
-        {children}
-      </Box>
+      <Box>{children}</Box>
     </Box>
   );
 };
