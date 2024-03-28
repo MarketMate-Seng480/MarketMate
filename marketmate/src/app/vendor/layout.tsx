@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
 import PageContainer from "../_components/PageContainer";
 import SideBar from "../_components/vendor/SideBar";
 
@@ -7,9 +7,13 @@ export default function VendorLayout({ children }: { children: React.ReactNode }
     <PageContainer>
       <Flex direction="row">
         <Box minWidth="250px">
-          <SideBar/>
+          <SideBar />
         </Box>
-        <Box flex="1" overflow="hidden" padding={8}>
+        <Box
+          flex="1"
+          overflow="hidden"
+          padding={8}
+        >
           {children}
         </Box>
       </Flex>

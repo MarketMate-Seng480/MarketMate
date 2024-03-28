@@ -20,14 +20,12 @@ import { CustomButton } from "../CustomButton";
 export default function ProductCreationModalContainer({
   isOpen,
   onClose,
-  onSave,
   initialProductInfo,
   alterProductInfo,
   vendorId,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  onSave: () => void;
   initialProductInfo: Product;
   alterProductInfo: (info: Product) => void;
   vendorId: string;
@@ -101,12 +99,16 @@ export default function ProductCreationModalContainer({
             mr={3}
             onClick={() => {
               alterProductInfo(productInfo);
-              onSave();
             }}
           >
             Save
           </CustomButton>
-          <CustomButton variant={'secondary'} onClick={onClose}>Cancel</CustomButton>
+          <CustomButton
+            variant={"secondary"}
+            onClick={onClose}
+          >
+            Cancel
+          </CustomButton>
         </ModalFooter>
       </ModalContent>
     </Modal>

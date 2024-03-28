@@ -5,5 +5,7 @@
         "Artisway",
         "Chakra",
         "supabase"
-    ]
+    ],
+    "prettier.singleAttributePerLine": true,
+    "editor.formatOnSave": true
 }
