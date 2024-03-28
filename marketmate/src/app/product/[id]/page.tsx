@@ -33,7 +33,6 @@ export default function ProductPage() {
           },
         });
         const data = await response.json();
-        console.log("data", data);
         setProduct(data.data);
       } catch (error) {
         console.error("Error fetching product:", error);
@@ -54,7 +53,6 @@ export default function ProductPage() {
         },
       });
       const userDataJson = await userData.json();
-      console.log("user data", userDataJson);
       setUser(userDataJson.data);
     };
 
@@ -86,7 +84,6 @@ export default function ProductPage() {
       try {
         const response = await fetch(fetchURL);
         const data = await response.json();
-        console.log("data", data);
         setVendor(data.data);
       } catch (error) {
         console.error("Error fetching vendor:", error);
