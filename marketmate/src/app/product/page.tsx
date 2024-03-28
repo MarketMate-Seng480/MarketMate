@@ -85,11 +85,14 @@ export default function AllProductsPage() {
                 {productCards}
               </SimpleGrid>
 
-              {products.length < totalNumberOfProducts && (
+              {/* {products.length < totalNumberOfProducts && (
                 <CustomButton onClick={loadMoreProducts} variant="secondary" size="lg" mt={10}>
                   Load more products
                 </CustomButton>
-              )}
+              )} */}
+              {true && (
+  <CustomButton onClick={loadMoreProducts}>Load more products</CustomButton>
+)}
             </Center>
           </Flex>
           
